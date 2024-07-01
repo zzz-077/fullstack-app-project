@@ -1,0 +1,35 @@
+.undefPage_container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.undefPage_container .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.undefPage_container .content div:nth-child(1) h1 {
+  font-size: 16rem;
+  color: var(--font-color);
+}
+.undefPage_container .content div:nth-child(1) {
+  display: flex;
+}
+.undefPage_container .content div:nth-child(1) h1:nth-child(1) {
+}
+.undefPage_container .content div:nth-child(2) {
+  width: 600px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+}
+.undefPage_container .content div:nth-child(3) {
+  margin-top: 1rem;
+}
+.undefPage_container .content div:nth-child(3) button {
+  font-size: 1.25rem;
+  padding: 0.5rem 2.5rem;
+  border-radius: 0.25rem;
+}
