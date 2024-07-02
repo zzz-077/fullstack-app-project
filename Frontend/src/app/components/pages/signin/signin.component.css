@@ -1,0 +1,214 @@
+.signup_container {
+  width: 100%;
+  height: 100%;
+  /* background-color: red; */
+  position: relative;
+}
+.signup_container .signup_box {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  padding: 0 2rem;
+  max-width: 1100px;
+}
+
+.signup_container .signup_box .content {
+  display: flex;
+  justify-content: center;
+  flex-direction: row-reverse;
+  align-items: center;
+  background-color: var(--box-color);
+  height: 750px;
+}
+
+.left_col {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 1rem;
+  padding: 0 3.5rem;
+}
+.left_col .header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.left_col .header h1 {
+  font-size: 2rem;
+}
+.left_col .header p {
+  color: #bbb8b8;
+  font-size: 0.875rem;
+}
+.left_col .inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+.left_col .inputs .google-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+.left_col .inputs .google-box button {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #cac9c9;
+  background-color: var(--box-color);
+  border-radius: 0.125rem;
+  color: var(--font-color);
+  font-weight: 600;
+  width: 100%;
+  padding: 0.75rem;
+}
+.left_col .inputs .google-box button:hover {
+  border: 1px solid #f5f3f3;
+  background-color: #f5f3f3;
+}
+.left_col .inputs .google-box button img {
+  width: 18px;
+  height: 18px;
+  object-fit: cover;
+}
+.left_col .inputs .google-box span {
+  position: relative;
+  color: #bbb8b8;
+}
+.left_col .inputs .google-box span::before,
+.left_col .inputs .google-box span::after {
+  content: "";
+  position: absolute;
+  height: 1.25px;
+  width: 47%;
+  background-color: #bbb8b8a7;
+  top: 50%;
+}
+.left_col .inputs .google-box span::before {
+  left: 0;
+}
+.left_col .inputs .google-box span::after {
+  right: 0;
+}
+
+.left_col .inputs form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  text-align: left;
+  width: 100%;
+}
+.left_col .inputs form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: left;
+  width: 100%;
+}
+.left_col .inputs form .field label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.left_col .inputs form .field div {
+  padding: 0.75rem 1rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  border: 1px solid #cac9c9;
+}
+.left_col .inputs form .field div input {
+  border: 0;
+  width: 100%;
+  font-size: 0.875rem;
+  outline: none;
+}
+.left_col .inputs form .field div input::placeholder {
+  color: #cac9c9f3;
+}
+.left_col .inputs form .field div .password_icons {
+  display: flex;
+  border: 0;
+  padding: 0;
+  gap: 0;
+}
+.left_col .inputs form .field div .password_icons i {
+  font-size: 0.75rem;
+  color: #bbb8b8;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.left_col .inputs form .field div .password_icons i:hover {
+  color: var(--font-color);
+}
+.left_col .inputs form .button_box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.875rem;
+}
+.left_col .inputs form .button_box button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+}
+.left_col .inputs form .button_box p {
+  color: #bbb8b8;
+  display: flex;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+.left_col .inputs form .button_box a {
+  color: var(--font-color);
+  font-style: italic;
+  cursor: pointer;
+}
+
+.right_col {
+  width: 550px;
+  height: 100%;
+}
+.right_col swiper-container {
+  width: 100%;
+  height: 100%;
+}
+.right_col swiper-slide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+}
+.right_col swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  z-index: 1;
+  filter: brightness(0.3);
+}
+.right_col swiper-slide div {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 3rem 2rem;
+  z-index: 10;
+}
+.right_col swiper-slide div h1 {
+  font-size: 2.25rem;
+  color: var(--font-light-color);
+}
+.right_col swiper-slide div h3 {
+  font-size: 0.875rem;
+  color: #bbb8b8;
+  font-weight: 300;
+}
