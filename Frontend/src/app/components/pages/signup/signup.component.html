@@ -32,20 +32,42 @@
             <div class="field">
               <label>Password</label>
               <div>
-                <input type="password" placeholder="......" />
+                <input
+                  [type]="isPassOneClicked ? 'text' : 'password'"
+                  placeholder="......"
+                />
                 <div class="password_icons">
-                  <!-- <i class="fa-solid fa-eye"></i> -->
-                  <i class="fa-solid fa-eye-slash"></i>
+                  <i
+                    *ngIf="isPassOneClicked"
+                    (click)="passwordClick(1, 'haid')"
+                    class="fa-solid fa-eye"
+                  ></i>
+                  <i
+                    *ngIf="!isPassOneClicked"
+                    (click)="passwordClick(1, 'unhaid')"
+                    class="fa-solid fa-eye-slash"
+                  ></i>
                 </div>
               </div>
             </div>
             <div class="field">
               <label>Confirm password</label>
               <div>
-                <input type="password" placeholder="......." />
+                <input
+                  [type]="isPassTwoClicked ? 'text' : 'password'"
+                  placeholder="......."
+                />
                 <div class="password_icons">
-                  <!-- <i class="fa-solid fa-eye"></i> -->
-                  <i class="fa-solid fa-eye-slash"></i>
+                  <i
+                    *ngIf="isPassTwoClicked"
+                    (click)="passwordClick(2, 'haid')"
+                    class="fa-solid fa-eye"
+                  ></i>
+                  <i
+                    *ngIf="!isPassTwoClicked"
+                    (click)="passwordClick(2, 'unhaid')"
+                    class="fa-solid fa-eye-slash"
+                  ></i>
                 </div>
               </div>
             </div>
@@ -60,6 +82,7 @@
         <swiper-container
           autoplay-delay="4000"
           autoplay-disable-on-interaction="false"
+          [pagination]="{ clickable: true }"
         >
           <swiper-slide>
             <img src="assets/slider_img1.png" alt="" />

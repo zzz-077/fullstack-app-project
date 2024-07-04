@@ -27,10 +27,6 @@
               <label>Password</label>
               <div>
                 <input type="password" placeholder="......" />
-                <div class="password_icons">
-                  <!-- <i class="fa-solid fa-eye"></i> -->
-                  <i class="fa-solid fa-eye-slash"></i>
-                </div>
               </div>
             </div>
             <div class="button_box">
@@ -44,6 +40,7 @@
         <swiper-container
           autoplay-delay="4000"
           autoplay-disable-on-interaction="false"
+          [pagination]="{ clickable: true }"
         >
           <swiper-slide>
             <img src="assets/slider_img1.png" alt="" />
