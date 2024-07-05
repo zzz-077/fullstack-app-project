@@ -2,7 +2,7 @@ import User from "../models/userM.js";
 async function userCreate(req, res) {
   try {
     const usersData = await User(req.body).save();
-    // console.log(usersData);
+    console.log(usersData);
 
     return res.status(200).json({
       status: "success",
