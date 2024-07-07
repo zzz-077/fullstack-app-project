@@ -4,15 +4,16 @@ import passport from "passport";
 import session from "express-session";
 import dotenv from "dotenv";
 import router from "./src/routes/router.js";
+import cookieParser from "cookie-parser";
 import "./auth.js";
 dotenv.config();
 const app = express();
 
 // Middleware to parse JSON
 app.use(express.json());
-//default rout
-app.use("/", router);
 
+//coockieParser
+app.use(cookieParser());
 // Session setup
 app.use(
   session({
@@ -27,6 +28,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+//default rout
+app.use("/", router);
 //connecting to database
 mongoose
   .connect(process.env.MONGO_URL)

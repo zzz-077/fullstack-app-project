@@ -11,6 +11,13 @@ router.get(
   passport.authenticate("google", { failureRedirect: "/signin" }),
   (req, res) => {
     res.redirect("/home");
+  },
+  (err, req, res, next) => {
+    res.status(500).json({
+      status: "fail",
+      message: "Authentication failed",
+      error: err.message,
+    });
   }
 );
 router.get("/logout", (req, res, next) => {
