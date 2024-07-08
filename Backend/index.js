@@ -5,6 +5,7 @@ import session from "express-session";
 import dotenv from "dotenv";
 import router from "./src/routes/router.js";
 import cookieParser from "cookie-parser";
+import User from "./src/models/userM.js";
 import "./auth.js";
 dotenv.config();
 const app = express();
@@ -27,6 +28,18 @@ app.use(
 // Passport initialization
 app.use(passport.initialize());
 app.use(passport.session());
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (error) {
+    done(error, null);
+  }
+});
 
 //default rout
 app.use("/", router);

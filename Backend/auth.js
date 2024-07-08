@@ -26,7 +26,8 @@ passport.use(
             img: profile.photos[0].value,
             password: hashedPass,
           }).save();
-          console.log(user);
+        } else {
+          return done(null, user);
         }
         done(null, user);
       } catch (error) {
@@ -35,14 +36,3 @@ passport.use(
     }
   )
 );
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await User.findById(id);
-    done(null, user);
-  } catch (error) {
-    done(error, null);
-  }
-});
