@@ -1,12 +1,12 @@
 import express from "express";
 import usersRoute from "./usersRoute.js";
 import authRoute from "./authRoute.js";
-import checkAutentication from "../middleware/app.js";
+import tokenAutentication from "../middleware/tokenAutentication.js";
 const router = express.Router();
 
 router.use("/user", usersRoute);
 router.use("/auth", authRoute);
-router.get("/home", (req, res) => {
+router.get("/home", tokenAutentication, (req, res) => {
   res.send("Home page");
 });
 router.get("/logout", (req, res, next) => {

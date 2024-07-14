@@ -9,38 +9,11 @@ import User from "./src/models/userM.js";
 import "./auth.js";
 dotenv.config();
 const app = express();
-
 // Middleware to parse JSON
 app.use(express.json());
-
 //coockieParser
 app.use(cookieParser());
-// Session setup
-// app.use(
-//   session({
-//     secret: "notmysecret",
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { secure: false },
-//   })
-// );
-
-// // Passport initialization
 app.use(passport.initialize());
-// app.use(passport.session());
-
-// passport.serializeUser((user, done) => {
-//   done(null, user.id);
-// });
-// passport.deserializeUser(async (id, done) => {
-//   try {
-//     const user = await User.findById(id);
-//     done(null, user);
-//   } catch (error) {
-//     done(error, null);
-//   }
-// });
-
 //default rout
 app.use("/", router);
 //connecting to database

@@ -1,14 +1,20 @@
 import User from "../models/userM.js";
 import bcrypt from "bcrypt";
-import { createAccessToken } from "../utils/createAccessToken.js";
-import { createAccessTokenCookie } from "../utils/cookiesUtils.js";
+import {
+  createAccessToken,
+  createRefreshToken,
+} from "../utils/createAccessToken.js";
+import {
+  createAccessTokenCookie,
+  createRefreshTokenCookie,
+} from "../utils/cookiesUtils.js";
 async function signIn(req, res) {
   const email = req.body.email;
   const password = req.body.password;
   try {
     const userData = await User.findOne({ email: email });
     const comparePass = await bcrypt.compare(password, userData.password);
-    if (userData.length === 0 || !comparePass)
+    if (userData.length === 0 || !comparePass || userData.googleId)
       return res.status(404).json({
         status: "fail",
         message: "No user found!",
@@ -16,7 +22,9 @@ async function signIn(req, res) {
         data: [],
       });
     const AccessToken = await createAccessToken(userData._id);
+    const RefreshToken = await createRefreshToken(userData._id);
     await createAccessTokenCookie(res, AccessToken);
+    await createRefreshTokenCookie(res, RefreshToken);
 
     return res.status(200).json({
       status: "success",

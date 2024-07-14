@@ -4,7 +4,12 @@ dotendv.config();
 
 async function createAccessToken(userId) {
   return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1hr",
+    expiresIn: "10s",
   });
 }
-export { createAccessToken };
+async function createRefreshToken(userId) {
+  return jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: "1d",
+  });
+}
+export { createAccessToken, createRefreshToken };

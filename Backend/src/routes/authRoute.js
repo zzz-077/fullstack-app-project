@@ -1,7 +1,13 @@
 import express from "express";
 import passport from "passport";
-import { createAccessToken } from "../utils/createAccessToken.js";
-import { createAccessTokenCookie } from "../utils/cookiesUtils.js";
+import {
+  createAccessToken,
+  createRefreshToken,
+} from "../utils/createAccessToken.js";
+import {
+  createAccessTokenCookie,
+  createRefreshTokenCookie,
+} from "../utils/cookiesUtils.js";
 const router = express.Router();
 
 router.get(
@@ -20,7 +26,9 @@ router.get(
   async (req, res) => {
     console.log("WORKS");
     const AccessToken = await createAccessToken(req.user._id);
+    const RefreshToken = await createRefreshToken(req.user._id);
     await createAccessTokenCookie(res, AccessToken);
+    await createRefreshTokenCookie(res, RefreshToken);
     res.redirect("/home");
   },
   (err, req, res, next) => {
