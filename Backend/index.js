@@ -16,30 +16,30 @@ app.use(express.json());
 //coockieParser
 app.use(cookieParser());
 // Session setup
-app.use(
-  session({
-    secret: "notmysecret",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false },
-  })
-);
+// app.use(
+//   session({
+//     secret: "notmysecret",
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: false },
+//   })
+// );
 
-// Passport initialization
+// // Passport initialization
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await User.findById(id);
-    done(null, user);
-  } catch (error) {
-    done(error, null);
-  }
-});
+// passport.serializeUser((user, done) => {
+//   done(null, user.id);
+// });
+// passport.deserializeUser(async (id, done) => {
+//   try {
+//     const user = await User.findById(id);
+//     done(null, user);
+//   } catch (error) {
+//     done(error, null);
+//   }
+// });
 
 //default rout
 app.use("/", router);

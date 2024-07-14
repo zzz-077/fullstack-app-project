@@ -1,5 +1,7 @@
 import User from "../models/userM.js";
 import bcrypt from "bcrypt";
+import { createAccessToken } from "../utils/createAccessToken.js";
+import { createAccessTokenCookie } from "../utils/cookiesUtils.js";
 async function signIn(req, res) {
   const email = req.body.email;
   const password = req.body.password;
@@ -13,6 +15,9 @@ async function signIn(req, res) {
         error: null,
         data: [],
       });
+    const AccessToken = await createAccessToken(userData._id);
+    await createAccessTokenCookie(res, AccessToken);
+
     return res.status(200).json({
       status: "success",
       message: "User data found successfully!",

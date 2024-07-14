@@ -6,29 +6,16 @@ const router = express.Router();
 
 router.use("/user", usersRoute);
 router.use("/auth", authRoute);
-router.get("/home", checkAutentication, (req, res) => {
+router.get("/home", (req, res) => {
   res.send("Home page");
 });
 router.get("/logout", (req, res, next) => {
-  req.logout((err) => {
-    if (err) {
-      return res.status(500).json({
-        status: "fail",
-        message: "User logout failed!",
-        error: err.message,
-      });
-    }
-    req.session.destroy((err) => {
-      if (err) {
-        return res.status(500).json({
-          status: "fail",
-          message: "Session destruction failed!",
-          error: err.message,
-        });
-      }
-      res.redirect("user/signin");
-    });
+  res.clearCookie("AccessToken", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Strict",
   });
+  res.redirect("user/signin");
 });
 
 export default router;
