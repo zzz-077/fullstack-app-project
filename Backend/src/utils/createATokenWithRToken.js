@@ -9,6 +9,7 @@ async function createATokenWithRToken(req, res, RefreshToken, next) {
         status: "fail",
         message: "Invalid Refresh token",
         error: err,
+        data: [],
       });
     }
     const userId = decoded.userId;

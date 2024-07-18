@@ -1,4 +1,7 @@
 <div class="signup_container">
+  @if (alert.status!=='') {
+  <app-alerts [alert]="alert"></app-alerts>
+  }
   <div class="signup_box">
     <div class="content">
       <div class="left_col">

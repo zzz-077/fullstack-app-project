@@ -20,6 +20,7 @@ async function usersGet(req, res) {
       status: "fail",
       message: "Users data get failed!",
       error: error,
+      data: [],
     });
   }
 }

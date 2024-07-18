@@ -15,6 +15,7 @@ async function tokenAutentication(req, res, next) {
           status: "fail",
           message: "Invalid Access token",
           error: err,
+          data: [],
         });
       }
       next();

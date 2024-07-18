@@ -37,6 +37,7 @@ async function signIn(req, res) {
       status: "fail",
       message: "User data get failed!",
       error: error,
+      data: [],
     });
   }
 }

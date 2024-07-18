@@ -5,10 +5,19 @@ import session from "express-session";
 import dotenv from "dotenv";
 import router from "./src/routes/router.js";
 import cookieParser from "cookie-parser";
-import User from "./src/models/userM.js";
+import cors from "cors";
 import "./auth.js";
 dotenv.config();
 const app = express();
+
+// Enable CORS
+app.use(
+  cors({
+    origin: "http://localhost:4200",
+    credentials: true,
+    methods: "GET,POST,PUT,DELETE",
+  })
+);
 // Middleware to parse JSON
 app.use(express.json());
 //coockieParser

@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './alerts.component.css',
 })
 export class AlertsComponent implements OnInit {
-  alert: any = {
+  @Input() alert: any = {
     status: '',
     message: '',
   };
