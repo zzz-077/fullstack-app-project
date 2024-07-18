@@ -12,27 +12,75 @@
               <img
                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEkUlEQVR4nO2Zb0wbZRzHn3taesUtRpOJYbo/DoQM5c/GMgryzxkYxbGBiQsbNBCEFGaIY8zCCuaUMSiQAQMGQWAgcSY2GeuNuzpc8NqNvRoCItE3841Dthj3ToNzbX+mVRBI197Zo2VJv8n3XZ+nn89dn6dPrwj5448/HgcoJIWqgGIoxywU4HuQTfwJSsIKBxBAKgJIQzbIJhZBhX+BE/g6VAUU2ccgXwc0UgWU4tvwNmGBJASCqiQsoMa3QRsQ433wOlk4qPEsvCkQ2llTEUAxnoEaFOIdeA3RCumEzWPwtT2IrHCK0K0f+HkUCMX4B9HBk9b0PTwNFJKJC9+NngcVfrDu8En/toJoFw9+EMnhOPGr1+DLCE40eIeAGn/vPXgsMvyHRIfgrbEMT0IlroUmaQpQaAtQKAjOSN6C05hy7Db21zgbW4pN4sI3kyGQQVh5g5+W9PJZfEChZ+ADydAqkVKR4R1vVIHv8IIvwPNwDr0oeP4aFAJ5+P76wJvl22CcfAQaCUCyC/gSPAV6JEEbLWAmdWAmwdHeAIB0wvmV35DweiQBs2x+WcDeURmACv8Hn0lYoAK9hDZiwCSPXwW/VI4E0En/ObuclPSjjRowybROBZY6FPAAyhGJNmrATF5xKWCSdQiZL1gzC2I0XDthO9rUd9e9gImccynAkRm+EAjWzMIbddcW+Qg8dCMQ6iuB3TW3rHwEHrkWQJt9JbCjehKeaoHtVd+C5x+hm7IwXwns1t60Pd2L+JNRHovYTI642UY7fSVwRDc8z0NAduZJ8A+5Z6Geif/jvF4RiEROy3D+puiPvrG4Eii/0DjqXoALVDiDnx0PBhWthENXs6HDGHtJbIGTnfX97u6Arq/iuHsBQBjMsntL4DYzCfRYOGQbDjvg7c2jlZaL11/bJhZ8W496Z2SNyeoK/vVas4XiKH5P88BENtrhfzdthrNMwjL4ylaPJi9wXIrHjwcpjpIeafxswd3VL2lrm+A9KXCBL98df+GvEjrdKfxSP2YTZjyRoDhKmt/SM+d2/6+egsbuylhBkzcwihlX8CvvRP/X4VuFwvfeiNhe1lX3E5/d51hz75zQ+RE9FvZKPq208pHIp5WWzq/2DlCDKXJ38w6PRW1qZ/b15RmU1pyRHDja2uH2FEp9ekrQl+dyutmY1iweAitFGljFdJdxL6VnIw5cGdsVdJkL2zJgjEq8aNxTV8ckTNpfs3JM1kgOFPZQsLXqO6cC77c3dSNPomPjpvkKeNKiwXLYWX1nFfy7TQM/Ik+j10fINHTqfW9IFH5RCJG1Jgd8ev2Xv53o6hJ0cHxiOG7HczVM4oI3JI7pc0HVemGeGq4MEgV+hYT8LBM/K2RN/J+eYxXTRmPo+v3m7jNGNecaMq2iX3lDprWXjWlG3sgwvSe0gY2beseQ5TF4ztXDjqt++caru5C3MzQWGdvM7L9VZDj4WCh4AZ3xuJGJm/icifb+n3xrowck6WeiC1uN+0a1TOLPajptUWVQWu13yH4IzDVk2tSGtMWqa8nzLex+ts8YU2Afg/zxxx/kaf4GzSVnCicBYF0AAAAASUVORK5CYII="
               />
-              <p>Sign up with Google</p>
+              <p>Continue with Google</p>
             </button>
             <span>or</span>
           </div>
-          <form action="">
+          <form [formGroup]="userForm" action="">
             <div class="field">
               <label>Name</label>
-              <div>
-                <input type="text" placeholder="Enter your name" />
+              <div class="field_input">
+                <input
+                  type="text"
+                  formControlName="name"
+                  placeholder="Enter your name"
+                />
+              </div>
+              <div
+                *ngIf="
+                  userForm.get('name')?.invalid &&
+                  (userForm.get('name')?.dirty || userForm.get('name')?.touched)
+                "
+                class="input_error"
+              >
+                <mat-error>
+                  <span *ngIf="userForm.get('name')?.hasError('required')"
+                    >Name is required</span
+                  >
+                  <span *ngIf="userForm.get('name')?.hasError('minlength')"
+                    >Name must be minimum 6 character</span
+                  >
+                  <span *ngIf="userForm.get('name')?.hasError('maxlength')"
+                    >Name must be maximum 15 character</span
+                  >
+                  <span *ngIf="userForm.get('name')?.hasError('pattern')"
+                    >Name form is incorrect</span
+                  >
+                </mat-error>
               </div>
             </div>
             <div class="field">
               <label>Email</label>
-              <div>
-                <input type="email" placeholder="Enter your email" />
+              <div class="field_input">
+                <input
+                  formControlName="email"
+                  type="email"
+                  placeholder="Enter your email"
+                />
+              </div>
+              <div
+                *ngIf="
+                  userForm.get('email')?.invalid &&
+                  (userForm.get('email')?.dirty ||
+                    userForm.get('email')?.touched)
+                "
+                class="input_error"
+              >
+                <mat-error>
+                  <span *ngIf="userForm.get('email')?.hasError('required')"
+                    >Email is required</span
+                  >
+                  <span *ngIf="userForm.get('email')?.hasError('pattern')"
+                    >Email form is incorrect</span
+                  >
+                </mat-error>
               </div>
             </div>
             <div class="field">
               <label>Password</label>
-              <div>
+              <div class="field_input">
                 <input
+                  formControlName="password"
                   [type]="isPassOneClicked ? 'text' : 'password'"
                   placeholder="......"
                 />
@@ -49,11 +97,32 @@
                   ></i>
                 </div>
               </div>
+              <div
+                *ngIf="
+                  userForm.get('password')?.invalid &&
+                  (userForm.get('password')?.dirty ||
+                    userForm.get('password')?.touched)
+                "
+                class="input_error"
+              >
+                <mat-error>
+                  <span *ngIf="userForm.get('password')?.hasError('required')"
+                    >Password is required</span
+                  >
+                  <span *ngIf="userForm.get('password')?.hasError('minlength')"
+                    >Password must be minimum 6 character</span
+                  >
+                  <span *ngIf="userForm.get('password')?.hasError('pattern')"
+                    >Password form is incorrect</span
+                  >
+                </mat-error>
+              </div>
             </div>
             <div class="field">
               <label>Confirm password</label>
-              <div>
+              <div class="field_input">
                 <input
+                  formControlName="confirmpassword"
                   [type]="isPassTwoClicked ? 'text' : 'password'"
                   placeholder="......."
                 />
@@ -70,10 +139,47 @@
                   ></i>
                 </div>
               </div>
+              <div
+                *ngIf="
+                  userForm.get('confirmpassword')?.invalid &&
+                  (userForm.get('confirmpassword')?.dirty ||
+                    userForm.get('confirmpassword')?.touched)
+                "
+                class="input_error"
+              >
+                <mat-error>
+                  <span
+                    *ngIf="
+                      userForm.get('confirmpassword')?.hasError('required')
+                    "
+                    >Password confirmation is required</span
+                  >
+                  <span
+                    *ngIf="
+                      userForm.get('confirmpassword')?.hasError('minlength')
+                    "
+                    >Password must be minimum 6 character</span
+                  >
+                  <span
+                    *ngIf="userForm.get('confirmpassword')?.hasError('pattern')"
+                    >Password form is incorrect</span
+                  >
+                  <span
+                    *ngIf="
+                      userForm
+                        .get('confirmpassword')
+                        ?.hasError('passwordMismatch') == true
+                    "
+                    >Password do not match</span
+                  >
+                </mat-error>
+              </div>
             </div>
             <div class="button_box">
-              <button>Sign up</button>
-              <p>already have an account? <a>Sign in</a></p>
+              <button (click)="signupClick()" [disabled]="!userForm.valid">
+                Sign up
+              </button>
+              <p>already have an account? <a href="/signin">Sign in</a></p>
             </div>
           </form>
         </div>

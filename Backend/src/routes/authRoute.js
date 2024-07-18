@@ -20,11 +20,10 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "user/signin",
+    failureRedirect: "/signin",
     session: false,
   }),
   async (req, res) => {
-    console.log("WORKS");
     const AccessToken = await createAccessToken(req.user._id);
     const RefreshToken = await createRefreshToken(req.user._id);
     await createAccessTokenCookie(res, AccessToken);

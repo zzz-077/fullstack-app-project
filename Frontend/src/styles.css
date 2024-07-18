@@ -30,6 +30,10 @@ button {
   background-color: var(--box-dark-color);
   /* box-shadow: 1px 1px 6px rgba(95, 158, 160, 0); */
 }
+button:disabled {
+  cursor: not-allowed;
+  background-color: #545555a2;
+}
 button:hover {
   --hovered-color: #323434;
   /* box-shadow: 1px 1px 6px var(--hovered-color); */
@@ -41,4 +45,11 @@ li {
 }
 a {
   text-decoration: none;
+}
+mat-error {
+  display: flex;
+  flex-direction: column;
+
+  color: rgba(230, 36, 36, 0.99);
+  font-size: 0.75rem;
 }

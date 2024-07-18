@@ -4,7 +4,7 @@ import authRoute from "./authRoute.js";
 import tokenAutentication from "../middleware/tokenAutentication.js";
 const router = express.Router();
 
-router.use("/user", usersRoute);
+router.use("/", usersRoute);
 router.use("/auth", authRoute);
 router.get("/home", tokenAutentication, (req, res) => {
   res.send("Home page");
@@ -15,7 +15,12 @@ router.get("/logout", (req, res, next) => {
     secure: true,
     sameSite: "Strict",
   });
-  res.redirect("user/signin");
+  res.clearCookie("RefreshToken", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Strict",
+  });
+  res.redirect("/signin");
 });
 
 export default router;

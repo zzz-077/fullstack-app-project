@@ -114,35 +114,35 @@
   font-size: 0.875rem;
   font-weight: 600;
 }
-.left_col .inputs form .field div {
+.left_col .inputs form .field .field_input {
   padding: 0.75rem 1rem;
   display: flex;
   gap: 0.5rem;
   align-items: center;
   border: 1px solid #cac9c9;
 }
-.left_col .inputs form .field div input {
+.left_col .inputs form .field .field_input input {
   border: 0;
   width: 100%;
   font-size: 0.875rem;
   outline: none;
 }
-.left_col .inputs form .field div input::placeholder {
+.left_col .inputs form .field .field_input input::placeholder {
   color: #cac9c9f3;
 }
-.left_col .inputs form .field div .password_icons {
+.left_col .inputs form .field .field_input .password_icons {
   display: flex;
   border: 0;
   padding: 0;
   gap: 0;
 }
-.left_col .inputs form .field div .password_icons i {
+.left_col .inputs form .field .field_input .password_icons i {
   font-size: 0.75rem;
   color: #bbb8b8;
   cursor: pointer;
   transition: all 0.2s;
 }
-.left_col .inputs form .field div .password_icons i:hover {
+.left_col .inputs form .field .field_input .password_icons i:hover {
   color: var(--font-color);
 }
 .left_col .inputs form .button_box {
