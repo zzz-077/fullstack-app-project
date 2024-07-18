@@ -16,21 +16,80 @@
             </button>
             <span>or</span>
           </div>
-          <form action="">
+          <form [formGroup]="userForm">
             <div class="field">
               <label>Email</label>
-              <div>
-                <input type="email" placeholder="Enter your email" />
+              <div class="field_input">
+                <input
+                  formControlName="email"
+                  type="email"
+                  placeholder="Enter your email"
+                />
+              </div>
+              <div
+                *ngIf="
+                  userForm.get('email')?.invalid &&
+                  (userForm.get('email')?.dirty ||
+                    userForm.get('email')?.touched)
+                "
+                class="input_error"
+              >
+                <mat-error>
+                  <span *ngIf="userForm.get('email')?.hasError('required')"
+                    >Email is required</span
+                  >
+                  <span *ngIf="userForm.get('email')?.hasError('pattern')"
+                    >Email form is incorrect</span
+                  >
+                </mat-error>
               </div>
             </div>
             <div class="field">
               <label>Password</label>
-              <div>
-                <input type="password" placeholder="......" />
+              <div class="field_input">
+                <input
+                  formControlName="password"
+                  [type]="isPassOneClicked ? 'text' : 'password'"
+                  placeholder="......"
+                />
+                <div class="password_icons">
+                  <i
+                    *ngIf="isPassOneClicked"
+                    (click)="passwordClick(1, 'haid')"
+                    class="fa-solid fa-eye"
+                  ></i>
+                  <i
+                    *ngIf="!isPassOneClicked"
+                    (click)="passwordClick(1, 'unhaid')"
+                    class="fa-solid fa-eye-slash"
+                  ></i>
+                </div>
+              </div>
+              <div
+                *ngIf="
+                  userForm.get('password')?.invalid &&
+                  (userForm.get('password')?.dirty ||
+                    userForm.get('password')?.touched)
+                "
+                class="input_error"
+              >
+                <mat-error>
+                  <span *ngIf="userForm.get('password')?.hasError('required')"
+                    >Password is required</span
+                  >
+                  <span *ngIf="userForm.get('password')?.hasError('minlength')"
+                    >Password must be minimum 6 character</span
+                  >
+                  <span *ngIf="userForm.get('password')?.hasError('pattern')"
+                    >Password form is incorrect</span
+                  >
+                </mat-error>
               </div>
             </div>
             <div class="button_box">
-              <button>Sign in</button>
+              <button (click)="signinClick()" [disabled]="!userForm.valid">
+                Sign in
+              </button>
               <p>
                 Don't have an account?
                 <a href="/signup">Sign up</a>

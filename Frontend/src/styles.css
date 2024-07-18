@@ -36,8 +36,10 @@ button:disabled {
 }
 button:hover {
   --hovered-color: #323434;
-  /* box-shadow: 1px 1px 6px var(--hovered-color); */
   background-color: var(--hovered-color);
+}
+button:disabled:hover {
+  background-color: #545555a2;
 }
 ul,
 li {

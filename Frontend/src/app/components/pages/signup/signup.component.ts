@@ -28,7 +28,7 @@ register();
 export class RegistrationComponent implements OnInit, OnDestroy {
   //variables
   users: any[] = [];
-  userSubscribtion!: Subscription;
+  // userSubscribtion!: Subscription;
   isPassOneClicked: boolean = false;
   isPassTwoClicked: boolean = false;
   userForm = new FormGroup({
@@ -57,13 +57,12 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   constructor(private registrationS: RegistrationService) {}
   ngOnInit() {
-    this.userSubscribtion = this.registrationS.usersGet().subscribe((data) => {
-      this.users = data.data[0];
-      console.log(this.users);
-    });
+    // this.userSubscribtion = this.registrationS.usersGet().subscribe((data) => {
+    //   this.users = data.data[0];
+    // });
   }
   ngOnDestroy() {
-    this.userSubscribtion.unsubscribe();
+    // this.userSubscribtion.unsubscribe();
   }
   //functions
   signupClick() {
