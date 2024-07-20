@@ -17,13 +17,19 @@ import { USER } from '../../../models/userModel';
 import { passwordMatch } from '../../../validations/passValidation';
 import { Observable, Subscription, catchError, of } from 'rxjs';
 import { RegistrationService } from '../../../shared/services/registrationService/registration.service';
-import { AlertsComponent } from '../../alerts/alerts.component';
+import { LoaderComponent } from '../../tools/loader/loader.component';
+import { AlertsComponent } from '../../tools/alerts/alerts.component';
 import { Router } from '@angular/router';
 register();
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AlertsComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    AlertsComponent,
+    LoaderComponent,
+  ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -32,6 +38,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   //variables
   users: any[] = [];
   // userSubscribtion!: Subscription;
+  isLoading: boolean = false;
   isPassOneClicked: boolean = false;
   isPassTwoClicked: boolean = false;
   alert: any = {
@@ -70,6 +77,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   ngOnDestroy() {}
   //functions
   signupClick() {
+    this.isLoading = true;
     const user: USER = {
       name: this.userForm.value.name as string,
       email: this.userForm.value.email as string,
@@ -80,6 +88,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       .userSignUp(user)
       .pipe(
         catchError((error: HttpErrorResponse) => {
+          this.isLoading = false;
           this.alert = {
             status: 'fail',
             message: 'Email is already used!',
@@ -101,6 +110,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
               message: message.message,
             };
             setTimeout(() => {
+              this.isLoading = false;
               this.router.navigate(['/signin']);
             }, 5000);
           } else {
@@ -114,6 +124,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
                 message: '',
               };
             }, 5000);
+            this.isLoading = false;
           }
         }
       });

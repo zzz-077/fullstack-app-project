@@ -26,6 +26,7 @@ import { RegistrationService } from '../../../shared/services/registrationServic
 })
 export class SigninComponent implements OnInit, OnDestroy {
   //variables
+  isLoading: boolean = false;
   isPassOneClicked: boolean = false;
   isPassTwoClicked: boolean = false;
   userForm = new FormGroup({

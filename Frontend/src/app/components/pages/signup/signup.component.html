@@ -180,7 +180,13 @@
             </div>
             <div class="button_box">
               <button (click)="signupClick()" [disabled]="!userForm.valid">
-                Sign up
+                @if(isLoading){
+                <div class="loader">
+                  <app-loader></app-loader>
+                </div>
+                }@else{
+                <p>Sign up</p>
+                }
               </button>
               <p>already have an account? <a href="/signin">Sign in</a></p>
             </div>

@@ -156,6 +156,9 @@
   width: 100%;
   padding: 1rem;
   font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .left_col .inputs form .button_box p {
   color: #bbb8b8;
@@ -163,6 +166,10 @@
   gap: 0.25rem;
   font-size: 0.875rem;
   font-weight: 400;
+}
+.left_col .inputs form .button_box button p {
+  font-size: 1rem;
+  color: var(--font-light-color);
 }
 .left_col .inputs form .button_box a {
   color: var(--font-color);

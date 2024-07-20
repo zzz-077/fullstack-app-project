@@ -88,7 +88,13 @@
             </div>
             <div class="button_box">
               <button (click)="signinClick()" [disabled]="!userForm.valid">
-                Sign in
+                @if(isLoading){
+                <div class="loader">
+                  <app-loader></app-loader>
+                </div>
+                }@else{
+                <p>Sign in</p>
+                }
               </button>
               <p>
                 Don't have an account?
