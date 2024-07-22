@@ -20,6 +20,7 @@ import { RegistrationService } from '../../../shared/services/registrationServic
 import { LoaderComponent } from '../../tools/loader/loader.component';
 import { AlertsComponent } from '../../tools/alerts/alerts.component';
 import { Router } from '@angular/router';
+import { log } from 'node:console';
 register();
 @Component({
   selector: 'app-signup',
@@ -112,7 +113,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
             setTimeout(() => {
               this.isLoading = false;
               this.router.navigate(['/signin']);
-            }, 5000);
+            }, 3000);
           } else {
             this.alert = {
               status: message.status,
@@ -128,6 +129,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
           }
         }
       });
+  }
+  GoogleSign() {
+    this.registrationS.userGoogleSignUp();
   }
   passwordClick(num: number, str: string) {
     if (str === 'unhaid' && num === 1) this.isPassOneClicked = true;

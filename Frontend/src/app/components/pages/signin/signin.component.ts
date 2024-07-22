@@ -14,12 +14,21 @@ import {
 import { register } from 'swiper/element/bundle';
 import { USER } from '../../../models/userModel';
 import { passwordMatch } from '../../../validations/passValidation';
-import { Observable, Subscription } from 'rxjs';
+import { catchError, Observable, of, Subscription } from 'rxjs';
 import { RegistrationService } from '../../../shared/services/registrationService/registration.service';
+import { LoaderComponent } from '../../tools/loader/loader.component';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AlertsComponent } from '../../tools/alerts/alerts.component';
 @Component({
   selector: 'app-signin',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    AlertsComponent,
+    LoaderComponent,
+  ],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -40,18 +49,62 @@ export class SigninComponent implements OnInit, OnDestroy {
       Validators.pattern(/^[a-zA-Z0-7]+$/),
     ]),
   });
+  alert: any = {
+    status: '',
+    message: '',
+  };
 
-  constructor(private registrationS: RegistrationService) {}
+  constructor(
+    private registrationS: RegistrationService,
+    private router: Router
+  ) {}
   ngOnInit() {}
   ngOnDestroy() {}
   //functions
   signinClick() {
+    this.isLoading = true;
     const user = {
       email: this.userForm.value.email as string,
       password: this.userForm.value.password as string,
     };
-    console.log(user);
+    this.registrationS
+      .userSignIn(user)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.log(error);
+          this.alert = {
+            status: error.error.status,
+            message: error.error.message,
+          };
+          setTimeout(() => {
+            this.alert = {
+              status: '',
+              message: '',
+            };
+          }, 5000);
+          this.isLoading = false;
+          return of(null);
+        })
+      )
+      .subscribe((res) => {
+        if (res) {
+          if (res.status === 'success') {
+            this.alert = {
+              status: res.status,
+              message: res.message,
+            };
+            setTimeout(() => {
+              this.isLoading = false;
+              this.router.navigate(['/signin']);
+            }, 3000);
+          }
+        }
+      });
   }
+  GoogleSign() {
+    this.registrationS.userGoogleSignUp();
+  }
+
   passwordClick(num: number, str: string) {
     if (str === 'unhaid' && num === 1) this.isPassOneClicked = true;
     else if (str === 'haid' && num === 1) this.isPassOneClicked = false;

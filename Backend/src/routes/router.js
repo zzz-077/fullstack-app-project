@@ -6,21 +6,19 @@ const router = express.Router();
 
 router.use("/", usersRoute);
 router.use("/auth", authRoute);
-router.get("/home", tokenAutentication, (req, res) => {
-  res.send("Home page");
-});
+router.get("/home", tokenAutentication, (req, res) => {});
 router.get("/logout", (req, res, next) => {
-  res.clearCookie("AccessToken", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "Strict",
-  });
-  res.clearCookie("RefreshToken", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "Strict",
-  });
-  res.redirect("/signin");
+    res.clearCookie("AccessToken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+    });
+    res.clearCookie("RefreshToken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+    });
+    res.redirect("/signin");
 });
 
 export default router;
