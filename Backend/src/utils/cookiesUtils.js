@@ -4,6 +4,7 @@ async function createAccessTokenCookie(res, AccessToken) {
         sameSite: "None",
         maxAge: 1 * 3600 * 1000,
         secure: true,
+        path: "/",
     });
 }
 async function createRefreshTokenCookie(res, RefreshToken) {
@@ -12,6 +13,7 @@ async function createRefreshTokenCookie(res, RefreshToken) {
         sameSite: "None",
         maxAge: 7 * 24 * 3600 * 1000,
         secure: true,
+        path: "/",
     });
 }
 

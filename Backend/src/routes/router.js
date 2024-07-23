@@ -11,14 +11,21 @@ router.get("/logout", (req, res, next) => {
     res.clearCookie("AccessToken", {
         httpOnly: true,
         secure: true,
-        sameSite: "Strict",
+        sameSite: "None",
+        path: "/",
     });
     res.clearCookie("RefreshToken", {
         httpOnly: true,
         secure: true,
-        sameSite: "Strict",
+        sameSite: "None",
+        path: "/",
     });
-    res.redirect("/signin");
+    res.status(200).json({
+        status: "success",
+        message: "Logged out successfully",
+        error: null,
+        data: [],
+    });
 });
 
 export default router;

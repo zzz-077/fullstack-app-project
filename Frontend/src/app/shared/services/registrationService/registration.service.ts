@@ -25,4 +25,9 @@ export class RegistrationService {
       withCredentials: true,
     });
   }
+  userLogout(): Observable<APIRESP> {
+    return this.http.get<APIRESP>(this.url + '/logout', {
+      withCredentials: true,
+    });
+  }
 }

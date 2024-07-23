@@ -20,7 +20,7 @@ router.get(
 router.get(
     "/google/callback",
     passport.authenticate("google", {
-        failureRedirect: `http://localhost:${process.env.FRONT_PORT}/signup`,
+        failureRedirect: `http://localhost:${process.env.FRONT_PORT}/signin`,
         session: false,
     }),
     async (req, res) => {
@@ -41,7 +41,7 @@ router.get(
         //     message: "Authentication failed",
         //     error: err.message,
         // });
-        res.redirect(`http://localhost:${process.env.FRONT_PORT}/signup`);
+        res.redirect(`http://localhost:${process.env.FRONT_PORT}/signin`);
     }
 );
 
