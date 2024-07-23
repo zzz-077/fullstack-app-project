@@ -5,7 +5,7 @@ import { UndefinedPageComponent } from './components/pages/undefined-page/undefi
 import { MainComponent } from './components/pages/main/main.component';
 
 export const routes: Routes = [
-  { path: '', component: MainComponent },
+  { path: 'home', component: MainComponent },
   { path: 'signup', component: RegistrationComponent },
   { path: 'signin', component: SigninComponent },
   { path: '**', component: UndefinedPageComponent },

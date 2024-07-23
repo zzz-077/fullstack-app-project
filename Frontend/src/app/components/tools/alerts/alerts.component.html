@@ -1,9 +1,9 @@
 <div id="toast" [class.show]="showToast">
-  @if(alert.status==="fail"){
-  <i id="img" class="fa-solid fa-xmark"></i>
+  @if(alert.status==="success"){
+  <i id="img" class="fa-solid fa-circle-check"></i>
   <div id="desc">{{ alert.message }}</div>
   }@else{
-  <i id="img" class="fa-solid fa-circle-check"></i>
+  <i id="img" class="fa-solid fa-xmark"></i>
   <div id="desc">{{ alert.message }}</div>
   }
 </div>

@@ -25,17 +25,16 @@ async function signIn(req, res) {
         const RefreshToken = await createRefreshToken(userData._id);
         await createAccessTokenCookie(res, AccessToken);
         await createRefreshTokenCookie(res, RefreshToken);
-
         return res.status(200).json({
             status: "success",
-            message: "User found successfully!",
+            message: "User signed successfully!",
             error: null,
             data: [userData],
         });
     } catch (error) {
         return res.status(500).json({
             status: "fail",
-            message: "User found failed!",
+            message: "User signed failed!",
             error: error,
             data: [],
         });

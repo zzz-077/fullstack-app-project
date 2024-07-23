@@ -15,7 +15,7 @@ import { register } from 'swiper/element/bundle';
 import { HttpErrorResponse } from '@angular/common/http';
 import { USER } from '../../../models/userModel';
 import { passwordMatch } from '../../../validations/passValidation';
-import { Observable, Subscription, catchError, of } from 'rxjs';
+import { Observable, Subscription, catchError, of, throwError } from 'rxjs';
 import { RegistrationService } from '../../../shared/services/registrationService/registration.service';
 import { LoaderComponent } from '../../tools/loader/loader.component';
 import { AlertsComponent } from '../../tools/alerts/alerts.component';
@@ -89,35 +89,38 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       .userSignUp(user)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          this.isLoading = false;
-          this.alert = {
-            status: 'fail',
-            message: 'Email is already used!',
-          };
+          if (error.error instanceof ErrorEvent) {
+            // Client-side error
+            this.alert = {
+              status: 'error',
+              message: error.error.message,
+            };
+          } else {
+            // Server-side errors
+            this.alert = {
+              status: 'fail',
+              message: 'Email is already used!',
+            };
+          }
           setTimeout(() => {
             this.alert = {
               status: '',
               message: '',
             };
           }, 5000);
-          return of(null);
+          this.isLoading = false;
+          return throwError(this.alert);
         })
       )
-      .subscribe((message) => {
-        if (message) {
-          if (message.status === 'success') {
-            this.alert = {
-              status: message.status,
-              message: message.message,
-            };
-            setTimeout(() => {
-              this.isLoading = false;
-              this.router.navigate(['/signin']);
-            }, 3000);
+      .subscribe((res) => {
+        if (res) {
+          if (res.status === 'success') {
+            this.isLoading = false;
+            this.router.navigate(['/home']);
           } else {
             this.alert = {
-              status: message.status,
-              message: message.message,
+              status: res.status,
+              message: res.message,
             };
             setTimeout(() => {
               this.alert = {

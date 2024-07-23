@@ -14,7 +14,7 @@ import {
 import { register } from 'swiper/element/bundle';
 import { USER } from '../../../models/userModel';
 import { passwordMatch } from '../../../validations/passValidation';
-import { catchError, Observable, of, Subscription } from 'rxjs';
+import { catchError, Observable, of, Subscription, throwError } from 'rxjs';
 import { RegistrationService } from '../../../shared/services/registrationService/registration.service';
 import { LoaderComponent } from '../../tools/loader/loader.component';
 import { Router } from '@angular/router';
@@ -71,10 +71,37 @@ export class SigninComponent implements OnInit, OnDestroy {
       .userSignIn(user)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          console.log(error);
+          if (error.error instanceof ErrorEvent) {
+            // Client-side error
+            this.alert = {
+              status: 'error',
+              message: error.error.message,
+            };
+          } else {
+            // Server-side errors
+            this.alert = {
+              status: error.error.status,
+              message: error.error.message,
+            };
+          }
+          setTimeout(() => {
+            this.alert = {
+              status: '',
+              message: '',
+            };
+          }, 5000);
+          this.isLoading = false;
+          return throwError(this.alert);
+        })
+      )
+      .subscribe((res: any) => {
+        if (res && res.status === 'success') {
+          this.isLoading = false;
+          this.router.navigate(['/home']);
+        } else {
           this.alert = {
-            status: error.error.status,
-            message: error.error.message,
+            status: res.status,
+            message: res.message,
           };
           setTimeout(() => {
             this.alert = {
@@ -83,24 +110,10 @@ export class SigninComponent implements OnInit, OnDestroy {
             };
           }, 5000);
           this.isLoading = false;
-          return of(null);
-        })
-      )
-      .subscribe((res) => {
-        if (res) {
-          if (res.status === 'success') {
-            this.alert = {
-              status: res.status,
-              message: res.message,
-            };
-            setTimeout(() => {
-              this.isLoading = false;
-              this.router.navigate(['/signin']);
-            }, 3000);
-          }
         }
       });
   }
+
   GoogleSign() {
     this.registrationS.userGoogleSignUp();
   }
