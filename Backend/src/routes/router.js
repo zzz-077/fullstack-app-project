@@ -6,26 +6,51 @@ const router = express.Router();
 
 router.use("/", usersRoute);
 router.use("/auth", authRoute);
-router.get("/home", tokenAutentication, (req, res) => {});
-router.get("/logout", (req, res, next) => {
-    res.clearCookie("AccessToken", {
-        httpOnly: true,
-        secure: true,
-        sameSite: "None",
-        path: "/",
-    });
-    res.clearCookie("RefreshToken", {
-        httpOnly: true,
-        secure: true,
-        sameSite: "None",
-        path: "/",
-    });
-    res.status(200).json({
-        status: "success",
-        message: "Logged out successfully",
-        error: null,
-        data: [],
-    });
+router.post("/home", tokenAutentication, (req, res) => {
+    try {
+        res.status(200).json({
+            status: "success",
+            message: "Autenticated successfully",
+            error: null,
+            data: [],
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: "fail",
+            message: "Autenticated failed",
+            error: error,
+            data: [],
+        });
+    }
+});
+router.post("/logout", (req, res) => {
+    try {
+        res.clearCookie("AccessToken", {
+            httpOnly: true,
+            sameSite: "None",
+            secure: true,
+            path: "/",
+        });
+        res.clearCookie("RefreshToken", {
+            httpOnly: true,
+            sameSite: "None",
+            secure: true,
+            path: "/",
+        });
+        res.status(200).json({
+            status: "success",
+            message: "Logout successfully",
+            error: null,
+            data: [],
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: "fail",
+            message: "Logout failed",
+            error: error,
+            data: [],
+        });
+    }
 });
 
 export default router;

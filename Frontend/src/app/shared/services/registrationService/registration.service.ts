@@ -26,8 +26,21 @@ export class RegistrationService {
     });
   }
   userLogout(): Observable<APIRESP> {
-    return this.http.get<APIRESP>(this.url + '/logout', {
-      withCredentials: true,
-    });
+    return this.http.post<APIRESP>(
+      this.url + '/logout',
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+  }
+  homeAutentication(): Observable<APIRESP> {
+    return this.http.post<APIRESP>(
+      this.url + '/home',
+      {},
+      {
+        withCredentials: true,
+      }
+    );
   }
 }

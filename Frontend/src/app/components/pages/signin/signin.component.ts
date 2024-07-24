@@ -74,7 +74,7 @@ export class SigninComponent implements OnInit, OnDestroy {
           if (error.error instanceof ErrorEvent) {
             // Client-side error
             this.alert = {
-              status: 'error',
+              status: 'fail',
               message: error.error.message,
             };
           } else {
