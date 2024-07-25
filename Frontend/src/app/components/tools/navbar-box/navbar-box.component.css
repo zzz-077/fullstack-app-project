@@ -1,0 +1,63 @@
+.chat_navbar_cont {
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+.chat_navbar_cont h1 {
+  font-size: 1.5rem;
+  color: var(--font-color);
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+.chat_navbar_cont h1 span {
+  font-size: 1.55rem;
+  background-color: var(--font-color);
+  width: 28px;
+  height: 28px;
+  color: var(--font-light-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5rem;
+  transform: rotateZ(10deg);
+}
+.chat_navbar_cont .chat_navbar_right_box {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+.chat_navbar_cont .chat_navbar_right_box button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  font-size: 0.75rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5rem;
+  border: 1px solid var(--font-color);
+  color: var(--font-light-color);
+}
+.chat_navbar_cont .chat_navbar_right_box .user_info_box {
+  display: flex;
+  gap: 0.125rem;
+  align-items: center;
+}
+.chat_navbar_cont .chat_navbar_right_box .user_info_box h3 {
+  font-size: 1.125rem;
+  color: var(--font-color);
+}
+
+.chat_navbar_cont .chat_navbar_right_box .user_info_box .user_img {
+  width: 34px;
+  height: 34px;
+  overflow: hidden;
+}
+.chat_navbar_cont .chat_navbar_right_box .user_info_box .user_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
