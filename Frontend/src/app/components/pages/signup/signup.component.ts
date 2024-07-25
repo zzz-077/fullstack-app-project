@@ -97,10 +97,17 @@ export class RegistrationComponent implements OnInit, OnDestroy {
             };
           } else {
             // Server-side errors
-            this.alert = {
-              status: 'fail',
-              message: 'Email is already used!',
-            };
+            if (error.status === 0) {
+              this.alert = {
+                status: 'fail',
+                message: 'there is no response',
+              };
+            } else {
+              this.alert = {
+                status: 'fail',
+                message: 'Email is already used!',
+              };
+            }
           }
           setTimeout(() => {
             this.alert = {

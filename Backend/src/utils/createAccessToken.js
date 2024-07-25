@@ -3,13 +3,13 @@ import dotendv from "dotenv";
 dotendv.config();
 
 async function createAccessToken(userId) {
-  return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1hr",
-  });
+    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: "1hr",
+    });
 }
 async function createRefreshToken(userId) {
-  return jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: "1d",
-  });
+    return jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, {
+        expiresIn: "1d",
+    });
 }
 export { createAccessToken, createRefreshToken };

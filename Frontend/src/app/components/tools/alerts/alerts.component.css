@@ -10,7 +10,7 @@
   border-radius: 2px;
   font-size: 17px;
   white-space: nowrap;
-  z-index: 100;
+  overflow: hidden;
 }
 #toast #img {
   width: 50px;

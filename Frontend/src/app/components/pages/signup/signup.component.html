@@ -1,6 +1,8 @@
 <div class="signup_container">
   @if (alert.status!=='') {
-  <app-alerts [alert]="alert"></app-alerts>
+  <div class="toast_box">
+    <app-alerts [alert]="alert"></app-alerts>
+  </div>
   }
   <div class="signup_box">
     <div class="content">

@@ -79,10 +79,17 @@ export class SigninComponent implements OnInit, OnDestroy {
             };
           } else {
             // Server-side errors
-            this.alert = {
-              status: error.error.status,
-              message: error.error.message,
-            };
+            if (error.status === 0) {
+              this.alert = {
+                status: 'fail',
+                message: 'there is no response',
+              };
+            } else {
+              this.alert = {
+                status: error.error.status,
+                message: error.error.message,
+              };
+            }
           }
           setTimeout(() => {
             this.alert = {
