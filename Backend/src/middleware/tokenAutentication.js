@@ -14,6 +14,8 @@ async function tokenAutentication(req, res, next) {
         }
         await createATokenWithRToken(req, res, RefreshToken, next);
     } else {
+        console.log("AccessToken=", req.cookies.AccessToken);
+        console.log("RefreshToken=", req.cookies.RefreshToken);
         jwt.verify(
             AccessToken,
             process.env.ACCESS_TOKEN_SECRET,

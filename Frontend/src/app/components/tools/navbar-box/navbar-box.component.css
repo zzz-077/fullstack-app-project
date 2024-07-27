@@ -38,8 +38,9 @@
   justify-content: center;
   align-items: center;
   border-radius: 5rem;
-  border: 1px solid var(--font-color);
+  /* border: 1px solid var(--font-color); */
   color: var(--font-light-color);
+  background-color: var(--font-color);
 }
 .chat_navbar_cont .chat_navbar_right_box .user_info_box {
   display: flex;
@@ -55,6 +56,12 @@
   width: 34px;
   height: 34px;
   overflow: hidden;
+  border-radius: 5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.chat_navbar_cont .chat_navbar_right_box .user_info_box .user_img:hover {
+  filter: brightness(0.6);
 }
 .chat_navbar_cont .chat_navbar_right_box .user_info_box .user_img img {
   width: 100%;

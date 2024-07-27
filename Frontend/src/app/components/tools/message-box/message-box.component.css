@@ -1,0 +1,104 @@
+.chat_message_cont {
+  /* padding: 0.25rem; */
+  width: 100%;
+  height: 100%;
+}
+.chat_message_cont .message_header {
+  height: 8%;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--box-color);
+}
+.chat_message_cont .message_header .left_col {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.chat_message_cont .message_header .left_col div:nth-child(1) {
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 5rem;
+}
+.chat_message_cont .message_header .left_col div:nth-child(1) img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.chat_message_cont .message_header .left_col div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.chat_message_cont .message_header .left_col div:nth-child(2) h2 {
+  font-size: 1rem;
+  color: var(--font-color);
+  margin-bottom: 0.25rem;
+}
+.chat_message_cont .message_header .left_col div:nth-child(2) span {
+  background-color: var(--online-color);
+  width: 10px;
+  height: 10px;
+  border-radius: 5rem;
+}
+.chat_message_cont .message_header .right_col {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--font-color);
+}
+.chat_message_cont .message_header .right_col i {
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.chat_message_cont .message_header .right_col i:hover {
+  color: #808080;
+}
+.chat_message_cont .message_inputs {
+  height: 6%;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--box-color);
+}
+.chat_message_cont .message_inputs input {
+  border: 0;
+  background-color: #f0f8ff00;
+  width: 80%;
+  outline: none;
+  padding: 0.25rem;
+  font-size: 1rem;
+  color: var(--font-color);
+}
+.chat_message_cont .message_inputs input::placeholder {
+  color: var(--font-color);
+}
+.chat_message_cont .message_inputs .buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--font-color);
+}
+.chat_message_cont .message_inputs .buttons i {
+  font-size: 1.125rem;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.chat_message_cont .message_inputs .buttons i:hover {
+  color: #808080;
+}
+.chat_message_cont .message_inputs .buttons .fa-paper-plane {
+  font-size: 1.25rem;
+  margin-left: 0.25rem;
+}
+.chat_message_cont .message_inputs .buttons .fa-paper-plane:hover {
+  color: rgb(78, 116, 78);
+}
+.message_box {
+  height: 100%;
+  overflow: hidden;
+  overflow-y: auto;
+}

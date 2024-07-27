@@ -13,7 +13,7 @@ async function createRefreshTokenCookie(res, RefreshToken) {
         sameSite: "None",
         secure: true,
         path: "/",
-        maxAge: 7 * 24 * 3600 * 1000,
+        maxAge: 24 * 3600 * 1000,
     });
 }
 

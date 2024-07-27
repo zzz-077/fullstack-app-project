@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-
+import { FriendCardComponent } from '../friend-card/friend-card.component';
 @Component({
   selector: 'app-contact-box',
   standalone: true,
-  imports: [],
+  imports: [FriendCardComponent],
   templateUrl: './contact-box.component.html',
-  styleUrl: './contact-box.component.css'
+  styleUrl: './contact-box.component.css',
 })
-export class ContactBoxComponent {
-
-}
+export class ContactBoxComponent {}
