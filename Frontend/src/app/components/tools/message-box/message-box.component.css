@@ -2,52 +2,71 @@
   /* padding: 0.25rem; */
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
+
+/*========================*/
+/*========================*/
+/*=====MESSAGE_HEADER=====*/
+/*========================*/
+/*========================*/
 .chat_message_cont .message_header {
   height: 8%;
   padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--box-color);
+  background-color: var(--font-color);
+  box-shadow: 0 3px 10px 1px var(--font-color);
+  z-index: 1;
 }
 .chat_message_cont .message_header .left_col {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-.chat_message_cont .message_header .left_col div:nth-child(1) {
+.chat_message_cont .message_header .left_col .img_box {
   width: 40px;
   height: 40px;
   overflow: hidden;
   border-radius: 5rem;
 }
-.chat_message_cont .message_header .left_col div:nth-child(1) img {
+.chat_message_cont .message_header .left_col .img_box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.chat_message_cont .message_header .left_col div:nth-child(2) {
+.chat_message_cont .message_header .left_col .friend_info_box {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
-.chat_message_cont .message_header .left_col div:nth-child(2) h2 {
+.chat_message_cont .message_header .left_col .friend_info_box h2 {
   font-size: 1rem;
-  color: var(--font-color);
-  margin-bottom: 0.25rem;
+  color: var(--font-light-color);
 }
-.chat_message_cont .message_header .left_col div:nth-child(2) span {
+.chat_message_cont .message_header .left_col .friend_info_box div {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+.chat_message_cont .message_header .left_col .friend_info_box div span {
   background-color: var(--online-color);
-  width: 10px;
-  height: 10px;
+  width: 13px;
+  height: 13px;
   border-radius: 5rem;
+}
+.chat_message_cont .message_header .left_col .friend_info_box div p {
+  font-size: 1rem;
+  color: var(--font-light-color);
 }
 .chat_message_cont .message_header .right_col {
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: var(--font-color);
+  color: var(--font-light-color);
 }
 .chat_message_cont .message_header .right_col i {
   transition: all 0.2s;
@@ -56,49 +75,108 @@
 .chat_message_cont .message_header .right_col i:hover {
   color: #808080;
 }
+
+/*========================*/
+/*========================*/
+/*=====MESSAGE_INPUT======*/
+/*========================*/
+/*========================*/
 .chat_message_cont .message_inputs {
-  height: 6%;
+  height: 8%;
   padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--box-color);
+  background-color: var(--font-color);
+  box-shadow: 0 -3px 10px 1px var(--font-color);
+  z-index: 1;
 }
-.chat_message_cont .message_inputs input {
+.chat_message_cont .message_inputs .left_col {
+  width: 85%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chat_message_cont .message_inputs .left_col input {
   border: 0;
   background-color: #f0f8ff00;
-  width: 80%;
+  width: 100%;
   outline: none;
   padding: 0.25rem;
   font-size: 1rem;
-  color: var(--font-color);
+  color: var(--font-light-color);
 }
-.chat_message_cont .message_inputs input::placeholder {
-  color: var(--font-color);
+.chat_message_cont .message_inputs .left_col input::placeholder {
+  color: var(--font-light-color);
 }
-.chat_message_cont .message_inputs .buttons {
+.chat_message_cont .message_inputs .left_col div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--font-light-color);
+}
+.chat_message_cont .message_inputs .right_col {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: var(--font-color);
+  color: var(--font-light-color);
 }
-.chat_message_cont .message_inputs .buttons i {
+.chat_message_cont .message_inputs .left_col i,
+.chat_message_cont .message_inputs .right_col i {
   font-size: 1.125rem;
   transition: all 0.2s;
   cursor: pointer;
 }
-.chat_message_cont .message_inputs .buttons i:hover {
+.chat_message_cont .message_inputs div i:hover {
   color: #808080;
 }
-.chat_message_cont .message_inputs .buttons .fa-paper-plane {
+.chat_message_cont .message_inputs .right_col .fa-paper-plane {
   font-size: 1.25rem;
   margin-left: 0.25rem;
 }
-.chat_message_cont .message_inputs .buttons .fa-paper-plane:hover {
-  color: rgb(78, 116, 78);
+.chat_message_cont .message_inputs .right_col .fa-paper-plane:hover {
+  color: rgb(66, 127, 66);
 }
+
+/*========================*/
+/*========================*/
+/*======MESSAGE_BOX=======*/
+/*========================*/
+/*========================*/
+
 .message_box {
   height: 100%;
   overflow: hidden;
   overflow-y: auto;
+  background-color: var(--bg-color);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.5rem;
+}
+.message_box .friend_message {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  text-align: left;
+  /* width: auto; */
+  max-width: 600px;
+}
+.message_box .friend_message h4 {
+  column-rule: var(--font-color);
+  font-size: 1rem;
+}
+.message_box .friend_message p {
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 1rem;
+  border-top-left-radius: 0;
+  background-color: var(--font-color);
+  color: var(--font-light-color);
+  width: auto;
+}
+.message_box .friend_message strong {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #808080;
+  text-align: right;
 }
