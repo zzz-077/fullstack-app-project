@@ -84,6 +84,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       email: this.userForm.value.email as string,
       password: this.userForm.value.password as string,
       img: '',
+      friends:[]
     };
     this.registrationS
       .userSignUp(user)

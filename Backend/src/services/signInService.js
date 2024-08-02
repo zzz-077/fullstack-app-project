@@ -22,6 +22,7 @@ async function signIn(req, res) {
                 data: [],
             });
         const AccessToken = await createAccessToken(userData._id);
+
         const RefreshToken = await createRefreshToken(userData._id);
         await createAccessTokenCookie(res, AccessToken);
         await createRefreshTokenCookie(res, RefreshToken);
