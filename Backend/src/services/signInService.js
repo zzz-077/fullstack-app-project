@@ -26,6 +26,8 @@ async function signIn(req, res) {
         const RefreshToken = await createRefreshToken(userData._id);
         await createAccessTokenCookie(res, AccessToken);
         await createRefreshTokenCookie(res, RefreshToken);
+        console.log(userData);
+
         return res.status(200).json({
             status: "success",
             message: "User signed successfully!",

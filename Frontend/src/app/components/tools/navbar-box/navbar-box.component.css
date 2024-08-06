@@ -4,6 +4,7 @@
   justify-content: space-between;
   align-items: center;
   height: 100%;
+  position: relative;
 }
 .chat_navbar_cont h1 {
   font-size: 1.5rem;
@@ -67,4 +68,172 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.friendAdd_box {
+  position: absolute;
+  right: 12%;
+  top: 8%;
+  background-color: var(--font-color);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  width: 200px;
+  padding: 0.5rem 0.35rem;
+  border-radius: 0.25rem;
+  justify-content: space-between;
+}
+.friendAdd_box .requestButtons_box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #302f2fe6;
+  gap: 0.125rem;
+}
+.friendAdd_box .requestButtons_box button {
+  width: 100%;
+  background-color: #302f2fe6;
+  color: var(--font-light-color);
+  padding: 0.25rem;
+  transition: all 0.2s;
+  font-size: 0.75rem;
+}
+.friendAdd_box .requestButtons_box button.add_btn_click {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.friendAdd_box .requestButtons_box button.active {
+  background-color: #3f3e3eca;
+}
+.friendAdd_box .requestButtons_box button.accept_btn_click {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.friendAdd_box .requestButtons_box button:hover {
+  background-color: #3f3e3eca;
+}
+.friendAdd_box .add_input_box {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.5rem 0 0;
+  text-align: left;
+  gap: 0.25rem;
+}
+.friendAdd_box .add_input_box.active {
+  display: flex;
+}
+.friendAdd_box .add_input_box .input_box {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+.friendAdd_box .add_input_box .input_box input {
+  background-color: #302f2fe6;
+  border: 0;
+  padding: 0.35rem;
+  border-radius: 0.125rem;
+  color: var(--font-light-color);
+  border-radius: 0;
+  width: 76%;
+  outline: none;
+  height: 25px;
+  font-size: 0.75rem;
+}
+.friendAdd_box .add_input_box .input_box button {
+  width: 24%;
+  height: 25px;
+  background-color: #302f2fe6;
+  padding: 0.35rem;
+  color: var(--font-light-color);
+  transition: all 0.2s;
+  font-size: 0.75rem;
+  color: var(--font-light-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.friendAdd_box .add_input_box .input_box button .loader {
+  width: 14px;
+  height: 14px;
+}
+.friendAdd_box .add_input_box .input_box button:hover {
+  background-color: #3f3e3eca;
+}
+.friendAdd_box .add_input_box .input_box input::placeholder {
+  color: var(--font-light-color);
+}
+.friendAdd_box .add_input_box p {
+  font-size: 0.75rem;
+  padding: 0 0.125rem;
+}
+.friendAdd_box .add_input_box p span {
+  color: #ffffff85;
+  font-style: oblique;
+  font-weight: 300;
+}
+.friendAdd_box .add_input_box p.success {
+  color: #3fa23fde;
+}
+.friendAdd_box .add_input_box p.error {
+  display: none;
+  color: #ca3c3ce5;
+}
+.friendAdd_box .friend_request_box {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.5rem 0 0;
+  text-align: left;
+  gap: 0.25rem;
+}
+.friendAdd_box .friend_request_box.active {
+  display: flex;
+}
+.friendAdd_box .friend_request_box .user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #302f2fe6;
+  border-radius: 0.125rem;
+  padding: 0.25rem;
+}
+.friendAdd_box .friend_request_box .user .left_col {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.friendAdd_box .friend_request_box .user .left_col img {
+  width: 25px;
+  height: 25px;
+  object-fit: cover;
+  border-radius: 5rem;
+}
+.friendAdd_box .friend_request_box .user .left_col span {
+  color: var(--font-light-color);
+  font-size: 0.75rem;
+}
+.friendAdd_box .friend_request_box .user .right_col {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+.friendAdd_box .friend_request_box .user .right_col button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 5rem;
+  color: var(--font-light-color);
+}
+.friendAdd_box .friend_request_box .user .right_col button:hover {
+  background-color: #0e0d0d;
+}
+.friendAdd_box .friend_request_box .user .right_col button:nth-child(1) {
+  color: #3fa23fde;
+}
+.friendAdd_box .friend_request_box .user .right_col button:nth-child(2) {
+  color: #ca3c3ce5;
 }

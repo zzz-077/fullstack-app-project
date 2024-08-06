@@ -7,7 +7,13 @@ const userSchema = new mongoose.Schema(
         password: { type: String, required: true },
         img: { type: String },
         googleId: { type: String, unique: true },
-        friends: { type: String },
+        friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
+        friendRequests: [
+            {
+                _id: mongoose.Schema.Types.ObjectId,
+                username: { type: String, required: true },
+            },
+        ],
     },
     {
         collection: "Users",

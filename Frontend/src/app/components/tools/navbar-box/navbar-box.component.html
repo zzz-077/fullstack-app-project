@@ -1,13 +1,89 @@
 <div class="chat_navbar_cont">
   <h1>Chat <span>Z</span></h1>
   <div class="chat_navbar_right_box">
-    <button>
+    <button (click)="userAddClick()">
       <i class="fa-solid fa-user-plus"></i>
     </button>
     <div class="user_info_box">
       <h3>zzz077</h3>
       <div class="user_img">
         <img src="assets/user-default-icon.png" alt="" />
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="isAddfriendClicked" class="friendAdd_box">
+  <div class="requestButtons_box">
+    <button
+      (click)="Add_btn_click()"
+      [ngClass]="{ active: isAddBtnClicked }"
+      class="add_btn_click"
+    >
+      Add
+    </button>
+    <button
+      (click)="Accept_btn_click()"
+      [ngClass]="{ active: isAcceptBtnClicked }"
+      class="accept_btn_click"
+    >
+      Accept
+    </button>
+  </div>
+  <div [ngClass]="{ active: isAddBtnClicked }" class="add_input_box">
+    <div class="input_box">
+      <input type="text" placeholder="Search" />
+      <button>
+        @if(isLoading){
+        <div class="loader">
+          <app-loader></app-loader>
+        </div>
+        }@else{
+        <i class="fa-solid fa-plus"></i>
+        }
+      </button>
+    </div>
+    <p class="success">user <span>zzz077</span> is found!</p>
+    <p class="error">user <span>zzz077</span> not found!</p>
+  </div>
+  <div [ngClass]="{ active: isAcceptBtnClicked }" class="friend_request_box">
+    <div class="user">
+      <div class="left_col">
+        <img src="assets/user-default-icon.png" alt="#" />
+        <span>Monesy</span>
+      </div>
+      <div class="right_col">
+        <button><i class="fa-solid fa-check"></i></button>
+        <button><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="user">
+      <div class="left_col">
+        <img src="assets/user-default-icon.png" alt="#" />
+        <span>Monesy</span>
+      </div>
+      <div class="right_col">
+        <button><i class="fa-solid fa-check"></i></button>
+        <button><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="user">
+      <div class="left_col">
+        <img src="assets/user-default-icon.png" alt="#" />
+        <span>Monesy</span>
+      </div>
+      <div class="right_col">
+        <button><i class="fa-solid fa-check"></i></button>
+        <button><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="user">
+      <div class="left_col">
+        <img src="assets/user-default-icon.png" alt="#" />
+        <span>Monesy</span>
+      </div>
+      <div class="right_col">
+        <button><i class="fa-solid fa-check"></i></button>
+        <button><i class="fa-solid fa-xmark"></i></button>
       </div>
     </div>
   </div>

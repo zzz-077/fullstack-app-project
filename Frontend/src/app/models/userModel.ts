@@ -3,5 +3,6 @@ export interface USER {
   email: string;
   password: string;
   img: string;
-  friends: [];
+  friends: string[];
+  friendRequests: { _id: string; username: string }[];
 }
