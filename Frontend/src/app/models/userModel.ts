@@ -4,5 +4,5 @@ export interface USER {
   password: string;
   img: string;
   friends: string[];
-  friendRequests: { _id: string; username: string }[];
+  friendRequests: { _id: string; username: string; img: string }[];
 }
