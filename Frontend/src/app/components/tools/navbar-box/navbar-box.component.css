@@ -154,6 +154,12 @@
   justify-content: center;
   align-items: center;
 }
+.friendAdd_box .add_input_box .input_box button:disabled {
+  background-color: #302f2fe6;
+}
+.friendAdd_box .add_input_box .input_box button:disabled:hover {
+  background-color: #302f2fe6;
+}
 .friendAdd_box .add_input_box .input_box button .loader {
   width: 14px;
   height: 14px;

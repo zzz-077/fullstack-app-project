@@ -1,3 +1,8 @@
+@if (alert.status!=='') {
+<div class="toast_box">
+  <app-alerts [alert]="alert"></app-alerts>
+</div>
+}
 <div class="chat_navbar_cont">
   <h1>Chat <span>Z</span></h1>
   <div class="chat_navbar_right_box">
@@ -31,8 +36,11 @@
   </div>
   <div [ngClass]="{ active: isAddBtnClicked }" class="add_input_box">
     <div class="input_box">
-      <input type="text" placeholder="Search" />
-      <button>
+      <input type="text" placeholder="Search" [(ngModel)]="searchInput" />
+      <button
+        [disabled]="searchInput === '' || isLoading"
+        (click)="friendAddClick()"
+      >
         @if(isLoading){
         <div class="loader">
           <app-loader></app-loader>
@@ -42,8 +50,6 @@
         }
       </button>
     </div>
-    <p class="success">user <span>zzz077</span> is found!</p>
-    <p class="error">user <span>zzz077</span> not found!</p>
   </div>
   <div [ngClass]="{ active: isAcceptBtnClicked }" class="friend_request_box">
     <div class="user">

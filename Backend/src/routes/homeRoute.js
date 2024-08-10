@@ -1,5 +1,5 @@
 import express from "express";
-import friendRequest from "../services/friendAddService.js";
+import { friendRequest, acceptRequest } from "../services/friendAddService.js";
 const router = express.Router();
 
 router.post("/", (req, res) => {
@@ -22,5 +22,6 @@ router.post("/", (req, res) => {
     }
 });
 router.post("/friendAddRequest", friendRequest);
+router.post("/acceptFriendRequest", acceptRequest);
 
 export default router;
