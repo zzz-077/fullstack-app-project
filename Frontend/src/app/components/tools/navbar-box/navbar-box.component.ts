@@ -51,6 +51,7 @@ export class NavbarBoxComponent {
         .friendAddRequest(obj)
         .pipe(
           catchError((error: HttpErrorResponse) => {
+            this.isLoading = false;
             if (error.error instanceof ErrorEvent) {
               console.log('log1');
               // Client-side error
@@ -80,14 +81,13 @@ export class NavbarBoxComponent {
                 message: '',
               };
             }, 5000);
-            this.isLoading = false;
             return throwError(this.alert);
           })
         )
         .subscribe((res: any) => {
+          this.isLoading = false;
           if (res && res.status === 'success') {
             console.log('log4');
-            this.isLoading = false;
             this.alert = {
               status: res.status,
               message: res.message,
@@ -98,10 +98,10 @@ export class NavbarBoxComponent {
                 message: '',
               };
             }, 5000);
-            this.isLoading = false;
           }
         });
     } else {
+      this.isLoading = false;
       this.alert = {
         status: 'fail',
         message: 'can not add your Self!',

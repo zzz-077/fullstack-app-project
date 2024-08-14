@@ -13,27 +13,30 @@ async function friendRequest(req, res) {
                 error: null,
                 data: [],
             });
-        console.log(foundedFriend);
-        const checkFriendReqInRequests = foundedFriend.friendRequests.some(
+        // console.log(foundedFriend);
+        // console.log("===========================");
+        // console.log(friend.userId);
+        const checkFriendReqInRequests = foundedFriend.friendRequests.filter(
             (obj) => {
-                return obj.id === friend.userId;
+                console.log("FIRSTCHECK:" + obj._id);
+                return obj._id !== friend.userId;
             }
         );
-        console.log("==========1==========");
-        console.log(checkFriendReqInRequests);
-        if (checkFriendReqInRequests)
+        // console.log("==========1==========");
+        // console.log(checkFriendReqInRequests);
+        if (checkFriendReqInRequests.length !== 0)
             return res.status(400).json({
                 status: "fail",
-                message: `You've already sent friend request!`,
+                message: `You've already sent friend requst!`,
                 error: null,
                 data: [],
             });
-        const checkFriendReqInFriends = foundedFriend.friends.some((id) => {
+        const checkFriendReqInFriends = foundedFriend.friends.filter((id) => {
             return id !== friend.userId;
         });
-        console.log("==========2==========");
-        console.log(checkFriendReqInFriends);
-        if (checkFriendReqInFriends)
+        // console.log("==========2==========");
+        // console.log(checkFriendReqInFriends);
+        if (checkFriendReqInFriends.length !== 0)
             return res.status(400).json({
                 status: "fail",
                 message: `You are already friends!`,
