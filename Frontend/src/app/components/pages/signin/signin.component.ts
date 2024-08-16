@@ -35,6 +35,7 @@ import { AlertsComponent } from '../../tools/alerts/alerts.component';
 })
 export class SigninComponent implements OnInit, OnDestroy {
   //variables
+  subscription!: Subscription;
   isLoading: boolean = false;
   isPassOneClicked: boolean = false;
   isPassTwoClicked: boolean = false;
@@ -58,8 +59,21 @@ export class SigninComponent implements OnInit, OnDestroy {
     private registrationS: RegistrationService,
     private router: Router
   ) {}
-  ngOnInit() {}
-  ngOnDestroy() {}
+  ngOnInit(): void {
+    this.subscription = this.registrationS.userLogout().subscribe({
+      next: (res) => {
+        if (res.status === 'success') this.router.navigateByUrl('/signin');
+      },
+      error: (err) => {
+        console.error('Logout failed:', err);
+      },
+    });
+  }
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
   //functions
   signinClick() {
     this.isLoading = true;

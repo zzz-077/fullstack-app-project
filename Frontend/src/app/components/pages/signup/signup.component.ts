@@ -37,6 +37,7 @@ register();
 })
 export class RegistrationComponent implements OnInit, OnDestroy {
   //variables
+  subscription!: Subscription;
   users: any[] = [];
   // userSubscribtion!: Subscription;
   isLoading: boolean = false;
@@ -74,8 +75,21 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     private registrationS: RegistrationService,
     private router: Router
   ) {}
-  ngOnInit() {}
-  ngOnDestroy() {}
+  ngOnInit(): void {
+    this.subscription = this.registrationS.userLogout().subscribe({
+      next: (res) => {
+        if (res.status === 'success') this.router.navigateByUrl('/signin');
+      },
+      error: (err) => {
+        console.error('Logout failed:', err);
+      },
+    });
+  }
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
   //functions
   signupClick() {
     this.isLoading = true;
