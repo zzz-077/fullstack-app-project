@@ -43,4 +43,7 @@ export class RegistrationService {
       }
     );
   }
+  getUserData(): Observable<USER> {
+    return this.http.post<USER>(this.url, {}, { withCredentials: true });
+  }
 }
