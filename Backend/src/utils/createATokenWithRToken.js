@@ -6,7 +6,7 @@ async function createATokenWithRToken(req, res, RefreshToken, next) {
     jwt.verify(
         RefreshToken,
         process.env.REFRESH_TOKEN_SECRET,
-        (err, decoded) => {
+        async (err, decoded) => {
             if (err) {
                 return res.status(403).json({
                     status: "fail",
@@ -16,7 +16,7 @@ async function createATokenWithRToken(req, res, RefreshToken, next) {
                 });
             }
             const userId = decoded.userId;
-            const AccessToken = createAccessToken(userId);
+            const AccessToken = await createAccessToken(userId);
             createAccessTokenCookie(res, AccessToken);
             next();
         }

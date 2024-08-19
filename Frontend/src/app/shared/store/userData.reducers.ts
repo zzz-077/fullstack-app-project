@@ -1,26 +1,23 @@
 import { createReducer, on } from '@ngrx/store';
-import { USER } from '../../models/userModel';
 import * as userActions from './userData.actions';
-import { error } from 'console';
+import { APIRESP } from '../../models/statusModel';
 
 export interface userState {
-  data: USER[];
-  error: string | null;
+  response: APIRESP;
 }
 export const initialUserState: userState = {
-  data: [],
-  error: null,
+  response: {
+    status: '',
+    message: '',
+    error: null,
+    data: [],
+  },
 };
 
 export const UserReducer = createReducer(
   initialUserState,
-  on(userActions.getUserDataSuccessfully, (state, { Data }) => ({
+  on(userActions.getUserDataSuccessfully, (state, { response }) => ({
     ...state,
-    Data,
-    error: null,
-  })),
-  on(userActions.getUserDatafailed, (state, { error }) => ({
-    ...state,
-    error: error,
+    response,
   }))
 );

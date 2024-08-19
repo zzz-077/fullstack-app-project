@@ -3,29 +3,33 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { RegistrationService } from '../services/registrationService/registration.service';
 import * as userActions from './userData.actions';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { USER } from '../../models/userModel';
+import { APIRESP } from '../../models/statusModel';
+import { response } from 'express';
 
 @Injectable()
 export class UserDataEffect {
   constructor(
     private actions$: Actions,
     private userService: RegistrationService
-  ) {}
+  ) {
+    console.log('log1');
+  }
+
   getUserData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userActions.userData),
       switchMap(() =>
         this.userService.getUserData().pipe(
-          map((res) =>
-            userActions.getUserDataSuccessfully({ Data: [res] as USER[] })
-          ),
-          catchError((err) =>
-            of(
-              userActions.getUserDatafailed({
-                error: err?.message,
-              })
-            )
-          )
+          map((res) => {
+            console.log('log2');
+            return userActions.getUserDataSuccessfully({
+              response: res as APIRESP,
+            });
+          }),
+          catchError((error) => {
+            console.error('Error in effect', error);
+            return of();
+          })
         )
       )
     )

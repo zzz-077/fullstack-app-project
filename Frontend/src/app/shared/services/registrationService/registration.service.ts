@@ -43,7 +43,12 @@ export class RegistrationService {
       }
     );
   }
-  getUserData(): Observable<USER> {
-    return this.http.post<USER>(this.url, {}, { withCredentials: true });
+
+  getUserData(): Observable<APIRESP> {
+    return this.http.post<APIRESP>(
+      this.url + '/home/UserData',
+      {},
+      { withCredentials: true }
+    );
   }
 }

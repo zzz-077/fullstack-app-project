@@ -1,12 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoaderComponent } from '../loader/loader.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FriendRequestService } from '../../../shared/services/friendRequestService/friend-request.service';
 import { FRIENDADD } from '../../../models/requesModel';
-import { catchError, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertsComponent } from '../alerts/alerts.component';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../shared/store/app.state';
+import { selectUserData } from '../../../shared/store/userData.selectors';
+import { USER } from '../../../models/userModel';
+import { APIRESP } from '../../../models/statusModel';
+import * as userActions from '../../../shared/store/userData.actions';
 
 @Component({
   selector: 'app-navbar-box',
@@ -15,18 +21,29 @@ import { AlertsComponent } from '../alerts/alerts.component';
   templateUrl: './navbar-box.component.html',
   styleUrl: './navbar-box.component.css',
 })
-export class NavbarBoxComponent {
+export class NavbarBoxComponent implements OnInit {
   searchInput: string = '';
   isAddfriendClicked: boolean = false;
   isLoading: boolean = false;
   isAddBtnClicked: boolean = true;
   isAcceptBtnClicked: boolean = false;
+  userData$: Observable<APIRESP>;
   alert: any = {
     status: '',
     message: '',
   };
-  constructor(private friendreqS: FriendRequestService) {}
-
+  constructor(
+    private friendreqS: FriendRequestService,
+    private store: Store<AppState>
+  ) {
+    this.userData$ = this.store.select(selectUserData);
+  }
+  ngOnInit() {
+    this.store.dispatch(userActions.userData());
+    this.userData$.subscribe((data) => {
+      console.log(data);
+    });
+  }
   userAddClick() {
     this.isAddfriendClicked = !this.isAddfriendClicked;
   }

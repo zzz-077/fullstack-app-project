@@ -1,5 +1,5 @@
 import { userState } from './userData.reducers';
 
-export interface states {
-  userData: userState;
+export interface AppState {
+  user: userState;
 }
