@@ -18,4 +18,11 @@ export class FriendRequestService {
       { withCredentials: true }
     );
   }
+  friendRequestAnswer(obj: USERADDRESP): Observable<APIRESP> {
+    return this.http.post<APIRESP>(
+      this.url + '/home' + '/acceptFriendRequest',
+      obj,
+      { withCredentials: true }
+    );
+  }
 }

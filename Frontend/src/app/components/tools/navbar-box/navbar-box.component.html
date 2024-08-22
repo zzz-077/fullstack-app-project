@@ -52,17 +52,27 @@
     </div>
   </div>
   <div [ngClass]="{ active: isAcceptBtnClicked }" class="friend_request_box">
-    @if(user!= null){
-    <div *ngFor="let friend of user.friendRequests" class="user">
+    @if(user!= null && user.friendRequests.length!==0){
+    <div
+      *ngFor="let friend of user.friendRequests"
+      [ngClass]="{ active: friendCardIdAccept === friend._id }"
+      class="user"
+    >
       <div class="left_col">
         <img [src]="friend?.img" alt="#" />
         <span>{{ friend?.username }}</span>
       </div>
       <div class="right_col">
-        <button><i class="fa-solid fa-check"></i></button>
-        <button><i class="fa-solid fa-xmark"></i></button>
+        <button (click)="friendRequestClick('accept', friend)">
+          <i class="fa-solid fa-check"></i>
+        </button>
+        <button (click)="friendRequestClick('reject', friend)">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
     </div>
+    }@else{
+    <p class="no_request_text">No friend request!</p>
     }
   </div>
 </div>

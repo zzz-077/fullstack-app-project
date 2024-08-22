@@ -193,6 +193,7 @@
   padding: 0.5rem 0 0;
   text-align: left;
   gap: 0.25rem;
+  overflow: hidden;
 }
 .friendAdd_box .friend_request_box.active {
   display: flex;
@@ -204,7 +205,14 @@
   background-color: #302f2fe6;
   border-radius: 0.125rem;
   padding: 0.25rem;
+  transition: all 0.5s;
+  opacity: 1;
 }
+.friendAdd_box .friend_request_box .user.active {
+  transform: translateX(-500px);
+  opacity: 0;
+}
+
 .friendAdd_box .friend_request_box .user .left_col {
   display: flex;
   align-items: center;
@@ -242,4 +250,9 @@
 }
 .friendAdd_box .friend_request_box .user .right_col button:nth-child(2) {
   color: #ca3c3ce5;
+}
+.friendAdd_box .friend_request_box .no_request_text {
+  color: var(--font-light-color);
+  text-align: center;
+  font-size: 0.75rem;
 }

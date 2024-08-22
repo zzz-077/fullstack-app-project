@@ -3,7 +3,7 @@ import { LoaderComponent } from '../loader/loader.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FriendRequestService } from '../../../shared/services/friendRequestService/friend-request.service';
-import { FRIENDADD } from '../../../models/requesModel';
+import { FRIENDADD, USERADDRESP } from '../../../models/requesModel';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertsComponent } from '../alerts/alerts.component';
@@ -28,6 +28,7 @@ export class NavbarBoxComponent implements OnInit {
   isAddBtnClicked: boolean = true;
   isAcceptBtnClicked: boolean = false;
   userResp$: Observable<APIRESP>;
+  friendCardIdAccept: string | null = null;
   user: any;
   alert: any = {
     status: '',
@@ -45,7 +46,6 @@ export class NavbarBoxComponent implements OnInit {
     this.userResp$.subscribe((res) => {
       if (res.data && !Array.isArray(res.data)) {
         this.user = res.data;
-        console.log(this.user?._id);
       }
     });
   }
@@ -130,6 +130,71 @@ export class NavbarBoxComponent implements OnInit {
           message: '',
         };
       }, 5000);
+    }
+  }
+  friendRequestClick(click: string, friend: any) {
+    this.friendCardIdAccept = friend?._id;
+    if (click === 'accept' || click === 'reject') {
+      const request: USERADDRESP = {
+        userId: this.user?._id,
+        requesterName: friend?.username,
+        requesterId: friend?._id,
+        status: click,
+      };
+      this.friendreqS
+        .friendRequestAnswer(request)
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            if (error.error instanceof ErrorEvent) {
+              // Client-side error
+              this.alert = {
+                status: 'fail',
+                message: error.error.message,
+              };
+            } else {
+              // Server-side errors
+              if (error.status === 0) {
+                this.alert = {
+                  status: 'fail',
+                  message: 'there is no response',
+                };
+              } else {
+                this.alert = {
+                  status: error.error.status,
+                  message: error.error.message,
+                };
+              }
+            }
+            setTimeout(() => {
+              this.alert = {
+                status: '',
+                message: '',
+              };
+            }, 5000);
+            setTimeout(() => {
+              this.friendCardIdAccept = null;
+            }, 490);
+            return throwError(this.alert);
+          })
+        )
+        .subscribe((res: any) => {
+          this.store.dispatch(userActions.userData());
+          if (res && res.status === 'success') {
+            this.alert = {
+              status: res.status,
+              message: res.message,
+            };
+            setTimeout(() => {
+              this.alert = {
+                status: '',
+                message: '',
+              };
+            }, 5000);
+            setTimeout(() => {
+              this.friendCardIdAccept = null;
+            }, 490);
+          }
+        });
     }
   }
 }
