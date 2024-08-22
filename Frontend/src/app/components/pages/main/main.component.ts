@@ -25,7 +25,7 @@ export class MainComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.subscription = this.registrationS.homeAutentication().subscribe({
       next: (res) => {
         console.log(res);

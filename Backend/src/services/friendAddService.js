@@ -1,4 +1,5 @@
 import User from "../models/userM.js";
+import mongoose from "mongoose";
 
 async function friendRequest(req, res) {
     const friend = req.body;
@@ -16,27 +17,27 @@ async function friendRequest(req, res) {
         // console.log(foundedFriend);
         // console.log("===========================");
         // console.log(friend.userId);
-        const checkFriendReqInRequests = foundedFriend.friendRequests.filter(
+        const checkFriendReqInRequests = foundedFriend.friendRequests.find(
             (obj) => {
                 console.log("FIRSTCHECK:" + obj._id);
-                return obj._id !== friend.userId;
+                return obj._id.toString() === friend.userId;
             }
         );
-        // console.log("==========1==========");
-        // console.log(checkFriendReqInRequests);
-        if (checkFriendReqInRequests.length !== 0)
+        console.log("==========1==========");
+        console.log(checkFriendReqInRequests);
+        if (checkFriendReqInRequests != undefined)
             return res.status(400).json({
                 status: "fail",
                 message: `You've already sent friend requst!`,
                 error: null,
                 data: [],
             });
-        const checkFriendReqInFriends = foundedFriend.friends.filter((id) => {
-            return id !== friend.userId;
+        const checkFriendReqInFriends = foundedFriend.friends.find((id) => {
+            return id.toString() === friend.userId;
         });
         // console.log("==========2==========");
         // console.log(checkFriendReqInFriends);
-        if (checkFriendReqInFriends.length !== 0)
+        if (checkFriendReqInFriends != undefined)
             return res.status(400).json({
                 status: "fail",
                 message: `You are already friends!`,
@@ -82,6 +83,8 @@ async function acceptRequest(req, res) {
             _id: reqBody.userId,
             friendRequests: { $elemMatch: { _id: reqBody.requesterId } },
         });
+        console.log(checkrequest);
+
         if (reqBody.status === "accept" && checkrequest) {
             const updatedUser = await User.findOneAndUpdate(
                 { _id: reqBody.userId },
@@ -94,12 +97,19 @@ async function acceptRequest(req, res) {
             if (!updatedUser)
                 return res.status(404).json({
                     status: "fail",
-                    message: `User ${reqBody.requesterName} can't accepted!`,
+                    message: `User ${reqBody.req0uesterName} can't accepted!`,
                     error: null,
                     data: [],
                 });
-            console.log(updatedUser);
-
+            const updatedfriend = await User.findOneAndUpdate(
+                { _id: reqBody.requesterId },
+                {
+                    $push: { friends: reqBody.userId },
+                    $pull: { friendRequests: { _id: reqBody.userId } },
+                },
+                { new: true }
+            );
+            console.log(updatedfriend);
             return res.status(200).json({
                 status: "success",
                 message: `User ${reqBody.requesterName} is accepted!`,
@@ -122,7 +132,6 @@ async function acceptRequest(req, res) {
                     error: null,
                     data: [],
                 });
-
             return res.status(200).json({
                 status: "success",
                 message: `User ${reqBody.requesterName} is rejected!`,

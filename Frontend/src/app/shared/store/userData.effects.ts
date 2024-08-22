@@ -11,9 +11,7 @@ export class UserDataEffect {
   constructor(
     private actions$: Actions,
     private userService: RegistrationService
-  ) {
-    console.log('log1');
-  }
+  ) {}
 
   getUserData$ = createEffect(() =>
     this.actions$.pipe(
@@ -21,13 +19,11 @@ export class UserDataEffect {
       switchMap(() =>
         this.userService.getUserData().pipe(
           map((res) => {
-            console.log('log2');
             return userActions.getUserDataSuccessfully({
               response: res as APIRESP,
             });
           }),
           catchError((error) => {
-            console.error('Error in effect', error);
             return of();
           })
         )

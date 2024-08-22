@@ -10,9 +10,9 @@
       <i class="fa-solid fa-user-plus"></i>
     </button>
     <div class="user_info_box">
-      <h3>zzz077</h3>
+      <h3>{{ user?.name }}</h3>
       <div class="user_img">
-        <img src="assets/user-default-icon.png" alt="" />
+        <img [src]="user?.img" alt="" />
       </div>
     </div>
   </div>
@@ -52,45 +52,17 @@
     </div>
   </div>
   <div [ngClass]="{ active: isAcceptBtnClicked }" class="friend_request_box">
-    <div class="user">
+    @if(user!= null){
+    <div *ngFor="let friend of user.friendRequests" class="user">
       <div class="left_col">
-        <img src="assets/user-default-icon.png" alt="#" />
-        <span>Monesy</span>
+        <img [src]="friend?.img" alt="#" />
+        <span>{{ friend?.username }}</span>
       </div>
       <div class="right_col">
         <button><i class="fa-solid fa-check"></i></button>
         <button><i class="fa-solid fa-xmark"></i></button>
       </div>
     </div>
-    <div class="user">
-      <div class="left_col">
-        <img src="assets/user-default-icon.png" alt="#" />
-        <span>Monesy</span>
-      </div>
-      <div class="right_col">
-        <button><i class="fa-solid fa-check"></i></button>
-        <button><i class="fa-solid fa-xmark"></i></button>
-      </div>
-    </div>
-    <div class="user">
-      <div class="left_col">
-        <img src="assets/user-default-icon.png" alt="#" />
-        <span>Monesy</span>
-      </div>
-      <div class="right_col">
-        <button><i class="fa-solid fa-check"></i></button>
-        <button><i class="fa-solid fa-xmark"></i></button>
-      </div>
-    </div>
-    <div class="user">
-      <div class="left_col">
-        <img src="assets/user-default-icon.png" alt="#" />
-        <span>Monesy</span>
-      </div>
-      <div class="right_col">
-        <button><i class="fa-solid fa-check"></i></button>
-        <button><i class="fa-solid fa-xmark"></i></button>
-      </div>
-    </div>
+    }
   </div>
 </div>

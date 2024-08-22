@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FriendRequestService } from '../../../shared/services/friendRequestService/friend-request.service';
 import { FRIENDADD } from '../../../models/requesModel';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertsComponent } from '../alerts/alerts.component';
 import { Store } from '@ngrx/store';
@@ -27,21 +27,26 @@ export class NavbarBoxComponent implements OnInit {
   isLoading: boolean = false;
   isAddBtnClicked: boolean = true;
   isAcceptBtnClicked: boolean = false;
-  userData$: Observable<APIRESP>;
+  userResp$: Observable<APIRESP>;
+  user: any;
   alert: any = {
     status: '',
     message: '',
   };
+
   constructor(
     private friendreqS: FriendRequestService,
     private store: Store<AppState>
   ) {
-    this.userData$ = this.store.select(selectUserData);
+    this.userResp$ = this.store.select(selectUserData);
   }
   ngOnInit() {
     this.store.dispatch(userActions.userData());
-    this.userData$.subscribe((data) => {
-      console.log(data);
+    this.userResp$.subscribe((res) => {
+      if (res.data && !Array.isArray(res.data)) {
+        this.user = res.data;
+        console.log(this.user?._id);
+      }
     });
   }
   userAddClick() {
@@ -58,9 +63,9 @@ export class NavbarBoxComponent implements OnInit {
   friendAddClick() {
     this.isLoading = true;
     const obj: FRIENDADD = {
-      userId: '66996e662c78feacbb54ca3c',
-      userName: 'vaske',
-      userImg: '',
+      userId: this.user?._id,
+      userName: this.user?.name,
+      userImg: this.user?.img,
       friendName: this.searchInput,
     };
     if (obj.friendName !== obj.userName) {
@@ -70,7 +75,6 @@ export class NavbarBoxComponent implements OnInit {
           catchError((error: HttpErrorResponse) => {
             this.isLoading = false;
             if (error.error instanceof ErrorEvent) {
-              console.log('log1');
               // Client-side error
               this.alert = {
                 status: 'fail',
@@ -79,13 +83,11 @@ export class NavbarBoxComponent implements OnInit {
             } else {
               // Server-side errors
               if (error.status === 0) {
-                console.log('log2');
                 this.alert = {
                   status: 'fail',
                   message: 'there is no response',
                 };
               } else {
-                console.log('log3');
                 this.alert = {
                   status: error.error.status,
                   message: error.error.message,
@@ -104,7 +106,6 @@ export class NavbarBoxComponent implements OnInit {
         .subscribe((res: any) => {
           this.isLoading = false;
           if (res && res.status === 'success') {
-            console.log('log4');
             this.alert = {
               status: res.status,
               message: res.message,
