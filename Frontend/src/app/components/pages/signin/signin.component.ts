@@ -74,6 +74,7 @@ export class SigninComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
   }
+
   //functions
   signinClick() {
     this.isLoading = true;
@@ -85,6 +86,8 @@ export class SigninComponent implements OnInit, OnDestroy {
       .userSignIn(user)
       .pipe(
         catchError((error: HttpErrorResponse) => {
+          console.log(error);
+
           if (error.error instanceof ErrorEvent) {
             // Client-side error
             this.alert = {
@@ -120,16 +123,6 @@ export class SigninComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.router.navigate(['/home']);
         } else {
-          this.alert = {
-            status: res.status,
-            message: res.message,
-          };
-          setTimeout(() => {
-            this.alert = {
-              status: '',
-              message: '',
-            };
-          }, 5000);
           this.isLoading = false;
         }
       });

@@ -12,17 +12,20 @@ export class FriendRequestService {
   constructor(private http: HttpClient) {}
 
   friendAddRequest(obj: FRIENDADD): Observable<APIRESP> {
+    return this.http.post<APIRESP>(this.url + '/home/friendAddRequest', obj, {
+      withCredentials: true,
+    });
+  }
+  friendRequestAnswer(obj: USERADDRESP): Observable<APIRESP> {
     return this.http.post<APIRESP>(
-      this.url + '/home' + '/friendAddRequest',
+      this.url + '/home/acceptFriendRequest',
       obj,
       { withCredentials: true }
     );
   }
-  friendRequestAnswer(obj: USERADDRESP): Observable<APIRESP> {
-    return this.http.post<APIRESP>(
-      this.url + '/home' + '/acceptFriendRequest',
-      obj,
-      { withCredentials: true }
-    );
+  getFriendData(id: string): Observable<APIRESP> {
+    return this.http.post<APIRESP>(this.url + '/home/getFriendData', id, {
+      withCredentials: true,
+    });
   }
 }

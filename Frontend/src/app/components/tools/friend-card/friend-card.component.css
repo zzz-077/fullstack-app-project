@@ -39,10 +39,12 @@
   font-size: 0.875rem;
 }
 .frined_card_cont .friend_info .header_info span {
-  background-color: var(--online-color);
   width: 10px;
   height: 10px;
   border-radius: 5rem;
+}
+.frined_card_cont .friend_info .header_info span.online {
+  background-color: var(--online-color);
 }
 .frined_card_cont .friend_info .header_info .ofline {
   background-color: var(--offline-color);

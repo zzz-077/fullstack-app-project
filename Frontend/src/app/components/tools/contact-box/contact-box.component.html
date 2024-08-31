@@ -4,17 +4,10 @@
     <i class="fa-solid fa-magnifying-glass"></i>
   </div>
   <div class="contact_friend_box">
-    <app-friend-card></app-friend-card>
-    <app-friend-card></app-friend-card>
-    <app-friend-card></app-friend-card>
-    <app-friend-card></app-friend-card>
-    <app-friend-card></app-friend-card>
-    <app-friend-card></app-friend-card>
-    <app-friend-card></app-friend-card>
-    <app-friend-card></app-friend-card>
-    <app-friend-card></app-friend-card>
-    <app-friend-card></app-friend-card>
-    <app-friend-card></app-friend-card>
+    <app-friend-card
+      *ngFor="let friendid of userFriends"
+      [friendID]="friendid"
+    ></app-friend-card>
   </div>
   <button class="contact_createChat_btn">
     <i class="fa-solid fa-circle-plus"></i>

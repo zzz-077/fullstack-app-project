@@ -1,11 +1,17 @@
+@if(friendInfo&& friendInfo.length>0 ){
+
 <div class="frined_card_cont">
   <div class="friend_img">
-    <img src="assets/user-default-icon.png" alt="" />
+    <img [src]="friendInfo[0]?.img" alt="" />
   </div>
   <div class="friend_info">
     <div class="header_info">
-      <h4>Monesy</h4>
-      <span></span>
+      <h4>{{ friendInfo[0]?.name }}</h4>
+      @if(friendInfo[0]?.status===true){
+      <span class="online"></span>
+      }@else{
+      <span class="ofline"></span>
+      }
     </div>
     <div class="message_info">
       <p>hey, wanna play cs? ...</p>
@@ -13,3 +19,4 @@
     </div>
   </div>
 </div>
+}

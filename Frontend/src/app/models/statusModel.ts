@@ -4,5 +4,5 @@ export interface APIRESP {
   status: string;
   message: string;
   error: any;
-  data: USER | [];
+  data: USER | { name: string; img: string; status: boolean }[] | [];
 }

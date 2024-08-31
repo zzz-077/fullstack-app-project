@@ -97,9 +97,10 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       name: this.userForm.value.name as string,
       email: this.userForm.value.email as string,
       password: this.userForm.value.password as string,
-      img: '',
+      img: 'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg',
       friends: [],
       friendRequests: [],
+      status: false,
     };
     this.registrationS
       .userSignUp(user)
