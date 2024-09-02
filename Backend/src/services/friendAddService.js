@@ -1,3 +1,4 @@
+import Chat from "../models/chatM.js";
 import User from "../models/userM.js";
 import mongoose from "mongoose";
 
@@ -83,7 +84,7 @@ async function acceptRequest(req, res) {
       _id: reqBody.userId,
       friendRequests: { $elemMatch: { _id: reqBody.requesterId } },
     });
-    console.log(checkrequest);
+    // console.log(checkrequest);
 
     if (reqBody.status === "accept" && checkrequest) {
       const updatedUser = await User.findOneAndUpdate(
@@ -109,7 +110,11 @@ async function acceptRequest(req, res) {
         },
         { new: true }
       );
-      console.log(updatedfriend);
+      // console.log(updatedfriend);
+      await Chat.create({
+        chatName: "",
+        participants: [reqBody.userId, reqBody.requesterId],
+      });
       return res.status(200).json({
         status: "success",
         message: `User ${reqBody.requesterName} is accepted!`,

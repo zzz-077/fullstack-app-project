@@ -42,6 +42,19 @@
   /* border: 1px solid var(--font-color); */
   color: var(--font-light-color);
   background-color: var(--font-color);
+  position: relative;
+}
+.chat_navbar_cont .chat_navbar_right_box button .user_request_span {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: var(--online-color);
+  top: -1px;
+  right: -1px;
 }
 .chat_navbar_cont .chat_navbar_right_box .user_info_box {
   display: flex;

@@ -8,6 +8,10 @@
   <div class="chat_navbar_right_box">
     <button (click)="userAddClick()">
       <i class="fa-solid fa-user-plus"></i>
+      <span
+        class="user_request_span"
+        *ngIf="user?.friendRequests.length > 0"
+      ></span>
     </button>
     <div class="user_info_box">
       <h3>{{ user?.name }}</h3>

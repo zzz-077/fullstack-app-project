@@ -7,6 +7,7 @@ import { selectUserData } from '../../../shared/store/userData.selectors';
 import { Observable } from 'rxjs';
 import { APIRESP } from '../../../models/statusModel';
 import { CommonModule } from '@angular/common';
+import { log } from 'node:console';
 
 @Component({
   selector: 'app-contact-box',
