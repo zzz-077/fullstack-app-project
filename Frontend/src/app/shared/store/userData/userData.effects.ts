@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { RegistrationService } from '../services/registrationService/registration.service';
+import { RegistrationService } from '../../services/registrationService/registration.service';
 import * as userActions from './userData.actions';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { APIRESP } from '../../models/statusModel';
+import { APIRESP } from '../../../models/statusModel';
 import { response } from 'express';
 
 @Injectable()

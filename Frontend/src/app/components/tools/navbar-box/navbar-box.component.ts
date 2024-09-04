@@ -9,10 +9,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AlertsComponent } from '../alerts/alerts.component';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../shared/store/app.state';
-import { selectUserData } from '../../../shared/store/userData.selectors';
+import { selectUserData } from '../../../shared/store/userData/userData.selectors';
 import { USER } from '../../../models/userModel';
 import { APIRESP } from '../../../models/statusModel';
-import * as userActions from '../../../shared/store/userData.actions';
+import * as userActions from '../../../shared/store/userData/userData.actions';
 
 @Component({
   selector: 'app-navbar-box',

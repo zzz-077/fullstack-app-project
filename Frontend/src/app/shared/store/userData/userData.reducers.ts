@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as userActions from './userData.actions';
-import { APIRESP } from '../../models/statusModel';
+import { APIRESP } from '../../../models/statusModel';
 
 export interface userState {
   response: APIRESP;

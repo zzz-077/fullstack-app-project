@@ -6,8 +6,9 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-import { UserReducer } from './shared/store/userData.reducers';
-import { UserDataEffect } from './shared/store/userData.effects';
+import { UserReducer } from './shared/store/userData/userData.reducers';
+import { UserDataEffect } from './shared/store/userData/userData.effects';
+import { ChatReducer } from './shared/store/Chat/chat.reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideStore(),
     provideState({ name: 'user', reducer: UserReducer }),
+    provideState({ name: 'chat', reducer: ChatReducer }),
     provideEffects([UserDataEffect]),
   ],
 };

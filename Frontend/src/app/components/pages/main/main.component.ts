@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { NavbarBoxComponent } from '../../tools/navbar-box/navbar-box.component';
 import { ContactBoxComponent } from '../../tools/contact-box/contact-box.component';
 import { MessageBoxComponent } from '../../tools/message-box/message-box.component';
+import { FriendRequestService } from '../../../shared/services/friendRequestService/friend-request.service';
 @Component({
   selector: 'app-main',
   standalone: true,
@@ -20,10 +21,18 @@ import { MessageBoxComponent } from '../../tools/message-box/message-box.compone
 })
 export class MainComponent implements OnInit {
   subscription!: Subscription;
+  openedChatId!: string;
   constructor(
     private registrationS: RegistrationService,
+    private friendReqS: FriendRequestService,
     private router: Router
-  ) {}
+  ) {
+    this.friendReqS.chatCheck$.subscribe((id) => {
+      if (id) {
+        this.openedChatId = id;
+      } else this.openedChatId = '';
+    });
+  }
 
   ngOnInit() {
     this.subscription = this.registrationS.homeAutentication().subscribe({
