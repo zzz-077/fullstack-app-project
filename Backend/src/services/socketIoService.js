@@ -5,5 +5,6 @@ function handleSocketConnection(io, socket) {
     socket.join(chatId);
     console.log(`user ${socket.id}  joined in chat: ${chatId}`);
   });
+  socket.on("disconnect", () => console.log("user disconnected:", socket.id));
 }
 export default handleSocketConnection;
