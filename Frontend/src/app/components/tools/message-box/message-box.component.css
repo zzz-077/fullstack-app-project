@@ -53,10 +53,15 @@
   gap: 0.125rem;
 }
 .chat_message_cont .message_header .left_col .friend_info_box div span {
-  background-color: var(--online-color);
   width: 13px;
   height: 13px;
   border-radius: 5rem;
+}
+.chat_message_cont .message_header .left_col .friend_info_box div span.online {
+  background-color: var(--online-color);
+}
+.chat_message_cont .message_header .left_col .friend_info_box div span.offline {
+  background-color: var(--offline-color);
 }
 .chat_message_cont .message_header .left_col .friend_info_box div p {
   font-size: 1rem;

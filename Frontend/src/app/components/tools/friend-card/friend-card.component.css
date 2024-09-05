@@ -46,7 +46,7 @@
 .frined_card_cont .friend_info .header_info span.online {
   background-color: var(--online-color);
 }
-.frined_card_cont .friend_info .header_info .ofline {
+.frined_card_cont .friend_info .header_info .offline {
   background-color: var(--offline-color);
 }
 .frined_card_cont .friend_info .message_info {

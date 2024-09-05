@@ -1,14 +1,19 @@
 <div class="chat_message_cont">
   <div class="message_header">
-    <div class="left_col">
+    <div *ngIf="friendInfo.length > 0" class="left_col">
       <div class="img_box">
-        <img src="assets/user-default-icon.png" alt="" />
+        <img [src]="friendInfo[0]?.img" alt="" />
       </div>
       <div class="friend_info_box">
-        <h2>Monesy Osipov</h2>
+        <h2>{{ friendInfo[0]?.name }}</h2>
         <div>
-          <span></span>
+          @if(friendInfo[0]?.status){
+          <span class="online"></span>
           <p>online</p>
+          }@else {
+          <span class="offline"></span>
+          <p>offline</p>
+          }
         </div>
       </div>
     </div>

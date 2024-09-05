@@ -1,23 +1,27 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FriendRequestService } from '../../../shared/services/friendRequestService/friend-request.service';
 import { AppState } from '../../../shared/store/app.state';
-import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { selectChatData } from '../../../shared/store/Chat/chat.selectors';
+import { FriendRequestService } from '../../../shared/services/friendRequestService/friend-request.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError, throwError } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-message-box',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './message-box.component.html',
   styleUrl: './message-box.component.css',
 })
 export class MessageBoxComponent implements OnInit {
-  @Input() chatId!: string;
+  @Input() OpenedChat: { chatId: string; friendId: string } | null = null;
+  user!: any;
   chatData!: any[];
+  friendInfo: { name: string; img: string; status: boolean }[] = [];
   constructor(
-    private friendreqS: FriendRequestService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private friendReqS: FriendRequestService
   ) {
     this.store.select(selectChatData).subscribe((data: any[]) => {
       if (data) {
@@ -26,5 +30,24 @@ export class MessageBoxComponent implements OnInit {
       }
     });
   }
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.OpenedChat && this.OpenedChat.friendId !== '')
+      this.friendReqS
+        .getFriendData(this.OpenedChat.friendId)
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            return throwError(() => error);
+          })
+        )
+        .subscribe(
+          (res) => {
+            if (Array.isArray(res.data)) {
+              this.friendInfo = res.data;
+            } else {
+              this.friendInfo = [];
+            }
+          },
+          (error) => console.log('Caught error:', error)
+        );
+  }
 }

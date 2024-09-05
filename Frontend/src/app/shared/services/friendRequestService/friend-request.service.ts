@@ -10,8 +10,12 @@ import { stringify } from 'node:querystring';
 })
 export class FriendRequestService {
   url: string = 'http://localhost:3000';
-  ChatBehaviorSabject = new BehaviorSubject<string>(this.checkChat());
-  chatCheck$: Observable<string> = this.ChatBehaviorSabject.asObservable();
+  ChatBehaviorSabject = new BehaviorSubject<{
+    chatId: string;
+    friendId: string;
+  }>(this.checkChat());
+  chatCheck$: Observable<{ chatId: string; friendId: string }> =
+    this.ChatBehaviorSabject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -38,11 +42,14 @@ export class FriendRequestService {
       withCredentials: true,
     });
   }
-  saveChatDataInLocalStorage(chatId: string) {
-    localStorage.setItem('openedChat', chatId);
-    this.ChatBehaviorSabject.next(chatId);
+  saveChatDataInLocalStorage(chatId: string, friendId: string) {
+    localStorage.setItem(
+      'openedChat',
+      JSON.stringify({ chatId: chatId, friendId: friendId })
+    );
+    this.ChatBehaviorSabject.next({ chatId: chatId, friendId: friendId });
   }
   checkChat() {
-    return localStorage.getItem('openedChat') as string;
+    return JSON.parse(localStorage.getItem('openedChat') || 'null');
   }
 }

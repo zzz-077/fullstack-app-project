@@ -37,8 +37,8 @@
         <app-contact-box></app-contact-box>
       </div>
       <div class="message_box">
-        @if(openedChatId!==''){
-        <app-message-box [chatId]="openedChatId"></app-message-box>
+        @if(openedChat!==null){
+        <app-message-box [OpenedChat]="openedChat"></app-message-box>
         }
       </div>
     </div>

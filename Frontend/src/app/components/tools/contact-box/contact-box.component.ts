@@ -63,7 +63,10 @@ export class ContactBoxComponent implements OnInit {
             ) {
               const modifiedData = firstItem as { _id: string };
               this.store.dispatch(chatActions.chatData({ data: res.data }));
-              this.friendreqS.saveChatDataInLocalStorage(modifiedData._id);
+              this.friendreqS.saveChatDataInLocalStorage(
+                modifiedData._id,
+                friendid
+              );
             } else {
               console.log(
                 'No _id found in the first item of the response data'

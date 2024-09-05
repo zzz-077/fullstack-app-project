@@ -6,11 +6,17 @@
   </div>
   <div class="friend_info">
     <div class="header_info">
-      <h4>{{ friendInfo[0]?.name }}</h4>
-      @if(friendInfo[0]?.status===true){
+      <h4>
+        {{
+          friendInfo[0]?.name?.length! > 10
+            ? friendInfo[0]?.name?.slice(0, 10) + "..."
+            : friendInfo[0]?.name
+        }}
+      </h4>
+      @if(friendInfo[0]?.status){
       <span class="online"></span>
       }@else{
-      <span class="ofline"></span>
+      <span class="offline"></span>
       }
     </div>
     <div class="message_info">
