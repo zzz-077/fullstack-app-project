@@ -21,7 +21,7 @@ import { FriendRequestService } from '../../../shared/services/friendRequestServ
 })
 export class MainComponent implements OnInit {
   subscription!: Subscription;
-  openedChat: { chatId: string; friendId: string } | null = null;
+  isChatOpened: boolean = false;
   constructor(
     private registrationS: RegistrationService,
     private friendReqS: FriendRequestService,
@@ -30,8 +30,8 @@ export class MainComponent implements OnInit {
     this.friendReqS.chatCheck$.subscribe(
       (data: { chatId: string; friendId: string } | null) => {
         if (data) {
-          this.openedChat = data;
-        } else this.openedChat = null;
+          this.isChatOpened = true;
+        } else this.isChatOpened = false;
       }
     );
   }

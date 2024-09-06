@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RegistrationService } from '../../../shared/services/registrationService/registration.service';
 import { Router } from '@angular/router';
-import { catchError, Subscription, throwError } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-logout',
@@ -16,6 +15,7 @@ export class LogoutComponent implements OnInit, OnDestroy {
     status: '',
     message: '',
   };
+  user!: any;
   private subscription!: Subscription;
   constructor(
     private registrationS: RegistrationService,

@@ -59,4 +59,8 @@ export class FriendRequestService {
   checkChat() {
     return JSON.parse(localStorage.getItem('openedChat') || 'null');
   }
+  //socketio-clientSide requests
+  JoinInChat(chatId: string): void {
+    this.socket.emit('joinChat', chatId);
+  }
 }
