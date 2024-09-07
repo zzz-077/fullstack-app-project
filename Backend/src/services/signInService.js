@@ -12,11 +12,7 @@ async function signIn(req, res) {
   const email = req.body.email;
   const password = req.body.password;
   try {
-    const userData = await User.findOneAndUpdate(
-      { email: email },
-      { $set: { status: true } },
-      { new: true }
-    );
+    const userData = await User.findOne({ email: email });
     const comparePass = await bcrypt.compare(password, userData.password);
     if (userData.length === 0 || !comparePass || userData.googleId)
       return res.status(404).json({

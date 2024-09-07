@@ -6,6 +6,7 @@ import { USER } from '../../../models/userModel';
 import { FRIENDADD, USERADDRESP } from '../../../models/requesModel';
 import { stringify } from 'node:querystring';
 import { io, Socket } from 'socket.io-client';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class FriendRequestService {
   chatCheck$: Observable<{ chatId: string; friendId: string }> =
     this.ChatBehaviorSabject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private cookieService: CookieService) {
     this.socket = io('http://localhost:3000', {
       withCredentials: true,
     });
@@ -43,7 +44,6 @@ export class FriendRequestService {
       withCredentials: true,
     });
   }
-
   getChatData(req: { userId: string; friendId: string }): Observable<APIRESP> {
     return this.http.post<APIRESP>(this.url + '/home/getChatData', req, {
       withCredentials: true,
