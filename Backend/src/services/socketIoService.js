@@ -1,26 +1,62 @@
 import jwt from "jsonwebtoken";
 import User from "../models/userM.js";
+import Message from "../models/messageM.js";
 function handleSocketConnection(io, socket) {
   const token = socket.handshake.headers.cookie
     ?.split(";")
     ?.find((cookie) => cookie.startsWith("AccessToken="))
     ?.split("=")[1];
   Tokenverify(token, true);
-  console.log("||||||0|||||||");
-  console.log(token);
+  // console.log("||||||0|||||||");
+  // console.log(token);
   console.log("A user connected:", socket.id);
 
   socket.on("joinChat", (chatId) => {
     socket.join(chatId);
     console.log(`user ${socket.id}  joined in chat: ${chatId}`);
   });
-
+  socket.on("sendMessage", async (chatId, senderId, message) => {
+    // sents message on status pending before fully senting message data like send time and so on
+    socket.emit("receivedMessage", {
+      chatId,
+      senderId,
+      message,
+      status: "pending",
+    });
+    try {
+      if (!chatId || !senderId || !message) {
+        socket.emit("receivedMessage", {
+          status: "fail",
+          message: "Missing required fields!",
+          error: null,
+          data: [],
+        });
+      }
+      const receivedMessage = await Message({
+        chatId,
+        senderId,
+        message,
+      }).save();
+      socket.emit("receivedMessage", {
+        ...receivedMessage?._doc,
+        status: "sent",
+      });
+      socket.brodcast.to(chatId).emit("receivedMessageInChat", receivedMessage);
+    } catch (error) {
+      socket.emit("receivedMessage", {
+        status: "fail",
+        message: "Message send failed!",
+        error: error.message,
+        data: [],
+      });
+    }
+  });
   socket.on("logout", () => {
     if (!token) {
-      console.log("No token found in cookies.");
+      console.log("No token from coockies.");
       return;
     }
-    console.log("||||||1|||||||");
+    // console.log("||||||1|||||||");
     Tokenverify(token, false);
   });
   socket.on("disconnect", () => {
@@ -28,10 +64,10 @@ function handleSocketConnection(io, socket) {
       console.log("No token found in cookies.");
       return;
     }
-    console.log("||||||2|||||||");
     setTimeout(() => {
       Tokenverify(token, false);
     }, 5000);
+    // console.log("||||||2|||||||");
     console.log("user disconnected:", socket.id);
   });
 }

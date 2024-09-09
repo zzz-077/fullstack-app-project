@@ -73,6 +73,10 @@
   gap: 1rem;
   color: var(--font-light-color);
 }
+.chat_message_cont .message_header .right_col {
+  background-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
+}
 .chat_message_cont .message_header .right_col i {
   transition: all 0.2s;
   cursor: pointer;
@@ -127,21 +131,41 @@
   gap: 0.25rem;
   color: var(--font-light-color);
 }
-.chat_message_cont .message_inputs .left_col i,
-.chat_message_cont .message_inputs .right_col i {
-  font-size: 1.125rem;
-  transition: all 0.2s;
+.chat_message_cont .message_inputs .right_col button:disabled {
+  cursor: not-allowed;
+}
+.chat_message_cont .message_inputs .left_col div button,
+.chat_message_cont .message_inputs .right_col button {
+  background-color: rgba(255, 0, 0, 0);
   cursor: pointer;
 }
-.chat_message_cont .message_inputs div i:hover {
+
+.chat_message_cont .message_inputs .left_col button i {
+  font-size: 1.125rem;
+  cursor: pointer;
+  color: #808080;
+  transition: all 0.2s;
+}
+
+.chat_message_cont .message_inputs .right_col button .fa-paper-plane {
+  font-size: 1.25rem;
+  transition: all 0.2s;
+  margin-left: 0.25rem;
   color: #808080;
 }
-.chat_message_cont .message_inputs .right_col .fa-paper-plane {
-  font-size: 1.25rem;
-  margin-left: 0.25rem;
+
+.chat_message_cont .message_inputs .left_col div button i:hover {
+  color: #b4b8b4;
 }
-.chat_message_cont .message_inputs .right_col .fa-paper-plane:hover {
+.chat_message_cont .message_inputs .right_col button .fa-paper-plane:hover {
   color: rgb(66, 127, 66);
+}
+.chat_message_cont
+  .message_inputs
+  .right_col
+  button:disabled
+  .fa-paper-plane:hover {
+  color: #808080;
 }
 
 /*========================*/
