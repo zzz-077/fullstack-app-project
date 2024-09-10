@@ -6,14 +6,13 @@ function handleSocketConnection(io, socket) {
     ?.split(";")
     ?.find((cookie) => cookie.startsWith("AccessToken="))
     ?.split("=")[1];
-  Tokenverify(token, true);
-  // console.log("||||||0|||||||");
+
   // console.log(token);
-  console.log("A user connected:", socket.id);
+  // console.log("A user connected:", socket.id);
 
   socket.on("joinChat", (chatId) => {
     socket.join(chatId);
-    console.log(`user ${socket.id}  joined in chat: ${chatId}`);
+    // console.log(`user ${socket.id}  joined in chat: ${chatId}`);
   });
   socket.on("sendMessage", async (chatId, senderId, message) => {
     // sents message on status pending before fully senting message data like send time and so on
@@ -56,7 +55,7 @@ function handleSocketConnection(io, socket) {
       console.log("No token from coockies.");
       return;
     }
-    // console.log("||||||1|||||||");
+    console.log("||||||1|||||||");
     Tokenverify(token, false);
   });
   socket.on("disconnect", () => {
@@ -64,10 +63,8 @@ function handleSocketConnection(io, socket) {
       console.log("No token found in cookies.");
       return;
     }
-    setTimeout(() => {
-      Tokenverify(token, false);
-    }, 5000);
-    // console.log("||||||2|||||||");
+    console.log("||||||2|||||||");
+    Tokenverify(token, false);
     console.log("user disconnected:", socket.id);
   });
 }
@@ -80,10 +77,10 @@ function Tokenverify(token, status) {
       const userId = decoded.userId;
       if (userId === "" || !userId)
         console.log("Don't have access on UserData!");
-      const userData = await User.findOneAndUpdate(
+      console.log("STATUS", status);
+      await User.findOneAndUpdate(
         { _id: userId },
-        { $set: { status: status } },
-        { new: true }
+        { $set: { status: status } }
       );
     }
   });

@@ -33,6 +33,7 @@ io.use(async (socket, next) => {
   } else {
     jwt.verify(AccessToken, process.env.ACCESS_TOKEN_SECRET, (err, decode) => {
       if (err) return next(new Error("Invalid Access token"));
+
       next();
     });
   }

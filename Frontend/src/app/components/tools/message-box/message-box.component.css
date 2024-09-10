@@ -182,6 +182,7 @@
   display: flex;
   flex-direction: column;
   padding: 1rem 1.5rem;
+  gap: 0.5rem;
 }
 .message_box .friend_message {
   width: 100%;
@@ -199,6 +200,7 @@
   text-align: left;
   max-width: 550px;
 }
+
 .message_box .friend_message .message h4,
 .message_box .user_message .message h4 {
   column-rule: var(--font-color);
@@ -207,18 +209,18 @@
 .message_box .user_message .message h4 {
   text-align: right;
 }
-.message_box .friend_message .message div,
-.message_box .user_message .message div {
+.message_box .friend_message .message .message_info,
+.message_box .user_message .message .message_info {
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
   max-width: fit-content;
 }
-.message_box .user_message .message div {
+.message_box .user_message .message .message_info {
   justify-content: end;
 }
-.message_box .friend_message .message div p,
-.message_box .user_message .message div p {
+.message_box .friend_message .message .message_info p,
+.message_box .user_message .message .message_info p {
   padding: 0.5rem;
   font-size: 0.75rem;
   border-radius: 1rem;
@@ -226,7 +228,7 @@
   background-color: var(--font-color);
   color: var(--font-light-color);
 }
-.message_box .user_message .message div p {
+.message_box .user_message .message .message_info p {
   padding: 0.5rem;
   font-size: 0.75rem;
   border-radius: 1rem;
@@ -234,15 +236,27 @@
   background-color: var(--box-color);
   color: var(--font-color);
 }
-.message_box .friend_message .message div strong,
-.message_box .user_message .message div strong {
+
+.message_box .friend_message .message .message_info .time_status,
+.message_box .user_message .message .message_info .time_status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.message_box .friend_message .message .message_info .time_status strong,
+.message_box .user_message .message .message_info .time_status strong {
   font-size: 0.75rem;
   font-weight: 500;
   color: #808080;
   text-align: right;
   margin-right: 0.5rem;
 }
-.message_box .user_message .message div strong {
+.message_box .user_message .message .message_info .time_status strong {
+  margin-right: 0;
+  margin-left: 0.5rem;
+  text-align: left;
+}
+.message_box .user_message .message .message_info .time_status strong {
   margin-right: 0;
   margin-left: 0.5rem;
   text-align: left;
