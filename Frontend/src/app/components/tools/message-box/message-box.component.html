@@ -23,73 +23,73 @@
     </div>
   </div>
   <div class="message_box">
-    @if (messagesArray.userMessage) {
-    <div *ngFor="let message of messagesArray.userMessage" class="user_message">
-      @if (message.status==='sent') {
-      <div class="message">
-        <h4>{{ message.name }}</h4>
-        <div class="message_info">
-          <p>
-            {{ message.message }}
-          </p>
-          <div class="time_status">
-            <strong>{{ message.time | date : "HH:mm" }}</strong>
-            <strong style="color: rgba(54, 170, 54, 0.811)">{{
-              message.status
-            }}</strong>
+    <div *ngFor="let message of messagesArray">
+      @if(message.senderId=== user?._id){
+      <div class="user_message">
+        @if (message.status==='sent') {
+        <div class="message">
+          <h4>{{ message.name }}</h4>
+          <div class="message_info">
+            <p>
+              {{ message.message }}
+            </p>
+            <div class="time_status">
+              <strong>{{ message.time | date : "HH:mm" }}</strong>
+              <strong style="color: rgba(54, 170, 54, 0.811)">{{
+                message.status
+              }}</strong>
+            </div>
           </div>
         </div>
-      </div>
-      }@else{
-      <div style="opacity: 0.7" class="pending_message message">
-        <h4>{{ message.name }}</h4>
-        <div class="message_info">
-          <p>{{ message.message }}</p>
-          <div class="time_status" style="justify-content: end">
-            <strong style="color: #962996; font-size: 0.75rem">{{
-              message.status
-            }}</strong>
+        }@else{
+        <div style="opacity: 0.7" class="pending_message message">
+          <h4>{{ message.name }}</h4>
+          <div class="message_info">
+            <p>{{ message.message }}</p>
+            <div class="time_status" style="justify-content: end">
+              <strong style="color: #962996; font-size: 0.75rem">{{
+                message.status
+              }}</strong>
+            </div>
           </div>
         </div>
+        }
       </div>
-      }
-    </div>
-    } @if (messagesArray.friendMessage) {
-    <div
-      *ngFor="let message of messagesArray.friendMessage"
-      class="friend_message"
-    >
-      @if (message.status==='sent') {
-      <div class="message">
-        <h4>{{ message.name }}</h4>
-        <div class="message_info">
-          <p>
-            {{ message.message }}
-          </p>
-          <div class="time_status">
-            <strong>{{ message.time | date : "HH:mm" }}</strong>
-            <strong style="color: rgba(54, 170, 54, 0.811)">{{
-              message.status
-            }}</strong>
-          </div>
-        </div>
-      </div>
-      }@else{
-      <div style="opacity: 0.7" class="pending_message message">
-        <h4>{{ message.name }}</h4>
-        <div class="message_info">
-          <p>{{ message.message }}</p>
 
-          <div class="time_status" style="justify-content: end">
-            <strong style="color: #962996; font-size: 0.75rem">{{
-              message.status
-            }}</strong>
+      }@else {
+      <div class="friend_message">
+        @if (message.status==='sent') {
+        <div class="message">
+          <h4>{{ message.name }}</h4>
+          <div class="message_info">
+            <p>
+              {{ message.message }}
+            </p>
+            <div class="time_status">
+              <strong>{{ message.time | date : "HH:mm" }}</strong>
+              <strong style="color: rgba(54, 170, 54, 0.811)">{{
+                message.status
+              }}</strong>
+            </div>
           </div>
         </div>
+        }@else{
+        <div style="opacity: 0.7" class="pending_message message">
+          <h4>{{ message.name }}</h4>
+          <div class="message_info">
+            <p>{{ message.message }}</p>
+
+            <div class="time_status" style="justify-content: end">
+              <strong style="color: #962996; font-size: 0.75rem">{{
+                message.status
+              }}</strong>
+            </div>
+          </div>
+        </div>
+        }
       </div>
       }
     </div>
-    }
   </div>
   <div class="message_inputs">
     <div class="left_col">

@@ -237,7 +237,12 @@
   color: var(--font-color);
 }
 
-.message_box .friend_message .message .message_info .time_status,
+.message_box .friend_message .message .message_info .time_status {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+}
 .message_box .user_message .message .message_info .time_status {
   display: flex;
   justify-content: space-between;

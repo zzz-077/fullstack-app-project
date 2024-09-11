@@ -26,6 +26,7 @@ export class LogoutComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.registrationS.userLogout().subscribe({
       next: (res) => {
+        localStorage.clear();
         if (res.status === 'success') this.router.navigateByUrl('/signin');
       },
       error: (err) => {

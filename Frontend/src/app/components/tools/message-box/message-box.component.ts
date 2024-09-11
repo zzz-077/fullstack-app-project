@@ -24,24 +24,19 @@ export class MessageBoxComponent implements OnInit {
   chatData!: any;
   messageText: string = '';
   messagesArray: {
-    userMessage: {
-      name: string;
-      message: string;
-      time: string;
-      status: string;
-    }[];
-    friendMessage: {
-      name: string;
-      message: string;
-      time: string;
-      status: string;
-    }[];
-  } = { userMessage: [], friendMessage: [] };
+    name: string;
+    message: string;
+    time: string;
+    status: string;
+    senderId: string;
+  }[] = [];
+
   friendInfo: { name: string; img: string; status: boolean }[] = [];
   constructor(
     private store: Store<AppState>,
     private friendReqS: FriendRequestService
   ) {}
+
   ngOnInit() {
     this.store.select(selectUserData).subscribe((res) => {
       if (res.data && !Array.isArray(res.data)) {
@@ -69,7 +64,9 @@ export class MessageBoxComponent implements OnInit {
             .subscribe(
               (res) => {
                 if (Array.isArray(res.data)) {
+                  this.messagesArray = [];
                   this.friendInfo = res.data;
+                  this.chatMessageFunction();
                 } else {
                   this.friendInfo = [];
                 }
@@ -79,6 +76,36 @@ export class MessageBoxComponent implements OnInit {
         } else this.OpenedChat = null;
       }
     );
+
+    this.chatMessageFunction();
+    this.friendReqS.receivedMessage().subscribe((messagedata) => {
+      if (messagedata && this.user?._id === messagedata?.senderId) {
+        if (Array.isArray(this.messagesArray)) {
+          if (messagedata.status === 'sent') {
+            this.messagesArray.pop();
+          }
+          this.messagesArray.push({
+            name: this.user?.name,
+            message: messagedata.message,
+            time: messagedata.createdAt,
+            status: messagedata.status,
+            senderId: messagedata.senderId,
+          });
+        }
+        console.log(this.messagesArray);
+      } else console.log(messagedata);
+    });
+  }
+  sendMessageClick(input: string) {
+    if (this.OpenedChat?.chatId)
+      this.friendReqS.sendMessage(
+        this.OpenedChat?.chatId,
+        this.user?._id,
+        input
+      );
+  }
+
+  chatMessageFunction(): void {
     this.friendReqS
       .getChatmessages(this.OpenedChat?.chatId as string)
       .pipe(
@@ -93,18 +120,20 @@ export class MessageBoxComponent implements OnInit {
             if (Array.isArray(Data)) {
               Data.filter((msg) => {
                 if (msg?.senderId === this.user?._id) {
-                  this.messagesArray.userMessage.push({
+                  this.messagesArray.push({
                     name: this.user?.name,
                     message: msg.message,
                     time: msg.createdAt as string,
                     status: 'sent',
+                    senderId: msg.senderId,
                   });
                 } else {
-                  this.messagesArray.friendMessage.push({
+                  this.messagesArray.push({
                     name: this.friendInfo[0]?.name,
                     message: msg.message,
                     time: msg.createdAt as string,
                     status: 'sent',
+                    senderId: msg.senderId,
                   });
                 }
               });
@@ -117,30 +146,6 @@ export class MessageBoxComponent implements OnInit {
         (error) => {
           console.log(error);
         }
-      );
-    this.friendReqS.receivedMessage().subscribe((messagedata) => {
-      if (messagedata && this.user?._id === messagedata?.senderId) {
-        if (Array.isArray(this.messagesArray.userMessage)) {
-          if (messagedata.status === 'sent') {
-            this.messagesArray.userMessage.pop();
-          }
-          this.messagesArray.userMessage.push({
-            name: this.user?.name,
-            message: messagedata.message,
-            time: messagedata.createdAt,
-            status: messagedata.status,
-          });
-        }
-        console.log(this.messagesArray.userMessage);
-      } else console.log(messagedata);
-    });
-  }
-  sendMessageClick(input: string) {
-    if (this.OpenedChat?.chatId)
-      this.friendReqS.sendMessage(
-        this.OpenedChat?.chatId,
-        this.user?._id,
-        input
       );
   }
 }

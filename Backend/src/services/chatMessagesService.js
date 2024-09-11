@@ -1,9 +1,12 @@
 import Message from "../models/messageM.js";
 async function getChatMessages(req, res) {
-  const chatId = req.body;
-
+  const { chatId } = req.body;
   try {
-    const chatData = await Message.find({ chatId: chatId });
+    const chatData = await Message.aggregate([
+      { $match: { chatId: chatId } },
+      { $sort: { createdAt: 1 } },
+    ]);
+    console.log(chatData);
     if (!chatData || chatData.length === 0)
       return res.status(404).json({
         status: "fail",

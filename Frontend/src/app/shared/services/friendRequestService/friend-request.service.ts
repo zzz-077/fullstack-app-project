@@ -60,9 +60,13 @@ export class FriendRequestService {
     return JSON.parse(localStorage.getItem('openedChat') || 'null');
   }
   getChatmessages(chatId: string): Observable<APIRESP> {
-    return this.http.post<APIRESP>(this.url + '/home/getChatmessages', chatId, {
-      withCredentials: true,
-    });
+    return this.http.post<APIRESP>(
+      this.url + '/home/getChatmessages',
+      { chatId: chatId },
+      {
+        withCredentials: true,
+      }
+    );
   }
   //socketio-clientSide requests
   JoinInChat(chatId: string): void {
