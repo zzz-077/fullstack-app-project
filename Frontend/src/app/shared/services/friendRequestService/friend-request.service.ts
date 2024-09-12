@@ -17,8 +17,8 @@ export class FriendRequestService {
   ChatBehaviorSabject = new BehaviorSubject<{
     chatId: string;
     friendId: string;
-  }>(this.checkChat());
-  chatCheck$: Observable<{ chatId: string; friendId: string }> =
+  } | null>(this.checkChat());
+  chatCheck$: Observable<{ chatId: string; friendId: string } | null> =
     this.ChatBehaviorSabject.asObservable();
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
@@ -50,11 +50,16 @@ export class FriendRequestService {
     });
   }
   saveChatDataInLocalStorage(chatId: string, friendId: string) {
-    localStorage.setItem(
-      'openedChat',
-      JSON.stringify({ chatId: chatId, friendId: friendId })
-    );
-    this.ChatBehaviorSabject.next({ chatId: chatId, friendId: friendId });
+    if (chatId === '' && friendId === '') {
+      localStorage.clear();
+      this.ChatBehaviorSabject.next(null);
+    } else {
+      localStorage.setItem(
+        'openedChat',
+        JSON.stringify({ chatId: chatId, friendId: friendId })
+      );
+      this.ChatBehaviorSabject.next({ chatId: chatId, friendId: friendId });
+    }
   }
   checkChat() {
     return JSON.parse(localStorage.getItem('openedChat') || 'null');
@@ -78,6 +83,15 @@ export class FriendRequestService {
   receivedMessage(): Observable<any> {
     return new Observable((observer) => {
       this.socket.on('receivedMessage', (data) => {
+        observer.next(data);
+      });
+    });
+  }
+  listenForMessagesInChat(): Observable<any> {
+    return new Observable((observer) => {
+      this.socket.on('receivedMessageInChat', (data) => {
+        console.log(data);
+
         observer.next(data);
       });
     });

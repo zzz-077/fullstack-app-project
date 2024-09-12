@@ -1,4 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  AfterViewChecked,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { AppState } from '../../../shared/store/app.state';
 import { Store } from '@ngrx/store';
 import { selectChatData } from '../../../shared/store/Chat/chat.selectors';
@@ -8,9 +15,8 @@ import { catchError, throwError } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { selectUserData } from '../../../shared/store/userData/userData.selectors';
-import { error } from 'node:console';
+import { error, log } from 'node:console';
 import { APIRESP } from '../../../models/statusModel';
-
 @Component({
   selector: 'app-message-box',
   standalone: true,
@@ -18,7 +24,7 @@ import { APIRESP } from '../../../models/statusModel';
   templateUrl: './message-box.component.html',
   styleUrl: './message-box.component.css',
 })
-export class MessageBoxComponent implements OnInit {
+export class MessageBoxComponent implements OnInit, AfterViewChecked {
   OpenedChat: { chatId: string; friendId: string } | null = null;
   user!: any;
   chatData!: any;
@@ -30,6 +36,7 @@ export class MessageBoxComponent implements OnInit {
     status: string;
     senderId: string;
   }[] = [];
+  @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
   friendInfo: { name: string; img: string; status: boolean }[] = [];
   constructor(
@@ -65,6 +72,7 @@ export class MessageBoxComponent implements OnInit {
               (res) => {
                 if (Array.isArray(res.data)) {
                   this.messagesArray = [];
+                  // console.log(res);
                   this.friendInfo = res.data;
                   this.chatMessageFunction();
                 } else {
@@ -92,8 +100,20 @@ export class MessageBoxComponent implements OnInit {
             senderId: messagedata.senderId,
           });
         }
-        console.log(this.messagesArray);
+        // console.log(this.messagesArray);
       } else console.log(messagedata);
+    });
+    this.friendReqS.listenForMessagesInChat().subscribe((data: any) => {
+      console.log(data);
+      if (data) {
+        this.messagesArray.push({
+          name: this.friendInfo[0]?.name,
+          message: data.message,
+          time: data.createdAt as string,
+          status: 'sent',
+          senderId: data.senderId,
+        });
+      }
     });
   }
   sendMessageClick(input: string) {
@@ -117,6 +137,8 @@ export class MessageBoxComponent implements OnInit {
         (res) => {
           if (res && res.data) {
             let Data = res.data;
+            // console.log(Data);
+
             if (Array.isArray(Data)) {
               Data.filter((msg) => {
                 if (msg?.senderId === this.user?._id) {
@@ -137,7 +159,7 @@ export class MessageBoxComponent implements OnInit {
                   });
                 }
               });
-              console.log(this.messagesArray);
+              // console.log(this.messagesArray);
             }
 
             this.messagesArray;
@@ -147,5 +169,12 @@ export class MessageBoxComponent implements OnInit {
           console.log(error);
         }
       );
+  }
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+  private scrollToBottom(): void {
+    const container = this.messageContainer.nativeElement;
+    container.scrollTop = container.scrollHeight;
   }
 }

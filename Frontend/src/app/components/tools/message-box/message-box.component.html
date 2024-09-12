@@ -22,7 +22,7 @@
       <i class="fa-solid fa-gears"></i>
     </div>
   </div>
-  <div class="message_box">
+  <div class="message_box" #messageContainer>
     <div *ngFor="let message of messagesArray">
       @if(message.senderId=== user?._id){
       <div class="user_message">
