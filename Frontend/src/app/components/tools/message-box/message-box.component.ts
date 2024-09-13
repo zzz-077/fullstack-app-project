@@ -8,15 +8,13 @@ import {
 } from '@angular/core';
 import { AppState } from '../../../shared/store/app.state';
 import { Store } from '@ngrx/store';
-import { selectChatData } from '../../../shared/store/Chat/chat.selectors';
 import { FriendRequestService } from '../../../shared/services/friendRequestService/friend-request.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { selectUserData } from '../../../shared/store/userData/userData.selectors';
-import { error, log } from 'node:console';
-import { APIRESP } from '../../../models/statusModel';
+import { selectChatData } from '../../../shared/store/Chat/chat.selectors';
 @Component({
   selector: 'app-message-box',
   standalone: true,
@@ -104,7 +102,6 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
       } else console.log(messagedata);
     });
     this.friendReqS.listenForMessagesInChat().subscribe((data: any) => {
-      console.log(data);
       if (data) {
         this.messagesArray.push({
           name: this.friendInfo[0]?.name,
@@ -137,8 +134,6 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
         (res) => {
           if (res && res.data) {
             let Data = res.data;
-            // console.log(Data);
-
             if (Array.isArray(Data)) {
               Data.filter((msg) => {
                 if (msg?.senderId === this.user?._id) {

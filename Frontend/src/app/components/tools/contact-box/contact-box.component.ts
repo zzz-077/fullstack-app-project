@@ -24,7 +24,6 @@ export class ContactBoxComponent implements OnInit {
   userResp$: Observable<APIRESP>;
   userFriends: any;
   user!: any;
-
   constructor(
     private store: Store<AppState>,
     private friendreqS: FriendRequestService

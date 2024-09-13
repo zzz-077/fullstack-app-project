@@ -2,11 +2,18 @@ import jwt from "jsonwebtoken";
 import User from "../models/userM.js";
 import Message from "../models/messageM.js";
 function handleSocketConnection(io, socket) {
+  console.log(
+    "===================================================================="
+  );
   const token = socket.handshake.headers.cookie
     ?.split(";")
-    ?.find((cookie) => cookie.startsWith("AccessToken="))
+    .find((cookie) => {
+      if (cookie.slice(0, 7) === " Access" || cookie.slice(0, 6) === "Access") {
+        return cookie;
+      }
+    })
     ?.split("=")[1];
-
+  console.log(token);
   // console.log(token);
   // console.log("A user connected:", socket.id);
 

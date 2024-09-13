@@ -1,5 +1,4 @@
 @if(friendInfo&& friendInfo.length>0 ){
-
 <div class="frined_card_cont">
   <div class="friend_img">
     <img [src]="friendInfo[0]?.img" alt="" />
@@ -20,8 +19,14 @@
       }
     </div>
     <div class="message_info">
-      <p>hey, wanna play cs? ...</p>
-      <strong>14:44</strong>
+      <p>
+        {{
+          lastMessage.message.length > 25
+            ? lastMessage.message.slice(0, 25) + "..."
+            : lastMessage.message
+        }}
+      </p>
+      <strong>{{ lastMessage.time | date : "HH:mm" }}</strong>
     </div>
   </div>
 </div>
