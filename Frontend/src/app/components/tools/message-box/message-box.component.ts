@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { selectUserData } from '../../../shared/store/userData/userData.selectors';
 import { selectChatData } from '../../../shared/store/Chat/chat.selectors';
+import { log } from 'node:console';
 @Component({
   selector: 'app-message-box',
   standalone: true,
@@ -34,6 +35,8 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
     status: string;
     senderId: string;
   }[] = [];
+  emojiArr: { htmlCodes: string[]; unicode: string[] }[] = [];
+  isEmojiClickOpened: boolean = false;
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
   friendInfo: { name: string; img: string; status: boolean }[] = [];
@@ -82,7 +85,6 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
         } else this.OpenedChat = null;
       }
     );
-
     this.chatMessageFunction();
     this.friendReqS.receivedMessage().subscribe((messagedata) => {
       if (messagedata && this.user?._id === messagedata?.senderId) {
@@ -112,14 +114,25 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
         });
       }
     });
+    this.friendReqS.getAllEmoji().subscribe((data) => {
+      if (Array.isArray(data)) {
+        data.filter((emoji) => {
+          this.emojiArr.push({
+            htmlCodes: emoji.htmlCode,
+            unicode: emoji.unicode,
+          });
+        });
+      }
+    });
   }
   sendMessageClick(input: string) {
-    if (this.OpenedChat?.chatId)
+    if (this.OpenedChat?.chatId && input.trim() !== '')
       this.friendReqS.sendMessage(
         this.OpenedChat?.chatId,
         this.user?._id,
         input
       );
+    this.messageText = '';
   }
 
   chatMessageFunction(): void {
@@ -161,7 +174,7 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
           }
         },
         (error) => {
-          console.log(error);
+          // console.log(error);
         }
       );
   }
@@ -171,5 +184,23 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
   private scrollToBottom(): void {
     const container = this.messageContainer.nativeElement;
     container.scrollTop = container.scrollHeight;
+  }
+  emojiOpenClick() {
+    this.isEmojiClickOpened = !this.isEmojiClickOpened;
+  }
+  emojiClick(emoji: { htmlCodes: string[]; unicode: string[] }) {
+    // Combine all HTML codes for the emoji
+    const combinedEmoji = emoji.htmlCodes
+      .map((code) => {
+        const decimalCode = parseInt(
+          code.replace('&#', '').replace(';', ''),
+          10
+        );
+        console.log(decimalCode);
+        return String.fromCodePoint(decimalCode);
+      })
+      .join('');
+
+    this.messageText += combinedEmoji;
   }
 }

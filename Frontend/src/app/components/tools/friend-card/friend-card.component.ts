@@ -99,18 +99,18 @@ export class FriendCardComponent implements OnInit {
                           };
                         }
                       });
-                      console.log(this.lastMessage);
+                      // console.log(this.lastMessage);
                     }
                   }
                 },
                 (error) => {
-                  console.log(error);
+                  // console.log(error);
                 }
               );
           }
         },
         (error: APIRESP) => {
-          console.log(error);
+          // console.log(error);
         }
       );
   }

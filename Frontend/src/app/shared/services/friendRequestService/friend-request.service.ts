@@ -13,6 +13,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class FriendRequestService {
   url: string = 'http://localhost:3000';
+  emojiAPi: string = 'https://emojihub.yurace.pro/api/all';
   private socket: Socket;
   ChatBehaviorSabject = new BehaviorSubject<{
     chatId: string;
@@ -20,7 +21,6 @@ export class FriendRequestService {
   } | null>(this.checkChat());
   chatCheck$: Observable<{ chatId: string; friendId: string } | null> =
     this.ChatBehaviorSabject.asObservable();
-
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.socket = io('http://localhost:3000', {
       withCredentials: true,
@@ -93,5 +93,8 @@ export class FriendRequestService {
         observer.next(data);
       });
     });
+  }
+  getAllEmoji() {
+    return this.http.get(this.emojiAPi);
   }
 }

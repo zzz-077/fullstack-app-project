@@ -97,13 +97,26 @@
         [(ngModel)]="messageText"
         type="text"
         placeholder="type something"
+        (keydown.enter)="sendMessageClick(messageText)"
       />
       <div>
         <button>
           <i class="fa-solid fa-paperclip"></i>
         </button>
-        <button>
-          <i class="fa-regular fa-face-smile-beam"></i>
+        <button class="amoji_btn">
+          <i
+            (click)="emojiOpenClick()"
+            class="fa-regular fa-face-smile-beam"
+          ></i>
+          @if(isEmojiClickOpened){
+          <div class="EmojiBox">
+            <p
+              (click)="emojiClick(emoji)"
+              *ngFor="let emoji of emojiArr"
+              [innerHTML]="emoji.htmlCodes[0]"
+            ></p>
+          </div>
+          }
         </button>
       </div>
     </div>

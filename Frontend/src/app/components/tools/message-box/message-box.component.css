@@ -266,3 +266,25 @@
   margin-left: 0.5rem;
   text-align: left;
 }
+.amoji_btn {
+  position: relative;
+}
+.amoji_btn .EmojiBox {
+  position: absolute;
+  background-color: var(--box-color);
+  padding: 0.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  top: -130px;
+  left: -235px;
+  width: 240px;
+  height: 120px;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.amoji_btn .EmojiBox p {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
