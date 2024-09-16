@@ -101,7 +101,41 @@
       />
       <div>
         <button>
-          <i class="fa-solid fa-paperclip"></i>
+          <!-- <input
+            style="display: none"
+            type="file"
+            accept="image/png, image/gif, image/jpeg,  image/jpg, image/webp"
+            (change)="openFilesClick($event)"
+            id="ImageAdd"
+          /> 
+           <label for="ImageAdd">
+            <i class="fa-solid fa-paperclip"></i>
+          </label> -->
+          <uc-config
+            ctx-name="my-uploader"
+            source-list="local, url, camera, dropbox"
+            pubkey="84fcad5ca1a7445d58ed"
+            use-cloud-image-editor="true"
+          ></uc-config>
+
+          <uc-file-uploader-regular
+            style="
+              position: absolute;
+              opacity: 0;
+              transform: rotateZ(90deg);
+              right: 150px;
+              bottom: -20px;
+            "
+            ctx-name="my-uploader"
+            class="uc-light"
+          ></uc-file-uploader-regular>
+
+          <uc-upload-ctx-provider #ctxProvider ctx-name="my-uploader">
+          </uc-upload-ctx-provider>
+
+          <label>
+            <i class="fa-solid fa-paperclip"></i>
+          </label>
         </button>
         <button class="amoji_btn">
           <i
@@ -130,3 +164,6 @@
     </div>
   </div>
 </div>
+<!-- <div *ngIf="uploadedImageUrl">
+  <img [src]="uploadedImageUrl" alt="Uploaded Image" style="max-width: 100%" />
+</div> -->

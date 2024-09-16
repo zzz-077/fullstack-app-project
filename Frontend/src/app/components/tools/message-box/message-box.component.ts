@@ -5,6 +5,7 @@ import {
   AfterViewChecked,
   ViewChild,
   ElementRef,
+  CUSTOM_ELEMENTS_SCHEMA,
 } from '@angular/core';
 import { AppState } from '../../../shared/store/app.state';
 import { Store } from '@ngrx/store';
@@ -14,14 +15,18 @@ import { catchError, throwError } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { selectUserData } from '../../../shared/store/userData/userData.selectors';
-import { selectChatData } from '../../../shared/store/Chat/chat.selectors';
-import { log } from 'node:console';
+import * as UC from '@uploadcare/file-uploader';
+import '@uploadcare/file-uploader/web/uc-file-uploader-regular.min.css';
+import * as LR from '@uploadcare/blocks';
+import { OutputFileEntry } from '@uploadcare/file-uploader';
+UC.defineComponents(UC);
 @Component({
   selector: 'app-message-box',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './message-box.component.html',
   styleUrl: './message-box.component.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MessageBoxComponent implements OnInit, AfterViewChecked {
   OpenedChat: { chatId: string; friendId: string } | null = null;
@@ -38,14 +43,24 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
   emojiArr: { htmlCodes: string[]; unicode: string[] }[] = [];
   isEmojiClickOpened: boolean = false;
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
-
+  // @ViewChild('ctxProvider', { static: true }) ctxProvider!: ElementRef<
+  //   typeof LR.UploadCtxProvider.prototype
+  // >;
+  @ViewChild('ctxProvider', { static: true }) ctxProviderRef!: ElementRef<
+    InstanceType<UC.UploadCtxProvider>
+  >;
   friendInfo: { name: string; img: string; status: boolean }[] = [];
+  files: any[] = [];
   constructor(
     private store: Store<AppState>,
     private friendReqS: FriendRequestService
   ) {}
 
   ngOnInit() {
+    this.ctxProviderRef.nativeElement.addEventListener(
+      'change',
+      this.handleUploadEvent
+    );
     this.store.select(selectUserData).subscribe((res) => {
       if (res.data && !Array.isArray(res.data)) {
         this.user = res.data;
@@ -203,4 +218,9 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
 
     this.messageText += combinedEmoji;
   }
+  handleUploadEvent = (e: UC.EventMap['change']) => {
+    this.files = e.detail.allEntries.filter(
+      (f) => f.status === 'success'
+    ) as OutputFileEntry<'success'>[];
+  };
 }

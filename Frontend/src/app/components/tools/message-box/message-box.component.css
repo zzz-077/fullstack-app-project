@@ -98,7 +98,6 @@
   align-items: center;
   background-color: var(--font-color);
   box-shadow: 0 -3px 10px 1px var(--font-color);
-  z-index: 1;
 }
 .chat_message_cont .message_inputs .left_col {
   width: 85%;
@@ -166,6 +165,28 @@
   button:disabled
   .fa-paper-plane:hover {
   color: #808080;
+}
+.amoji_btn {
+  position: relative;
+}
+.amoji_btn .EmojiBox {
+  position: absolute;
+  background-color: var(--box-color);
+  padding: 0.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  top: -130px;
+  left: -235px;
+  width: 240px;
+  height: 120px;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.amoji_btn .EmojiBox p {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
 
 /*========================*/
@@ -265,26 +286,4 @@
   margin-right: 0;
   margin-left: 0.5rem;
   text-align: left;
-}
-.amoji_btn {
-  position: relative;
-}
-.amoji_btn .EmojiBox {
-  position: absolute;
-  background-color: var(--box-color);
-  padding: 0.25rem;
-  display: flex;
-  flex-wrap: wrap;
-  top: -130px;
-  left: -235px;
-  width: 240px;
-  height: 120px;
-  border-radius: 0.25rem;
-  overflow: hidden;
-  overflow-y: auto;
-}
-.amoji_btn .EmojiBox p {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
 }
