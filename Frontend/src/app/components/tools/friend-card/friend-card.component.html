@@ -19,6 +19,9 @@
       }
     </div>
     <div class="message_info">
+      @if (lastMessage.message.slice(0,8)==='https://') {
+      <p>photo sent</p>
+      }@else {
       <p>
         {{
           lastMessage.message.length > 25
@@ -26,6 +29,8 @@
             : lastMessage.message
         }}
       </p>
+      }
+
       <strong>{{ lastMessage.time | date : "HH:mm" }}</strong>
     </div>
   </div>

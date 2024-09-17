@@ -30,9 +30,18 @@
         <div class="message">
           <h4>{{ message.name }}</h4>
           <div class="message_info">
+            @if (message.message.slice(0,8)==='https://') {
+            <img
+              (click)="chatImgClick(message.message, true)"
+              [src]="message.message"
+              alt=""
+            />
+
+            }@else {
             <p>
               {{ message.message }}
             </p>
+            }
             <div class="time_status">
               <strong>{{ message.time | date : "HH:mm" }}</strong>
               <strong style="color: rgba(54, 170, 54, 0.811)">{{
@@ -45,7 +54,18 @@
         <div style="opacity: 0.7" class="pending_message message">
           <h4>{{ message.name }}</h4>
           <div class="message_info">
-            <p>{{ message.message }}</p>
+            @if (message.message.slice(0,8)==='https://') {
+            <img
+              (click)="chatImgClick(message.message, true)"
+              [src]="message.message"
+              alt=""
+            />
+
+            }@else {
+            <p>
+              {{ message.message }}
+            </p>
+            }
             <div class="time_status" style="justify-content: end">
               <strong style="color: #962996; font-size: 0.75rem">{{
                 message.status
@@ -55,16 +75,24 @@
         </div>
         }
       </div>
-
       }@else {
       <div class="friend_message">
         @if (message.status==='sent') {
         <div class="message">
           <h4>{{ message.name }}</h4>
           <div class="message_info">
+            @if (message.message.slice(0,8)==='https://') {
+            <img
+              (click)="chatImgClick(message.message, true)"
+              [src]="message.message"
+              alt=""
+            />
+
+            }@else {
             <p>
               {{ message.message }}
             </p>
+            }
             <div class="time_status">
               <strong>{{ message.time | date : "HH:mm" }}</strong>
               <strong style="color: rgba(54, 170, 54, 0.811)">{{
@@ -77,8 +105,18 @@
         <div style="opacity: 0.7" class="pending_message message">
           <h4>{{ message.name }}</h4>
           <div class="message_info">
-            <p>{{ message.message }}</p>
+            @if (message.message.slice(0,8)==='https://') {
+            <img
+              (click)="chatImgClick(message.message, true)"
+              [src]="message.message"
+              alt=""
+            />
 
+            }@else {
+            <p>
+              {{ message.message }}
+            </p>
+            }
             <div class="time_status" style="justify-content: end">
               <strong style="color: #962996; font-size: 0.75rem">{{
                 message.status
@@ -101,21 +139,12 @@
       />
       <div>
         <button>
-          <!-- <input
-            style="display: none"
-            type="file"
-            accept="image/png, image/gif, image/jpeg,  image/jpg, image/webp"
-            (change)="openFilesClick($event)"
-            id="ImageAdd"
-          /> 
-           <label for="ImageAdd">
-            <i class="fa-solid fa-paperclip"></i>
-          </label> -->
           <uc-config
             ctx-name="my-uploader"
             source-list="local, url, camera, dropbox"
             pubkey="84fcad5ca1a7445d58ed"
             use-cloud-image-editor="true"
+            multiple-max="1"
           ></uc-config>
 
           <uc-file-uploader-regular
@@ -123,7 +152,7 @@
               position: absolute;
               opacity: 0;
               transform: rotateZ(90deg);
-              right: 150px;
+              right: 12.5%;
               bottom: -20px;
             "
             ctx-name="my-uploader"
@@ -163,7 +192,10 @@
       </button>
     </div>
   </div>
+  <div *ngIf="isChatImgClicked" class="ZoomedChatImg">
+    <div>
+      <img [src]="cklickedChatImg" alt="" />
+    </div>
+    <p (click)="chatImgClick('', false)">zoom out image</p>
+  </div>
 </div>
-<!-- <div *ngIf="uploadedImageUrl">
-  <img [src]="uploadedImageUrl" alt="Uploaded Image" style="max-width: 100%" />
-</div> -->

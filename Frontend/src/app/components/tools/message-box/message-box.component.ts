@@ -40,12 +40,11 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
     status: string;
     senderId: string;
   }[] = [];
+  isChatImgClicked: boolean = false;
+  cklickedChatImg!: string;
   emojiArr: { htmlCodes: string[]; unicode: string[] }[] = [];
   isEmojiClickOpened: boolean = false;
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
-  // @ViewChild('ctxProvider', { static: true }) ctxProvider!: ElementRef<
-  //   typeof LR.UploadCtxProvider.prototype
-  // >;
   @ViewChild('ctxProvider', { static: true }) ctxProviderRef!: ElementRef<
     InstanceType<UC.UploadCtxProvider>
   >;
@@ -140,6 +139,7 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
       }
     });
   }
+
   sendMessageClick(input: string) {
     if (this.OpenedChat?.chatId && input.trim() !== '')
       this.friendReqS.sendMessage(
@@ -149,7 +149,6 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
       );
     this.messageText = '';
   }
-
   chatMessageFunction(): void {
     this.friendReqS
       .getChatmessages(this.OpenedChat?.chatId as string)
@@ -222,5 +221,12 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
     this.files = e.detail.allEntries.filter(
       (f) => f.status === 'success'
     ) as OutputFileEntry<'success'>[];
+    if (this.files.length > 0) {
+      this.sendMessageClick(this.files[0].cdnUrl);
+    }
   };
+  chatImgClick(imgUrl: string, bool: boolean) {
+    this.isChatImgClicked = bool;
+    if (imgUrl.trim() !== '') this.cklickedChatImg = imgUrl;
+  }
 }
