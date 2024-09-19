@@ -79,7 +79,7 @@
 }
 .left_col .inputs .google-box span {
   position: relative;
-  color: #bbb8b8;
+  color: var(--decoration-color);
 }
 .left_col .inputs .google-box span::before,
 .left_col .inputs .google-box span::after {
@@ -87,7 +87,7 @@
   position: absolute;
   height: 1.25px;
   width: 47%;
-  background-color: #bbb8b8a7;
+  background-color: var(--decoration-color);
   top: 50%;
 }
 .left_col .inputs .google-box span::before {
@@ -144,7 +144,7 @@
   transition: all 0.2s;
 }
 .left_col .inputs form .field .field_input .password_icons i:hover {
-  color: var(--font-color);
+  color: var(--decoration-color);
 }
 .left_col .inputs form .button_box {
   display: flex;
@@ -160,6 +160,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s;
+}
+.left_col .inputs form .button_box button:hover {
+  background-color: var(--decoration-color);
 }
 .left_col .inputs form .button_box p {
   color: #bbb8b8;

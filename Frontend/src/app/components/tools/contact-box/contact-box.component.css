@@ -73,8 +73,7 @@
   transition: all 0.2s;
 }
 .contact_createChat_btn:hover {
-  --hovered-color: #323434;
-  background-color: var(--hovered-color);
+  background-color: var(--decoration-color);
 }
 .contact_createChat_btn p {
   color: var(--font-light-color);

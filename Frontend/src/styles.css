@@ -3,6 +3,7 @@
   --bg-color: #e1e2e6;
   --box-color: #ffffff;
   --box-dark-color: #1b1c1e;
+  --decoration-color: #5549ade7;
   /*=========================*/
   --font-color: #222325;
   --font-light-color: #e1e2e6;
@@ -33,7 +34,7 @@ body {
     background-color: var(--font-color);
   }
   ::-webkit-scrollbar-thumb {
-    background-color: #808080;
+    background-color: var(--decoration-color);
     border-radius: 1rem;
   }
 }

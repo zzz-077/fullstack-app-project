@@ -12,11 +12,12 @@ import { FriendRequestService } from '../../../shared/services/friendRequestServ
 import { HttpErrorResponse } from '@angular/common/http';
 import * as chatActions from '../../../shared/store/Chat/chat.actions';
 import { selectChatData } from '../../../shared/store/Chat/chat.selectors';
+import { CreateChatBarComponent } from '../create-chat-bar/create-chat-bar.component';
 
 @Component({
   selector: 'app-contact-box',
   standalone: true,
-  imports: [FriendCardComponent, CommonModule],
+  imports: [FriendCardComponent, CommonModule, CreateChatBarComponent],
   templateUrl: './contact-box.component.html',
   styleUrl: './contact-box.component.css',
 })
@@ -24,6 +25,7 @@ export class ContactBoxComponent implements OnInit {
   userResp$: Observable<APIRESP>;
   userFriends: any;
   user!: any;
+  iscreateChatOpened: boolean = false;
   constructor(
     private store: Store<AppState>,
     private friendreqS: FriendRequestService
@@ -77,5 +79,9 @@ export class ContactBoxComponent implements OnInit {
           console.log('error catched while getting chatData', error);
         }
       );
+  }
+  createChatClick(string: string) {
+    if (string === 'closed') this.iscreateChatOpened = false;
+    else this.iscreateChatOpened = true;
   }
 }

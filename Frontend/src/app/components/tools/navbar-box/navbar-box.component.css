@@ -15,7 +15,7 @@
 }
 .chat_navbar_cont h1 span {
   font-size: 1.55rem;
-  background-color: var(--font-color);
+  background-color: var(--decoration-color);
   width: 28px;
   height: 28px;
   color: var(--font-light-color);
@@ -39,10 +39,13 @@
   justify-content: center;
   align-items: center;
   border-radius: 5rem;
-  /* border: 1px solid var(--font-color); */
   color: var(--font-light-color);
   background-color: var(--font-color);
   position: relative;
+  transition: all 0.2s;
+}
+.chat_navbar_cont .chat_navbar_right_box button:hover {
+  background-color: var(--decoration-color);
 }
 .chat_navbar_cont .chat_navbar_right_box button .user_request_span {
   position: absolute;

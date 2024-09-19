@@ -6,8 +6,13 @@
       [friendID]="friendid"
     ></app-friend-card>
   </div>
-  <button class="contact_createChat_btn">
+  <button (click)="createChatClick('opened')" class="contact_createChat_btn">
     <i class="fa-solid fa-circle-plus"></i>
     <p>create chat</p>
   </button>
 </div>
+<app-create-chat-bar
+  *ngIf="iscreateChatOpened"
+  (isClosedComponent)="createChatClick('closed')"
+  [isOpenedComponent]="iscreateChatOpened"
+></app-create-chat-bar>
