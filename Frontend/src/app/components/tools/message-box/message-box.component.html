@@ -138,7 +138,7 @@
         (keydown.enter)="sendMessageClick(messageText)"
       />
       <div>
-        <button>
+        <button style="position: relative">
           <uc-config
             ctx-name="my-uploader"
             source-list="local, url, camera, dropbox"
@@ -152,8 +152,8 @@
               position: absolute;
               opacity: 0;
               transform: rotateZ(90deg);
-              right: 12.5%;
-              bottom: -20px;
+              left: -350%;
+              bottom: -55px;
             "
             ctx-name="my-uploader"
             class="uc-light"

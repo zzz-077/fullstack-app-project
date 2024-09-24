@@ -9,7 +9,6 @@ import { AppState } from '../../../shared/store/app.state';
 import { Store } from '@ngrx/store';
 import { APIRESP } from '../../../models/statusModel';
 import { selectUserData } from '../../../shared/store/userData/userData.selectors';
-
 @Component({
   selector: 'app-friend-card',
   standalone: true,
@@ -19,6 +18,7 @@ import { selectUserData } from '../../../shared/store/userData/userData.selector
 })
 export class FriendCardComponent implements OnInit {
   @Input() friendID: string = '';
+  @Input() fromWhereIscalled!: string;
   OpenedChat: { chatId: string; friendId: string } | null = null;
   lastMessage: {
     message: string;
@@ -50,7 +50,6 @@ export class FriendCardComponent implements OnInit {
         }
       }
     );
-
     this.friendreqS
       .getFriendData(this.friendID)
       .pipe(
@@ -68,50 +67,52 @@ export class FriendCardComponent implements OnInit {
         },
         (error) => console.log('Caught error:', error)
       );
-    this.friendreqS
-      .getChatData({ userId: this.user?._id, friendId: this.friendID })
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          return throwError(() => error);
-        })
-      )
-      .subscribe(
-        (res: APIRESP) => {
-          if (res) {
-            const chatId = res.data[0]?._id;
-            this.friendreqS
-              .getChatmessages(chatId as string)
-              .pipe(
-                catchError((error: HttpErrorResponse) => {
-                  return throwError(() => error);
-                })
-              )
-              .subscribe(
-                (res) => {
-                  if (res && res.data) {
-                    let Data = res.data;
-                    if (Array.isArray(Data)) {
-                      Data.filter((msg) => {
-                        if (msg?.senderId === this.friendID) {
-                          this.lastMessage = {
-                            message: msg.message,
-                            time: msg.createdAt,
-                          };
-                        }
-                      });
-                      // console.log(this.lastMessage);
+    if (this.fromWhereIscalled === 'contactBox') {
+      this.friendreqS
+        .getChatData({ userId: this.user?._id, friendId: this.friendID })
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            return throwError(() => error);
+          })
+        )
+        .subscribe(
+          (res: APIRESP) => {
+            if (res) {
+              const chatId = res.data[0]?._id;
+              this.friendreqS
+                .getChatmessages(chatId as string)
+                .pipe(
+                  catchError((error: HttpErrorResponse) => {
+                    return throwError(() => error);
+                  })
+                )
+                .subscribe(
+                  (res) => {
+                    if (res && res.data) {
+                      let Data = res.data;
+                      if (Array.isArray(Data)) {
+                        Data.filter((msg) => {
+                          if (msg?.senderId === this.friendID) {
+                            this.lastMessage = {
+                              message: msg.message,
+                              time: msg.createdAt,
+                            };
+                          }
+                        });
+                        // console.log(this.lastMessage);
+                      }
                     }
+                  },
+                  (error) => {
+                    // console.log(error);
                   }
-                },
-                (error) => {
-                  // console.log(error);
-                }
-              );
+                );
+            }
+          },
+          (error: APIRESP) => {
+            // console.log(error);
           }
-        },
-        (error: APIRESP) => {
-          // console.log(error);
-        }
-      );
+        );
+    }
   }
 }

@@ -21,12 +21,15 @@ export class FriendRequestService {
   } | null>(this.checkChat());
   chatCheck$: Observable<{ chatId: string; friendId: string } | null> =
     this.ChatBehaviorSabject.asObservable();
+
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.socket = io('http://localhost:3000', {
       withCredentials: true,
     });
   }
-
+  getAllEmoji() {
+    return this.http.get(this.emojiAPi);
+  }
   friendAddRequest(obj: FRIENDADD): Observable<APIRESP> {
     return this.http.post<APIRESP>(this.url + '/home/friendAddRequest', obj, {
       withCredentials: true,
@@ -93,8 +96,5 @@ export class FriendRequestService {
         observer.next(data);
       });
     });
-  }
-  getAllEmoji() {
-    return this.http.get(this.emojiAPi);
   }
 }
