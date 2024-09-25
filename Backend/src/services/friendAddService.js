@@ -110,7 +110,7 @@ async function acceptRequest(req, res) {
         },
         { new: true }
       );
-      // console.log(updatedfriend);
+      //CreateChat
       await Chat.create({
         chatName: "",
         participants: [reqBody.userId, reqBody.requesterId],

@@ -107,29 +107,15 @@ export class CreateChatBarComponent implements OnInit, OnDestroy {
         data.name.toLowerCase().includes(val)
       );
     } else {
-      console.log('noresult');
-
       this.friendInfo = this.savedFriendInfoData;
     }
   }
+
   selectedFriend(friendId: string) {
     this.friendInfo.forEach((data) => {
       if (data.id === friendId) {
-        if (!data.checked) {
-          data.checked = true;
-          console.log(data.checked);
-        } else {
-          data.checked = false;
-          console.log(data.checked);
-        }
+        data.checked = !data.checked;
       }
     });
-    this.savedFriendInfoData.forEach((data) => {
-      if (data.id === friendId) {
-        if (!data.checked) data.checked = true;
-        else data.checked = false;
-      }
-    });
-    console.log(this.friendInfo);
   }
 }

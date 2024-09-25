@@ -19,14 +19,17 @@
           (input)="searchFriendInput(inpt.value)"
         />
         <div class="tags_box">
-          <!-- <span
+          <span
             class="tags"
             *ngFor="let friend of friendInfo"
             [ngStyle]="{ display: friend.checked ? 'flex' : 'none' }"
           >
             <p>{{ friend.name }}</p>
-            <i class="fa-solid fa-xmark"></i>
-          </span> -->
+            <i
+              (click)="selectedFriend(friend.id)"
+              class="fa-solid fa-xmark"
+            ></i>
+          </span>
         </div>
         <ul>
           @if (friendInfo.length>0) {
