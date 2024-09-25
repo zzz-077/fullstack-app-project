@@ -40,6 +40,7 @@ export class ContactBoxComponent implements OnInit {
         this.userFriends = res.data.friends;
       }
     });
+    // this.friendreqS.getChatData(req: { userId: this.user?._id; friendId: string })
   }
   friendCardClick(friendid: string) {
     const req = {

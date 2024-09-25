@@ -76,6 +76,15 @@ export class FriendRequestService {
       }
     );
   }
+  createGroupChat(chatIds: string[], chatName: string): Observable<APIRESP> {
+    return this.http.post<APIRESP>(
+      this.url + '/home/createChat',
+      { chatIds, chatName },
+      {
+        withCredentials: true,
+      }
+    );
+  }
   //socketio-clientSide requests
   JoinInChat(chatId: string): void {
     this.socket.emit('joinChat', chatId);

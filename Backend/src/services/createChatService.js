@@ -1,18 +1,23 @@
 import Chat from "../models/chatM.js";
 
 export default async function createChat(req, res) {
-  // there also must be userId as friendIdes
-  const groupIds = req.body.friendids;
-
+  const groupIds = req.body.chatIds;
+  const chatName = req.body.chatName;
   try {
     await Chat.create({
-      chatName: "",
-      participants: [groupIds],
+      chatName: chatName,
+      participants: groupIds,
+    });
+    return res.status(200).json({
+      status: "success",
+      message: "Created chat group!",
+      error: null,
+      data: [],
     });
   } catch (error) {
     return res.status(500).json({
       status: "fail",
-      message: "create chat group failed!",
+      message: "Create chat group failed!",
       error: error,
       data: [],
     });
