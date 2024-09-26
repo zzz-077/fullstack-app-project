@@ -9,6 +9,8 @@ import { provideEffects } from '@ngrx/effects';
 import { UserReducer } from './shared/store/userData/userData.reducers';
 import { UserDataEffect } from './shared/store/userData/userData.effects';
 import { ChatReducer } from './shared/store/Chat/chat.reducers';
+import { ChatsForUserReducer } from './shared/store/AllChat/chats.reducers';
+import { getUserChatsEffect } from './shared/store/AllChat/chats.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,6 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideStore(),
     provideState({ name: 'user', reducer: UserReducer }),
     provideState({ name: 'chat', reducer: ChatReducer }),
-    provideEffects([UserDataEffect]),
+    provideState({ name: 'AllUserChats', reducer: ChatsForUserReducer }),
+    provideEffects(UserDataEffect, getUserChatsEffect),
   ],
 };

@@ -122,7 +122,7 @@ export class NavbarBoxComponent implements OnInit {
       this.isLoading = false;
       this.alert = {
         status: 'fail',
-        message: 'can not add your Self!',
+        message: 'can not add your self!',
       };
       setTimeout(() => {
         this.alert = {

@@ -65,7 +65,10 @@ export class FriendRequestService {
     }
   }
   checkChat() {
-    return JSON.parse(localStorage.getItem('openedChat') || 'null');
+    if (typeof window !== 'undefined' && localStorage) {
+      return JSON.parse(localStorage.getItem('openedChat') || 'null');
+    }
+    return null;
   }
   getChatmessages(chatId: string): Observable<APIRESP> {
     return this.http.post<APIRESP>(
@@ -80,6 +83,15 @@ export class FriendRequestService {
     return this.http.post<APIRESP>(
       this.url + '/home/createChat',
       { chatIds, chatName },
+      {
+        withCredentials: true,
+      }
+    );
+  }
+  getChatsDataForUser(): Observable<APIRESP> {
+    return this.http.post<APIRESP>(
+      this.url + '/home/getChats',
+      {},
       {
         withCredentials: true,
       }

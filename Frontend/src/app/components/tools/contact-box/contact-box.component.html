@@ -2,7 +2,7 @@
   <div class="contact_friend_box">
     <app-friend-card
       (click)="friendCardClick(friendid)"
-      *ngFor="let friendid of userFriends"
+      *ngFor="let friendid of userChats"
       [friendID]="friendid"
       [fromWhereIscalled]="'contactBox'"
     ></app-friend-card>
@@ -14,7 +14,7 @@
 </div>
 <app-create-chat-bar
   *ngIf="iscreateChatOpened"
-  [userFriendsId]="userFriends"
+  [userFriendsId]="userChats"
   (isClosedComponent)="createChatClick('closed')"
   [isOpenedComponent]="iscreateChatOpened"
 ></app-create-chat-bar>

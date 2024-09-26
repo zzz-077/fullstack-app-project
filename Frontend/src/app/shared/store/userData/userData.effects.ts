@@ -4,7 +4,6 @@ import { RegistrationService } from '../../services/registrationService/registra
 import * as userActions from './userData.actions';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { APIRESP } from '../../../models/statusModel';
-import { response } from 'express';
 
 @Injectable()
 export class UserDataEffect {

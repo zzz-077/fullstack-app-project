@@ -18,6 +18,7 @@ import { selectUserData } from '../../../shared/store/userData/userData.selector
 })
 export class FriendCardComponent implements OnInit {
   @Input() friendID: string = '';
+  // @Input() friendID: string[] = [];
   @Input() fromWhereIscalled!: string;
   OpenedChat: { chatId: string; friendId: string } | null = null;
   lastMessage: {
