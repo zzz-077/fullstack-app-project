@@ -17,9 +17,9 @@ export class FriendRequestService {
   private socket: Socket;
   ChatBehaviorSabject = new BehaviorSubject<{
     chatId: string;
-    friendId: string;
+    participants: string[];
   } | null>(this.checkChat());
-  chatCheck$: Observable<{ chatId: string; friendId: string } | null> =
+  chatCheck$: Observable<{ chatId: string; participants: string[] } | null> =
     this.ChatBehaviorSabject.asObservable();
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
@@ -52,16 +52,19 @@ export class FriendRequestService {
       withCredentials: true,
     });
   }
-  saveChatDataInLocalStorage(chatId: string, friendId: string) {
-    if (chatId === '' && friendId === '') {
+  saveChatDataInLocalStorage(chatId: string, participants: string[]) {
+    if (chatId === '' && participants.length === 0) {
       localStorage.clear();
       this.ChatBehaviorSabject.next(null);
     } else {
       localStorage.setItem(
         'openedChat',
-        JSON.stringify({ chatId: chatId, friendId: friendId })
+        JSON.stringify({ chatId: chatId, participants: participants })
       );
-      this.ChatBehaviorSabject.next({ chatId: chatId, friendId: friendId });
+      this.ChatBehaviorSabject.next({
+        chatId: chatId,
+        participants: participants,
+      });
     }
   }
   checkChat() {

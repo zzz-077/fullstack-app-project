@@ -1,9 +1,9 @@
 <div class="chat_contact_cont">
   <div class="contact_friend_box">
     <app-friend-card
-      (click)="friendCardClick(friendid)"
-      *ngFor="let friendid of userChats"
-      [friendID]="friendid"
+      (click)="friendCardClick(chat)"
+      *ngFor="let chat of userChats"
+      [chatInfo]="chat"
       [fromWhereIscalled]="'contactBox'"
     ></app-friend-card>
   </div>

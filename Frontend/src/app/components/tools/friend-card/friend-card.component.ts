@@ -17,10 +17,9 @@ import { selectUserData } from '../../../shared/store/userData/userData.selector
   styleUrl: './friend-card.component.css',
 })
 export class FriendCardComponent implements OnInit {
-  @Input() friendID: string = '';
-  // @Input() friendID: string[] = [];
+  @Input() chatInfo: any;
   @Input() fromWhereIscalled!: string;
-  OpenedChat: { chatId: string; friendId: string } | null = null;
+  OpenedChat: { chatId: string; participants: string[] } | null = null;
   lastMessage: {
     message: string;
     time: string;
@@ -45,14 +44,70 @@ export class FriendCardComponent implements OnInit {
       }
     });
     this.friendreqS.chatCheck$.subscribe(
-      (data: { chatId: string; friendId: string } | null) => {
+      (data: { chatId: string; participants: string[] } | null) => {
         if (data) {
           this.OpenedChat = data;
         }
       }
     );
+    // console.log(this.chatInfo);
+    if (this.chatInfo?.participants.length > 1) {
+      this.friendInfo = [];
+      this.friendInfo.push({
+        name: this.chatInfo?.chatName,
+        img: 'assets/groupChatImg.png',
+        status: true,
+      });
+      this.getChatLastMessage(this.chatInfo?._id);
+    } else {
+      this.friendreqS
+        .getFriendData(this.chatInfo?.participants[0])
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            return throwError(() => error);
+          })
+        )
+        .subscribe(
+          (res) => {
+            if (Array.isArray(res.data)) {
+              this.friendInfo = [];
+
+              this.friendInfo.push(res.data[0]);
+            } else {
+              this.friendInfo = [];
+            }
+          },
+          (error) => console.log('Caught error:', error)
+        );
+      if (this.fromWhereIscalled === 'contactBox') {
+        this.friendreqS
+          .getChatData({
+            userId: this.user?._id,
+            friendId: this.chatInfo?.participants[0],
+          })
+          .pipe(
+            catchError((error: HttpErrorResponse) => {
+              return throwError(() => error);
+            })
+          )
+          .subscribe(
+            (res: APIRESP) => {
+              if (res) {
+                const chatId = res.data[0]?._id;
+                this.getChatLastMessage(chatId);
+              }
+            },
+            (error: APIRESP) => {
+              // console.log(error);
+            }
+          );
+      }
+    }
+  }
+
+  getChatLastMessage(chatId: string) {
     this.friendreqS
-      .getFriendData(this.friendID)
+      .getChatmessages(chatId)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           return throwError(() => error);
@@ -60,60 +115,24 @@ export class FriendCardComponent implements OnInit {
       )
       .subscribe(
         (res) => {
-          if (Array.isArray(res.data)) {
-            this.friendInfo = res.data;
-          } else {
-            this.friendInfo = [];
+          if (res && res.data) {
+            let Data = res.data;
+            if (Array.isArray(Data)) {
+              Data.filter((msg) => {
+                if (msg?.senderId === this.chatInfo?.participants[0]) {
+                  this.lastMessage = {
+                    message: msg.message,
+                    time: msg.createdAt,
+                  };
+                }
+              });
+              // console.log(this.lastMessage);
+            }
           }
         },
-        (error) => console.log('Caught error:', error)
+        (error) => {
+          // console.log(error);
+        }
       );
-    if (this.fromWhereIscalled === 'contactBox') {
-      this.friendreqS
-        .getChatData({ userId: this.user?._id, friendId: this.friendID })
-        .pipe(
-          catchError((error: HttpErrorResponse) => {
-            return throwError(() => error);
-          })
-        )
-        .subscribe(
-          (res: APIRESP) => {
-            if (res) {
-              const chatId = res.data[0]?._id;
-              this.friendreqS
-                .getChatmessages(chatId as string)
-                .pipe(
-                  catchError((error: HttpErrorResponse) => {
-                    return throwError(() => error);
-                  })
-                )
-                .subscribe(
-                  (res) => {
-                    if (res && res.data) {
-                      let Data = res.data;
-                      if (Array.isArray(Data)) {
-                        Data.filter((msg) => {
-                          if (msg?.senderId === this.friendID) {
-                            this.lastMessage = {
-                              message: msg.message,
-                              time: msg.createdAt,
-                            };
-                          }
-                        });
-                        // console.log(this.lastMessage);
-                      }
-                    }
-                  },
-                  (error) => {
-                    // console.log(error);
-                  }
-                );
-            }
-          },
-          (error: APIRESP) => {
-            // console.log(error);
-          }
-        );
-    }
   }
 }

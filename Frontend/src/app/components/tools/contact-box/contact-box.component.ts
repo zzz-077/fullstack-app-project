@@ -40,7 +40,7 @@ export class ContactBoxComponent implements OnInit {
     this.userResp$.subscribe((res) => {
       if (res.data && !Array.isArray(res.data)) {
         this.user = res.data;
-        this.userChats = res.data.friends;
+        // this.userChats = res.data.friends;
       }
     });
     this.store.dispatch(chatsActions.chatsData());
@@ -58,49 +58,17 @@ export class ContactBoxComponent implements OnInit {
           }
           return data;
         });
-        // console.log(changedData);
-        // this.userChats=changedData
+        console.log(changedData);
+        this.userChats = changedData;
       }
     });
   }
-  friendCardClick(friendid: string) {
-    const req = {
-      userId: this.user?._id,
-      friendId: friendid,
-    };
-    this.friendreqS
-      .getChatData(req)
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          return throwError(error);
-        })
-      )
-      .subscribe(
-        (res) => {
-          if (Array.isArray(res.data) && res.data.length > 0) {
-            const firstItem = res.data[0];
-            if (
-              typeof firstItem === 'object' &&
-              firstItem !== null &&
-              '_id' in firstItem
-            ) {
-              const modifiedData = firstItem as { _id: string };
-              this.store.dispatch(chatActions.chatData({ data: res.data }));
-              this.friendreqS.saveChatDataInLocalStorage(
-                modifiedData._id,
-                friendid
-              );
-            } else {
-              console.log(
-                'No _id found in the first item of the response data'
-              );
-            }
-          }
-        },
-        (error) => {
-          console.log('error catched while getting chatData', error);
-        }
-      );
+  friendCardClick(chatInfo: any) {
+    this.store.dispatch(chatActions.chatData({ data: chatInfo }));
+    this.friendreqS.saveChatDataInLocalStorage(
+      chatInfo._id,
+      chatInfo?.participants
+    );
   }
   createChatClick(string: string) {
     if (string === 'closed') this.iscreateChatOpened = false;

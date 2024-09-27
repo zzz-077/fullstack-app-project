@@ -26,7 +26,7 @@ export class LogoutComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.registrationS.userLogout().subscribe({
       next: (res) => {
-        this.friendreqS.saveChatDataInLocalStorage('', '');
+        this.friendreqS.saveChatDataInLocalStorage('', []);
         if (res.status === 'success') this.router.navigateByUrl('/signin');
       },
       error: (err) => {

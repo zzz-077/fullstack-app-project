@@ -28,7 +28,7 @@ export class MainComponent implements OnInit {
     private router: Router
   ) {
     this.friendReqS.chatCheck$.subscribe(
-      (data: { chatId: string; friendId: string } | null) => {
+      (data: { chatId: string; participants: string[] } | null) => {
         if (data) {
           this.isChatOpened = true;
         } else this.isChatOpened = false;
@@ -39,7 +39,7 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.registrationS.homeAutentication().subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
       },
       error: (err) => {
         this.router.navigate(['/signin']);

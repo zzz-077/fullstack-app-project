@@ -19,6 +19,7 @@ import * as UC from '@uploadcare/file-uploader';
 import '@uploadcare/file-uploader/web/uc-file-uploader-regular.min.css';
 import * as LR from '@uploadcare/blocks';
 import { OutputFileEntry } from '@uploadcare/file-uploader';
+import { selectChatData } from '../../../shared/store/Chat/chat.selectors';
 UC.defineComponents(UC);
 @Component({
   selector: 'app-message-box',
@@ -29,7 +30,7 @@ UC.defineComponents(UC);
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MessageBoxComponent implements OnInit, AfterViewChecked {
-  OpenedChat: { chatId: string; friendId: string } | null = null;
+  OpenedChat: { chatId: string; participants: string[] } | null = null;
   user!: any;
   chatData!: any;
   messageText: string = '';
@@ -65,37 +66,44 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
         this.user = res.data;
       }
     });
-    // this.store.select(selectChatData).subscribe((data: any[]) => {
-    //   if (data) {
-    //     this.chatData = data[0];
-    //     console.log(this.chatData);
-    //   }
-    // });
     this.friendReqS.chatCheck$.subscribe(
-      (data: { chatId: string; friendId: string } | null) => {
+      (data: { chatId: string; participants: string[] } | null) => {
         if (data) {
           this.OpenedChat = data;
           this.friendReqS.JoinInChat(this.OpenedChat.chatId);
-          this.friendReqS
-            .getFriendData(this.OpenedChat.friendId)
-            .pipe(
-              catchError((error: HttpErrorResponse) => {
-                return throwError(() => error);
-              })
-            )
-            .subscribe(
-              (res) => {
-                if (Array.isArray(res.data)) {
-                  this.messagesArray = [];
-                  // console.log(res);
-                  this.friendInfo = res.data;
-                  this.chatMessageFunction();
-                } else {
-                  this.friendInfo = [];
-                }
-              },
-              (error) => console.log('Caught error:', error)
-            );
+          if (this.OpenedChat.participants.length > 1) {
+            this.store.select(selectChatData).subscribe((data: any) => {
+              if (data) {
+                this.friendInfo = [];
+                this.friendInfo.push({
+                  name: data.chatName,
+                  img: 'assets/groupChatImg.png',
+                  status: true,
+                });
+              }
+            });
+          } else {
+            this.friendReqS
+              .getFriendData(this.OpenedChat.participants[0])
+              .pipe(
+                catchError((error: HttpErrorResponse) => {
+                  return throwError(() => error);
+                })
+              )
+              .subscribe(
+                (res) => {
+                  if (Array.isArray(res.data)) {
+                    this.messagesArray = [];
+                    this.friendInfo = [];
+                    this.friendInfo.push(res.data[0]);
+                    this.chatMessageFunction();
+                  } else {
+                    this.friendInfo = [];
+                  }
+                },
+                (error) => console.log('Caught error:', error)
+              );
+          }
         } else this.OpenedChat = null;
       }
     );
