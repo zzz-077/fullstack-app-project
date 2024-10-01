@@ -36,30 +36,27 @@ export class ContactBoxComponent implements OnInit {
     this.chatsResp$ = this.store.select(SelectuserChats);
   }
   ngOnInit() {
-    this.store.dispatch(userActions.userData());
     this.userResp$.subscribe((res) => {
       if (res.data && !Array.isArray(res.data)) {
         this.user = res.data;
-        // this.userChats = res.data.friends;
-      }
-    });
-    this.store.dispatch(chatsActions.chatsData());
-    this.chatsResp$.subscribe((res: APIRESP) => {
-      if (res.data.length > 0 && Array.isArray(res.data)) {
-        const changedData = res.data.map((data) => {
-          if (Array.isArray(data.participants)) {
-            const participants = data.participants.filter((id: string) => {
-              return id !== this.user?._id;
+        this.store.dispatch(chatsActions.chatsData());
+        this.chatsResp$.subscribe((res: APIRESP) => {
+          if (res.data.length > 0 && Array.isArray(res.data)) {
+            const changedData = res.data.map((data) => {
+              if (Array.isArray(data.participants)) {
+                const participants = data.participants.filter((id: string) => {
+                  return id !== this.user?._id;
+                });
+                return {
+                  ...data,
+                  participants: participants,
+                };
+              }
+              return data;
             });
-            return {
-              ...data,
-              participants: participants,
-            };
+            this.userChats = changedData;
           }
-          return data;
         });
-        console.log(changedData);
-        this.userChats = changedData;
       }
     });
   }

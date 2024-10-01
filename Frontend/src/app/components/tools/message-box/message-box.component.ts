@@ -11,13 +11,12 @@ import { AppState } from '../../../shared/store/app.state';
 import { Store } from '@ngrx/store';
 import { FriendRequestService } from '../../../shared/services/friendRequestService/friend-request.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { catchError, throwError } from 'rxjs';
+import { catchError, from, map, mergeMap, of, throwError } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { selectUserData } from '../../../shared/store/userData/userData.selectors';
 import * as UC from '@uploadcare/file-uploader';
 import '@uploadcare/file-uploader/web/uc-file-uploader-regular.min.css';
-import * as LR from '@uploadcare/blocks';
 import { OutputFileEntry } from '@uploadcare/file-uploader';
 import { selectChatData } from '../../../shared/store/Chat/chat.selectors';
 UC.defineComponents(UC);
@@ -49,7 +48,7 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
   @ViewChild('ctxProvider', { static: true }) ctxProviderRef!: ElementRef<
     InstanceType<UC.UploadCtxProvider>
   >;
-  friendInfo: { name: string; img: string; status: boolean }[] = [];
+  chatInfo: { name: string; img: string; status: boolean }[] = [];
   files: any[] = [];
   constructor(
     private store: Store<AppState>,
@@ -74,8 +73,8 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
           if (this.OpenedChat.participants.length > 1) {
             this.store.select(selectChatData).subscribe((data: any) => {
               if (data) {
-                this.friendInfo = [];
-                this.friendInfo.push({
+                this.chatInfo = [];
+                this.chatInfo.push({
                   name: data.chatName,
                   img: 'assets/groupChatImg.png',
                   status: true,
@@ -94,20 +93,20 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
                 (res) => {
                   if (Array.isArray(res.data)) {
                     this.messagesArray = [];
-                    this.friendInfo = [];
-                    this.friendInfo.push(res.data[0]);
-                    this.chatMessageFunction();
+                    this.chatInfo = [];
+                    this.chatInfo.push(res.data[0]);
                   } else {
-                    this.friendInfo = [];
+                    this.chatInfo = [];
                   }
                 },
                 (error) => console.log('Caught error:', error)
               );
           }
+          this.chatMessageFunction();
         } else this.OpenedChat = null;
       }
     );
-    this.chatMessageFunction();
+    // this.chatMessageFunction();
     this.friendReqS.receivedMessage().subscribe((messagedata) => {
       if (messagedata && this.user?._id === messagedata?.senderId) {
         if (Array.isArray(this.messagesArray)) {
@@ -127,8 +126,9 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
     });
     this.friendReqS.listenForMessagesInChat().subscribe((data: any) => {
       if (data) {
+        this.findFriendNameForMessage(data);
         this.messagesArray.push({
-          name: this.friendInfo[0]?.name,
+          name: this.chatInfo[0]?.name,
           message: data.message,
           time: data.createdAt as string,
           status: 'sent',
@@ -171,32 +171,77 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
             let Data = res.data;
             if (Array.isArray(Data)) {
               Data.filter((msg) => {
-                if (msg?.senderId === this.user?._id) {
-                  this.messagesArray.push({
-                    name: this.user?.name,
-                    message: msg.message,
-                    time: msg.createdAt as string,
-                    status: 'sent',
-                    senderId: msg.senderId,
-                  });
-                } else {
-                  this.messagesArray.push({
-                    name: this.friendInfo[0]?.name,
-                    message: msg.message,
-                    time: msg.createdAt as string,
-                    status: 'sent',
-                    senderId: msg.senderId,
-                  });
-                }
+                this.friendReqS
+                  .getFriendData(msg.senderId)
+                  .pipe(
+                    catchError((error: HttpErrorResponse) => {
+                      return throwError(() => error);
+                    })
+                  )
+                  .subscribe(
+                    (res) => {
+                      if (res && res.data) {
+                        const senderName = res.data[0]?.name;
+                        if (msg?.senderId === this.user?._id) {
+                          console.log(1);
+                          this.messagesArray.push({
+                            name: senderName,
+                            message: msg.message,
+                            time: msg.createdAt as string,
+                            status: 'sent',
+                            senderId: msg.senderId,
+                          });
+                        } else {
+                          this.messagesArray.push({
+                            name: senderName,
+                            message: msg.message,
+                            time: msg.createdAt as string,
+                            status: 'sent',
+                            senderId: msg.senderId,
+                          });
+                        }
+                      }
+                    },
+                    (error) => {
+                      console.log(error);
+                    }
+                  );
               });
-              // console.log(this.messagesArray);
             }
-
-            this.messagesArray;
           }
         },
         (error) => {
-          // console.log(error);
+          this.messagesArray = [];
+          console.log(error);
+        }
+      );
+  }
+  findFriendNameForMessage(msg: any) {
+    this.friendReqS
+      .getFriendData(msg.senderId)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(() => error);
+        })
+      )
+      .subscribe(
+        (res) => {
+          if (res && res.data) {
+            const senderId = res.data?._id;
+            const senderName = res.data?.name;
+            console.log(senderId);
+
+            this.messagesArray.push({
+              name: senderName,
+              message: msg.message,
+              time: msg.createdAt as string,
+              status: 'sent',
+              senderId: senderId,
+            });
+          }
+        },
+        (error) => {
+          console.log(error);
         }
       );
   }

@@ -9,6 +9,8 @@ import { AppState } from '../../../shared/store/app.state';
 import { Store } from '@ngrx/store';
 import { APIRESP } from '../../../models/statusModel';
 import { selectUserData } from '../../../shared/store/userData/userData.selectors';
+import * as chatActions from '../../../shared/store/Chat/chat.actions';
+
 @Component({
   selector: 'app-friend-card',
   standalone: true,
@@ -50,7 +52,14 @@ export class FriendCardComponent implements OnInit {
         }
       }
     );
-    // console.log(this.chatInfo);
+    // this.friendreqS.chatCheck$.subscribe((data: any) => {
+    //   if (data) {
+    //     const chatDataFromLocalstorage = data;
+    //     if (this.chatInfo?._id === chatDataFromLocalstorage?.chatId) {
+    //       this.store.dispatch(chatActions.chatData({ data: this.chatInfo }));
+    //     }
+    //   }
+    // });
     if (this.chatInfo?.participants.length > 1) {
       this.friendInfo = [];
       this.friendInfo.push({
@@ -71,7 +80,6 @@ export class FriendCardComponent implements OnInit {
           (res) => {
             if (Array.isArray(res.data)) {
               this.friendInfo = [];
-
               this.friendInfo.push(res.data[0]);
             } else {
               this.friendInfo = [];
@@ -126,12 +134,11 @@ export class FriendCardComponent implements OnInit {
                   };
                 }
               });
-              // console.log(this.lastMessage);
             }
           }
         },
         (error) => {
-          // console.log(error);
+          console.log(error);
         }
       );
   }
