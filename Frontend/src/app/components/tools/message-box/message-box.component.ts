@@ -6,12 +6,21 @@ import {
   ViewChild,
   ElementRef,
   CUSTOM_ELEMENTS_SCHEMA,
+  OnDestroy,
 } from '@angular/core';
 import { AppState } from '../../../shared/store/app.state';
 import { Store } from '@ngrx/store';
 import { FriendRequestService } from '../../../shared/services/friendRequestService/friend-request.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { catchError, from, map, mergeMap, of, throwError } from 'rxjs';
+import {
+  Subscription,
+  catchError,
+  from,
+  map,
+  mergeMap,
+  of,
+  throwError,
+} from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { selectUserData } from '../../../shared/store/userData/userData.selectors';
@@ -48,8 +57,10 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
   @ViewChild('ctxProvider', { static: true }) ctxProviderRef!: ElementRef<
     InstanceType<UC.UploadCtxProvider>
   >;
+  getChatMembersName: { name: string; id: string }[] = [];
   chatInfo: { name: string; img: string; status: boolean }[] = [];
   files: any[] = [];
+  clickedChat!: string;
   constructor(
     private store: Store<AppState>,
     private friendReqS: FriendRequestService
@@ -70,6 +81,7 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
         if (data) {
           this.OpenedChat = data;
           this.friendReqS.JoinInChat(this.OpenedChat.chatId);
+          this.messagesArray = [];
           if (this.OpenedChat.participants.length > 1) {
             this.store.select(selectChatData).subscribe((data: any) => {
               if (data) {
@@ -102,11 +114,43 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
                 (error) => console.log('Caught error:', error)
               );
           }
-          this.chatMessageFunction();
+          /*
+          data.participants.forEach((msg) => {
+            this.friendReqS
+              .getFriendData(msg)
+              .pipe(
+                catchError((error: HttpErrorResponse) => {
+                  return throwError(() => error);
+                })
+              )
+              .subscribe(
+                (res) => {
+                  if (res && res.data) {
+                    const member = res.data[0];
+                    this.getChatMembersName.push({
+                      name: member?.name,
+                      id: member?.id,
+                    });
+                  }
+                },
+                (error) => {
+                  console.log(error);
+                }
+              );
+          });
+          */
+          if (
+            this.clickedChat === undefined ||
+            this.clickedChat !== this.OpenedChat?.chatId
+          ) {
+            this.clickedChat = this.OpenedChat?.chatId;
+            this.chatMessageFunction();
+          } else {
+            this.messagesArray = this.messagesArray;
+          }
         } else this.OpenedChat = null;
       }
     );
-    // this.chatMessageFunction();
     this.friendReqS.receivedMessage().subscribe((messagedata) => {
       if (messagedata && this.user?._id === messagedata?.senderId) {
         if (Array.isArray(this.messagesArray)) {
@@ -126,13 +170,16 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
     });
     this.friendReqS.listenForMessagesInChat().subscribe((data: any) => {
       if (data) {
-        this.findFriendNameForMessage(data);
-        this.messagesArray.push({
-          name: this.chatInfo[0]?.name,
-          message: data.message,
-          time: data.createdAt as string,
-          status: 'sent',
-          senderId: data.senderId,
+        this.getChatMembersName.forEach((member) => {
+          if (member.id === data?.senderId) {
+            this.messagesArray.push({
+              name: member.name,
+              message: data.message,
+              time: data.createdAt as string,
+              status: 'sent',
+              senderId: data.senderId,
+            });
+          }
         });
       }
     });
@@ -170,7 +217,7 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
           if (res && res.data) {
             let Data = res.data;
             if (Array.isArray(Data)) {
-              Data.filter((msg) => {
+              Data.forEach((msg) => {
                 this.friendReqS
                   .getFriendData(msg.senderId)
                   .pipe(
@@ -181,19 +228,18 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
                   .subscribe(
                     (res) => {
                       if (res && res.data) {
-                        const senderName = res.data[0]?.name;
+                        const SenderName = res.data[0]?.name;
                         if (msg?.senderId === this.user?._id) {
-                          console.log(1);
                           this.messagesArray.push({
-                            name: senderName,
+                            name: this.user?.name,
                             message: msg.message,
                             time: msg.createdAt as string,
                             status: 'sent',
-                            senderId: msg.senderId,
+                            senderId: this.user?._id,
                           });
                         } else {
                           this.messagesArray.push({
-                            name: senderName,
+                            name: SenderName,
                             message: msg.message,
                             time: msg.createdAt as string,
                             status: 'sent',
@@ -206,41 +252,35 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
                       console.log(error);
                     }
                   );
+                /*
+                if (msg?.senderId === this.user?._id) {
+                  this.messagesArray.push({
+                    name: this.user?.name,
+                    message: msg.message,
+                    time: msg.createdAt as string,
+                    status: 'sent',
+                    senderId: this.user?._id,
+                  });
+                } else {
+                  this.getChatMembersName.forEach((member) => {
+                    if (member.id === msg?.senderId) {
+                      this.messagesArray.push({
+                        name: member.name,
+                        message: msg.message,
+                        time: msg.createdAt as string,
+                        status: 'sent',
+                        senderId: msg.senderId,
+                      });
+                    }
+                  });
+                }*/
               });
+              console.log(this.messagesArray);
             }
           }
         },
         (error) => {
           this.messagesArray = [];
-          console.log(error);
-        }
-      );
-  }
-  findFriendNameForMessage(msg: any) {
-    this.friendReqS
-      .getFriendData(msg.senderId)
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          return throwError(() => error);
-        })
-      )
-      .subscribe(
-        (res) => {
-          if (res && res.data) {
-            const senderId = res.data?._id;
-            const senderName = res.data?.name;
-            console.log(senderId);
-
-            this.messagesArray.push({
-              name: senderName,
-              message: msg.message,
-              time: msg.createdAt as string,
-              status: 'sent',
-              senderId: senderId,
-            });
-          }
-        },
-        (error) => {
           console.log(error);
         }
       );
@@ -263,7 +303,6 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
           code.replace('&#', '').replace(';', ''),
           10
         );
-        console.log(decimalCode);
         return String.fromCodePoint(decimalCode);
       })
       .join('');

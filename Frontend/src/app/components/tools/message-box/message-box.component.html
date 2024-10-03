@@ -28,7 +28,7 @@
       <div class="user_message">
         @if (message.status==='sent') {
         <div class="message">
-          <h4>{{ message.name }}</h4>
+          <h4>{{ message.name.split(" ")[0] }}</h4>
           <div class="message_info">
             @if (message.message.slice(0,8)==='https://') {
             <img
@@ -36,7 +36,6 @@
               [src]="message.message"
               alt=""
             />
-
             }@else {
             <p>
               {{ message.message }}

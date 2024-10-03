@@ -17,8 +17,8 @@ async function getFriendData(req, res) {
       name: foundFriend.name,
       img: foundFriend.img,
       status: foundFriend.status,
+      id: foundFriend._id,
     };
-    // console.log(friendData);
     return res.status(200).json({
       status: "success",
       message: "Friend data found!",

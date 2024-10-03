@@ -14,7 +14,7 @@
 </div>
 <app-create-chat-bar
   *ngIf="iscreateChatOpened"
-  [userFriendsId]="userChats"
+  [userChats]="userChats"
   (isClosedComponent)="createChatClick('closed')"
   [isOpenedComponent]="iscreateChatOpened"
 ></app-create-chat-bar>
