@@ -40,7 +40,6 @@ UC.defineComponents(UC);
 export class MessageBoxComponent implements OnInit, AfterViewChecked {
   OpenedChat: { chatId: string; participants: string[] } | null = null;
   user!: any;
-  chatData!: any;
   messageText: string = '';
   messagesArray: {
     name: string;
@@ -61,6 +60,7 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
   chatInfo: { name: string; img: string; status: boolean }[] = [];
   files: any[] = [];
   clickedChat!: string;
+  isMessagesLoaded: boolean = false;
   constructor(
     private store: Store<AppState>,
     private friendReqS: FriendRequestService
@@ -114,39 +114,38 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
                 (error) => console.log('Caught error:', error)
               );
           }
-          /*
-          data.participants.forEach((msg) => {
+          //getChatMessages
+          if (this.OpenedChat?.chatId) {
+            this.isMessagesLoaded = false;
             this.friendReqS
-              .getFriendData(msg)
+              .getChatmessages(this.OpenedChat?.chatId)
               .pipe(
                 catchError((error: HttpErrorResponse) => {
-                  return throwError(() => error);
+                  return throwError(error);
                 })
               )
               .subscribe(
                 (res) => {
                   if (res && res.data) {
-                    const member = res.data[0];
-                    this.getChatMembersName.push({
-                      name: member?.name,
-                      id: member?.id,
-                    });
+                    let Data = res.data;
+                    if (Array.isArray(Data)) {
+                      Data.forEach((sender) => {
+                        this.messagesArray.push({
+                          name: sender.senderName,
+                          message: sender.message,
+                          time: sender.createdAt as string,
+                          status: 'sent',
+                          senderId: sender.senderId,
+                        });
+                      });
+                      this.isMessagesLoaded = true;
+                    }
                   }
                 },
                 (error) => {
                   console.log(error);
                 }
               );
-          });
-          */
-          if (
-            this.clickedChat === undefined ||
-            this.clickedChat !== this.OpenedChat?.chatId
-          ) {
-            this.clickedChat = this.OpenedChat?.chatId;
-            this.chatMessageFunction();
-          } else {
-            this.messagesArray = this.messagesArray;
           }
         } else this.OpenedChat = null;
       }
@@ -170,16 +169,12 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
     });
     this.friendReqS.listenForMessagesInChat().subscribe((data: any) => {
       if (data) {
-        this.getChatMembersName.forEach((member) => {
-          if (member.id === data?.senderId) {
-            this.messagesArray.push({
-              name: member.name,
-              message: data.message,
-              time: data.createdAt as string,
-              status: 'sent',
-              senderId: data.senderId,
-            });
-          }
+        this.messagesArray.push({
+          name: data.senderName,
+          message: data.message,
+          time: data.createdAt as string,
+          status: 'sent',
+          senderId: data.senderId,
         });
       }
     });
@@ -200,91 +195,12 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
       this.friendReqS.sendMessage(
         this.OpenedChat?.chatId,
         this.user?._id,
+        this.user?.name,
         input
       );
     this.messageText = '';
   }
-  chatMessageFunction(): void {
-    this.friendReqS
-      .getChatmessages(this.OpenedChat?.chatId as string)
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          return throwError(() => error);
-        })
-      )
-      .subscribe(
-        (res) => {
-          if (res && res.data) {
-            let Data = res.data;
-            if (Array.isArray(Data)) {
-              Data.forEach((msg) => {
-                this.friendReqS
-                  .getFriendData(msg.senderId)
-                  .pipe(
-                    catchError((error: HttpErrorResponse) => {
-                      return throwError(() => error);
-                    })
-                  )
-                  .subscribe(
-                    (res) => {
-                      if (res && res.data) {
-                        const SenderName = res.data[0]?.name;
-                        if (msg?.senderId === this.user?._id) {
-                          this.messagesArray.push({
-                            name: this.user?.name,
-                            message: msg.message,
-                            time: msg.createdAt as string,
-                            status: 'sent',
-                            senderId: this.user?._id,
-                          });
-                        } else {
-                          this.messagesArray.push({
-                            name: SenderName,
-                            message: msg.message,
-                            time: msg.createdAt as string,
-                            status: 'sent',
-                            senderId: msg.senderId,
-                          });
-                        }
-                      }
-                    },
-                    (error) => {
-                      console.log(error);
-                    }
-                  );
-                /*
-                if (msg?.senderId === this.user?._id) {
-                  this.messagesArray.push({
-                    name: this.user?.name,
-                    message: msg.message,
-                    time: msg.createdAt as string,
-                    status: 'sent',
-                    senderId: this.user?._id,
-                  });
-                } else {
-                  this.getChatMembersName.forEach((member) => {
-                    if (member.id === msg?.senderId) {
-                      this.messagesArray.push({
-                        name: member.name,
-                        message: msg.message,
-                        time: msg.createdAt as string,
-                        status: 'sent',
-                        senderId: msg.senderId,
-                      });
-                    }
-                  });
-                }*/
-              });
-              console.log(this.messagesArray);
-            }
-          }
-        },
-        (error) => {
-          this.messagesArray = [];
-          console.log(error);
-        }
-      );
-  }
+
   ngAfterViewChecked() {
     this.scrollToBottom();
   }

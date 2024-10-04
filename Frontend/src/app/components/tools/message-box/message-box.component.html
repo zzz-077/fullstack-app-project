@@ -23,12 +23,13 @@
     </div>
   </div>
   <div class="message_box" #messageContainer>
+    @if(isMessagesLoaded){
     <div *ngFor="let message of messagesArray">
       @if(message.senderId=== user?._id){
       <div class="user_message">
         @if (message.status==='sent') {
         <div class="message">
-          <h4>{{ message.name.split(" ")[0] }}</h4>
+          <h4>{{ message.name }}</h4>
           <div class="message_info">
             @if (message.message.slice(0,8)==='https://') {
             <img
@@ -42,7 +43,7 @@
             </p>
             }
             <div class="time_status">
-              <strong>{{ message.time | date : "HH:mm" }}</strong>
+              <strong>{{ message.time | date : "d/M/yy, h:mm" }}</strong>
               <strong style="color: var(--decoration-color)">{{
                 message.status
               }}</strong>
@@ -93,7 +94,7 @@
             </p>
             }
             <div class="time_status">
-              <strong>{{ message.time | date : "HH:mm" }}</strong>
+              <strong>{{ message.time | date : "d/M/yy, h:mm" }}</strong>
               <strong style="color: var(--decoration-color)">{{
                 message.status
               }}</strong>
@@ -127,6 +128,7 @@
       </div>
       }
     </div>
+    }
   </div>
   <div class="message_inputs">
     <div class="left_col">

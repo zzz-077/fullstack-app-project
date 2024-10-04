@@ -104,8 +104,13 @@ export class FriendRequestService {
   JoinInChat(chatId: string): void {
     this.socket.emit('joinChat', chatId);
   }
-  sendMessage(chatId: string, senderId: string, message: string): void {
-    this.socket.emit('sendMessage', chatId, senderId, message);
+  sendMessage(
+    chatId: string,
+    senderId: string,
+    senderName: string,
+    message: string
+  ): void {
+    this.socket.emit('sendMessage', chatId, senderId, senderName, message);
   }
   receivedMessage(): Observable<any> {
     return new Observable((observer) => {

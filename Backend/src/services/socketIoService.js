@@ -21,16 +21,17 @@ function handleSocketConnection(io, socket) {
     socket.join(chatId);
     // console.log(`user ${socket.id}  joined in chat: ${chatId}`);
   });
-  socket.on("sendMessage", async (chatId, senderId, message) => {
+  socket.on("sendMessage", async (chatId, senderId, senderName, message) => {
     // sents message on status pending before fully senting message data like send time and so on
     socket.emit("receivedMessage", {
       chatId,
       senderId,
+      senderName,
       message,
       status: "pending",
     });
     try {
-      if (!chatId || !senderId || !message) {
+      if (!chatId || !senderId || !senderName || !message) {
         socket.emit("receivedMessage", {
           status: "fail",
           message: "Missing required fields!",
@@ -41,6 +42,7 @@ function handleSocketConnection(io, socket) {
       const receivedMessage = await Message({
         chatId,
         senderId,
+        senderName,
         message,
       }).save();
       socket.emit("receivedMessage", {
