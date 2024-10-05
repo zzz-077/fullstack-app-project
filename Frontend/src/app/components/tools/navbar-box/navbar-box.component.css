@@ -63,6 +63,23 @@
   display: flex;
   gap: 0.125rem;
   align-items: center;
+  position: relative;
+}
+.chat_navbar_cont .chat_navbar_right_box .user_info_box .logout_div {
+  position: absolute;
+  bottom: 20px;
+  left: 20%;
+  padding: 0.4rem 0.25rem;
+  border-radius: 0.25rem;
+  background-color: #292a2a;
+  color: var(--font-light-color);
+  font-size: 0.75rem;
+  z-index: 10;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.chat_navbar_cont .chat_navbar_right_box .user_info_box .logout_div:hover {
+  background-color: #505151;
 }
 .chat_navbar_cont .chat_navbar_right_box .user_info_box h3 {
   font-size: 1.125rem;

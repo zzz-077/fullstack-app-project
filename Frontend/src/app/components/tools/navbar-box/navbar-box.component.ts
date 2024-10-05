@@ -13,6 +13,7 @@ import { selectUserData } from '../../../shared/store/userData/userData.selector
 import { USER } from '../../../models/userModel';
 import { APIRESP } from '../../../models/statusModel';
 import * as userActions from '../../../shared/store/userData/userData.actions';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar-box',
@@ -34,10 +35,12 @@ export class NavbarBoxComponent implements OnInit {
     status: '',
     message: '',
   };
+  isUserImgClicked: boolean = false;
 
   constructor(
     private friendreqS: FriendRequestService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private router: Router
   ) {
     this.userResp$ = this.store.select(selectUserData);
   }
@@ -196,5 +199,11 @@ export class NavbarBoxComponent implements OnInit {
           }
         });
     }
+  }
+  userImgClicked() {
+    this.isUserImgClicked = !this.isUserImgClicked;
+  }
+  logoutClick() {
+    this.router.navigate(['/logout']);
   }
 }

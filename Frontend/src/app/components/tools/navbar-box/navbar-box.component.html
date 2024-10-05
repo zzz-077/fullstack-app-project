@@ -15,68 +15,77 @@
     </button>
     <div class="user_info_box">
       <h3>{{ user?.name }}</h3>
-      <div class="user_img">
+      <div (click)="userImgClicked()" class="user_img">
         <img [src]="user?.img" alt="" />
+      </div>
+
+      <div (click)="logoutClick()" *ngIf="isUserImgClicked" class="logout_div">
+        <p>Logout</p>
       </div>
     </div>
   </div>
   <div *ngIf="isAddfriendClicked" class="friendAdd_box">
-    <div class="requestButtons_box">
-      <button
-        (click)="Add_btn_click()"
-        [ngClass]="{ active: isAddBtnClicked }"
-        class="add_btn_click"
-      >
-        Add
-      </button>
-      <button
-        (click)="Accept_btn_click()"
-        [ngClass]="{ active: isAcceptBtnClicked }"
-        class="accept_btn_click"
-      >
-        Accept
-      </button>
-    </div>
-    <div [ngClass]="{ active: isAddBtnClicked }" class="add_input_box">
-      <div class="input_box">
-        <input type="text" placeholder="Search" [(ngModel)]="searchInput" />
+    <div *ngIf="isAddfriendClicked" class="">
+      <div class="requestButtons_box">
         <button
-          [disabled]="searchInput === '' || isLoading"
-          (click)="friendAddClick()"
+          (click)="Add_btn_click()"
+          [ngClass]="{ active: isAddBtnClicked }"
+          class="add_btn_click"
         >
-          @if(isLoading){
-          <div class="loader">
-            <app-loader></app-loader>
-          </div>
-          }@else{
-          <i class="fa-solid fa-plus"></i>
-          }
+          Add
+        </button>
+        <button
+          (click)="Accept_btn_click()"
+          [ngClass]="{ active: isAcceptBtnClicked }"
+          class="accept_btn_click"
+        >
+          Accept
         </button>
       </div>
-    </div>
-    <div [ngClass]="{ active: isAcceptBtnClicked }" class="friend_request_box">
-      @if(user!= null && user.friendRequests.length!==0){
-      <div
-        *ngFor="let friend of user.friendRequests"
-        [ngClass]="{ active: friendCardIdAccept === friend._id }"
-        class="user"
-      >
-        <div class="left_col">
-          <img [src]="friend?.img" alt="#" />
-          <span>{{ friend?.username }}</span>
-        </div>
-        <div class="right_col">
-          <button (click)="friendRequestClick('accept', friend)">
-            <i class="fa-solid fa-check"></i>
-          </button>
-          <button (click)="friendRequestClick('reject', friend)">
-            <i class="fa-solid fa-xmark"></i>
+      <div [ngClass]="{ active: isAddBtnClicked }" class="add_input_box">
+        <div class="input_box">
+          <input type="text" placeholder="Search" [(ngModel)]="searchInput" />
+          <button
+            [disabled]="searchInput === '' || isLoading"
+            (click)="friendAddClick()"
+          >
+            @if(isLoading){
+            <div class="loader">
+              <app-loader></app-loader>
+            </div>
+            }@else{
+            <i class="fa-solid fa-plus"></i>
+            }
           </button>
         </div>
       </div>
-      }@else{
-      <p class="no_request_text">No friend request!</p>
-      }
+      <div
+        [ngClass]="{ active: isAcceptBtnClicked }"
+        class="friend_request_box"
+      >
+        @if(user!= null && user.friendRequests.length!==0){
+        <div
+          *ngFor="let friend of user.friendRequests"
+          [ngClass]="{ active: friendCardIdAccept === friend._id }"
+          class="user"
+        >
+          <div class="left_col">
+            <img [src]="friend?.img" alt="#" />
+            <span>{{ friend?.username }}</span>
+          </div>
+          <div class="right_col">
+            <button (click)="friendRequestClick('accept', friend)">
+              <i class="fa-solid fa-check"></i>
+            </button>
+            <button (click)="friendRequestClick('reject', friend)">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+        }@else{
+        <p class="no_request_text">No friend request!</p>
+        }
+      </div>
     </div>
   </div>
 </div>
