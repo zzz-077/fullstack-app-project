@@ -60,12 +60,21 @@
         <p>Cancel</p>
       </button>
       <button
-        [disabled]="chatName === undefined || chatName === ''"
+        [disabled]="
+          friendSelectCounter <= 1 || chatName === undefined || chatName === ''
+        "
         class="Create_btn"
         (click)="createChatClick()"
       >
+        @if(isLoading){
+        <div class="loader">
+          <app-loader></app-loader>
+        </div>
+        }@else{
         <p>Create</p>
+        }
       </button>
     </div>
   </div>
 </div>
+6702c05efe55a8f20589fab3

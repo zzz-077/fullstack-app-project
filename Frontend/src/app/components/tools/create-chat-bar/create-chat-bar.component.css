@@ -40,6 +40,14 @@
   border-radius: 0.25rem;
   background-color: var(--decoration-color);
   transition: all 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+}
+.chatBar_cont .chatBar_box .chatBar_buttons button .loader {
+  width: 18px;
+  height: 18px;
 }
 
 .chatBar_cont .chatBar_box .chatBar_buttons button:hover {

@@ -30,6 +30,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../shared/store/app.state';
 import { selectUserData } from '../../../shared/store/userData/userData.selectors';
 import { AlertsComponent } from '../alerts/alerts.component';
+import * as chatsActions from '../../../shared/store/AllChat/chats.actions';
+import { LoaderComponent } from '../loader/loader.component';
 
 @Component({
   selector: 'app-create-chat-bar',
@@ -40,6 +42,7 @@ import { AlertsComponent } from '../alerts/alerts.component';
     FormsModule,
     FriendCardComponent,
     AlertsComponent,
+    LoaderComponent,
   ],
   templateUrl: './create-chat-bar.component.html',
   styleUrl: './create-chat-bar.component.css',
@@ -68,6 +71,9 @@ export class CreateChatBarComponent implements OnInit, OnDestroy {
     status: '',
     message: '',
   };
+  friendSelectCounter: number = 0;
+  isLoading: boolean = false;
+
   constructor(
     private friendreqS: FriendRequestService,
     private store: Store<AppState>
@@ -91,7 +97,6 @@ export class CreateChatBarComponent implements OnInit, OnDestroy {
         .subscribe(
           (res) => {
             if (Array.isArray(res.data)) {
-              console.log(res.data);
               this.friendInfo.push({
                 id: id,
                 name: res.data[0]?.name,
@@ -121,6 +126,7 @@ export class CreateChatBarComponent implements OnInit, OnDestroy {
     this.isClosedComponent.emit(true);
   }
   createChatClick() {
+    this.isLoading = true;
     this.friendInfo.forEach((data) => {
       if (data.checked) {
         this.chatUserIds.push(data.id);
@@ -171,8 +177,10 @@ export class CreateChatBarComponent implements OnInit, OnDestroy {
                 status: '',
                 message: '',
               };
+              this.isLoading = false;
+              this.store.dispatch(chatsActions.chatsData());
               this.isClosedComponent.emit(true);
-            }, 5000);
+            }, 2500);
           }
         },
         (error) => console.log('Caught error:', error)
@@ -191,7 +199,10 @@ export class CreateChatBarComponent implements OnInit, OnDestroy {
     this.friendInfo.forEach((data) => {
       if (data.id === friendId) {
         data.checked = !data.checked;
+        if (data.checked) this.friendSelectCounter++;
+        else this.friendSelectCounter--;
       }
     });
+    console.log(this.friendSelectCounter);
   }
 }

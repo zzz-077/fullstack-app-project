@@ -28,7 +28,7 @@ export default async function getChats(req, res) {
           const chatData = await Chat.find({
             participants: { $all: [userId] },
           });
-          console.log(chatData);
+          // console.log(chatData);
           if (!chatData)
             return res.status(404).json({
               status: "fail",
