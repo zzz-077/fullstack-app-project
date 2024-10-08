@@ -37,7 +37,9 @@ UC.defineComponents(UC);
   styleUrl: './message-box.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class MessageBoxComponent implements OnInit, AfterViewChecked {
+export class MessageBoxComponent
+  implements OnInit, OnDestroy, AfterViewChecked
+{
   OpenedChat: { chatId: string; participants: string[] } | null = null;
   user!: any;
   messageText: string = '';
@@ -61,6 +63,7 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
   files: any[] = [];
   clickedChat!: string;
   isMessagesLoaded: boolean = false;
+  EmojiSubsription!: Subscription;
   constructor(
     private store: Store<AppState>,
     private friendReqS: FriendRequestService
@@ -152,10 +155,14 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
     );
     this.friendReqS.receivedMessage().subscribe((messagedata) => {
       if (messagedata && this.user?._id === messagedata?.senderId) {
-        if (Array.isArray(this.messagesArray)) {
+        if (this.messagesArray || Array.isArray(this.messagesArray)) {
+          this.isMessagesLoaded = true;
+          console.log('log1');
           if (messagedata.status === 'sent') {
+            console.log('log2');
             this.messagesArray.pop();
           }
+          console.log(messagedata.status);
           this.messagesArray.push({
             name: this.user?.name,
             message: messagedata.message,
@@ -164,10 +171,12 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
             senderId: messagedata.senderId,
           });
         }
-        // console.log(this.messagesArray);
+        console.log(this.messagesArray);
       } else console.log(messagedata);
     });
     this.friendReqS.listenForMessagesInChat().subscribe((data: any) => {
+      this.isMessagesLoaded = true;
+      console.log(data);
       if (data) {
         this.messagesArray.push({
           name: data.senderName,
@@ -176,6 +185,7 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
           status: 'sent',
           senderId: data.senderId,
         });
+        console.log(this.messagesArray);
       }
     });
     this.friendReqS.getAllEmoji().subscribe((data) => {
@@ -189,7 +199,9 @@ export class MessageBoxComponent implements OnInit, AfterViewChecked {
       }
     });
   }
-
+  ngOnDestroy(): void {
+    if (this.EmojiSubsription) this.EmojiSubsription.unsubscribe();
+  }
   sendMessageClick(input: string) {
     if (this.OpenedChat?.chatId && input.trim() !== '')
       this.friendReqS.sendMessage(

@@ -203,6 +203,5 @@ export class CreateChatBarComponent implements OnInit, OnDestroy {
         else this.friendSelectCounter--;
       }
     });
-    console.log(this.friendSelectCounter);
   }
 }

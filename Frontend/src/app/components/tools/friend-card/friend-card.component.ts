@@ -52,14 +52,6 @@ export class FriendCardComponent implements OnInit {
         }
       }
     );
-    // this.friendreqS.chatCheck$.subscribe((data: any) => {
-    //   if (data) {
-    //     const chatDataFromLocalstorage = data;
-    //     if (this.chatInfo?._id === chatDataFromLocalstorage?.chatId) {
-    //       this.store.dispatch(chatActions.chatData({ data: this.chatInfo }));
-    //     }
-    //   }
-    // });
     if (this.chatInfo?.participants.length > 1) {
       this.friendInfo = [];
       this.friendInfo.push({
@@ -69,6 +61,7 @@ export class FriendCardComponent implements OnInit {
       });
       this.getChatLastMessage(this.chatInfo?._id);
     } else {
+      this.getChatLastMessage(this.chatInfo?._id);
       this.friendreqS
         .getFriendData(this.chatInfo?.participants[0])
         .pipe(
@@ -87,6 +80,7 @@ export class FriendCardComponent implements OnInit {
           },
           (error) => console.log('Caught error:', error)
         );
+      /*
       if (this.fromWhereIscalled === 'contactBox') {
         this.friendreqS
           .getChatData({
@@ -109,7 +103,7 @@ export class FriendCardComponent implements OnInit {
               // console.log(error);
             }
           );
-      }
+      }*/
     }
   }
 
@@ -138,6 +132,10 @@ export class FriendCardComponent implements OnInit {
           }
         },
         (error) => {
+          this.lastMessage = {
+            message: '',
+            time: '',
+          };
           console.log(error);
         }
       );

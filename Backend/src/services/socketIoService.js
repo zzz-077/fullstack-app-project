@@ -49,9 +49,12 @@ function handleSocketConnection(io, socket) {
         ...receivedMessage?._doc,
         status: "sent",
       });
+
       socket.broadcast
         .to(chatId)
         .emit("receivedMessageInChat", receivedMessage);
+      console.log("================receivedMessage================");
+      console.log(receivedMessage);
     } catch (error) {
       socket.emit("receivedMessage", {
         status: "fail",
