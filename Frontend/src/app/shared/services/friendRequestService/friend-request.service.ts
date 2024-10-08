@@ -115,7 +115,6 @@ export class FriendRequestService {
   receivedMessage(): Observable<any> {
     return new Observable((observer) => {
       this.socket.on('receivedMessage', (data) => {
-        console.log(data);
         observer.next(data);
       });
     });
@@ -123,7 +122,6 @@ export class FriendRequestService {
   listenForMessagesInChat(): Observable<any> {
     return new Observable((observer) => {
       this.socket.on('receivedMessageInChat', (data) => {
-        console.log(data);
         observer.next(data);
       });
     });

@@ -53,8 +53,6 @@ function handleSocketConnection(io, socket) {
       socket.broadcast
         .to(chatId)
         .emit("receivedMessageInChat", receivedMessage);
-      console.log("================receivedMessage================");
-      console.log(receivedMessage);
     } catch (error) {
       socket.emit("receivedMessage", {
         status: "fail",

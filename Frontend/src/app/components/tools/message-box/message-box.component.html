@@ -18,11 +18,20 @@
       </div>
     </div>
     <div class="right_col">
-      <i class="fa-solid fa-video"></i>
-      <i class="fa-solid fa-gears"></i>
+      <button>
+        <i class="fa-solid fa-video"></i>
+      </button>
+      <button (click)="optionsClick()">
+        <i class="fa-solid fa-gears"></i>
+      </button>
     </div>
   </div>
   <div class="message_box" #messageContainer>
+    <div [ngClass]="isOptionsClicked ? 'active' : null" class="options_cont">
+      <button class="delete_chat_btn">
+        <i class="fa-solid fa-trash-can"></i>delete chat
+      </button>
+    </div>
     @if(isMessagesLoaded){
     <div *ngFor="let message of messagesArray">
       @if(message.senderId=== user?._id){

@@ -63,6 +63,7 @@ export class MessageBoxComponent
   files: any[] = [];
   clickedChat!: string;
   isMessagesLoaded: boolean = false;
+  isOptionsClicked: boolean = false;
   EmojiSubsription!: Subscription;
   constructor(
     private store: Store<AppState>,
@@ -157,12 +158,9 @@ export class MessageBoxComponent
       if (messagedata && this.user?._id === messagedata?.senderId) {
         if (this.messagesArray || Array.isArray(this.messagesArray)) {
           this.isMessagesLoaded = true;
-          console.log('log1');
           if (messagedata.status === 'sent') {
-            console.log('log2');
             this.messagesArray.pop();
           }
-          console.log(messagedata.status);
           this.messagesArray.push({
             name: this.user?.name,
             message: messagedata.message,
@@ -171,12 +169,10 @@ export class MessageBoxComponent
             senderId: messagedata.senderId,
           });
         }
-        console.log(this.messagesArray);
       } else console.log(messagedata);
     });
     this.friendReqS.listenForMessagesInChat().subscribe((data: any) => {
       this.isMessagesLoaded = true;
-      console.log(data);
       if (data) {
         this.messagesArray.push({
           name: data.senderName,
@@ -185,7 +181,6 @@ export class MessageBoxComponent
           status: 'sent',
           senderId: data.senderId,
         });
-        console.log(this.messagesArray);
       }
     });
     this.friendReqS.getAllEmoji().subscribe((data) => {
@@ -248,5 +243,8 @@ export class MessageBoxComponent
   chatImgClick(imgUrl: string, bool: boolean) {
     this.isChatImgClicked = bool;
     if (imgUrl.trim() !== '') this.cklickedChatImg = imgUrl;
+  }
+  optionsClick() {
+    this.isOptionsClicked = !this.isOptionsClicked;
   }
 }
