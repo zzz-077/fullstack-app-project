@@ -6,6 +6,7 @@ import getChatData from "../services/getChatDataService.js";
 import getChatMessages from "../services/chatMessagesService.js";
 import createChat from "../services/createChatService.js";
 import getChats from "../services/getChatsService.js";
+import deletechat from "../services/deleteChatService.js";
 const router = express.Router();
 
 router.post("/", (req, res) => {
@@ -33,5 +34,6 @@ router.post("/getChatData", getChatData);
 router.post("/getChatmessages", getChatMessages);
 router.post("/createChat", createChat);
 router.post("/getChats", getChats);
+router.delete("/deleteChat", deletechat);
 
 export default router;

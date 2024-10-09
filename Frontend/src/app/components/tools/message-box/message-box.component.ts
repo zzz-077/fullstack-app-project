@@ -247,4 +247,8 @@ export class MessageBoxComponent
   optionsClick() {
     this.isOptionsClicked = !this.isOptionsClicked;
   }
+  deleteChatClick() {
+    const chatId = this.OpenedChat?.chatId;
+    const participants = this.OpenedChat?.participants;
+  }
 }
