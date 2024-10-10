@@ -28,9 +28,12 @@
   </div>
   <div class="message_box" #messageContainer>
     <div [ngClass]="isOptionsClicked ? 'active' : null" class="options_cont">
-      <button (click)="deleteChatClick()" class="delete_chat_btn">
-        <i class="fa-solid fa-trash-can"></i>delete chat
-      </button>
+      <div class="options_box">
+        <button (click)="deleteChatClick()" class="delete_chat_btn">
+          <i class="fa-solid fa-trash-can"></i>delete chat
+        </button>
+        <p>More feature will be added soon</p>
+      </div>
     </div>
     @if(isMessagesLoaded){
     <div *ngFor="let message of messagesArray">

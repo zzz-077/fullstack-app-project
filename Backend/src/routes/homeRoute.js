@@ -34,6 +34,6 @@ router.post("/getChatData", getChatData);
 router.post("/getChatmessages", getChatMessages);
 router.post("/createChat", createChat);
 router.post("/getChats", getChats);
-router.delete("/deleteChat", deletechat);
+router.post("/deleteChat", deletechat);
 
 export default router;

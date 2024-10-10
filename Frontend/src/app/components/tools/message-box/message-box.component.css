@@ -216,8 +216,17 @@
   top: 0;
   right: 0;
   transform: translateX(100%);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: end;
   transition: all 0.3s;
-  z-index: 1;
+}
+.message_box .options_cont.active {
+  transform: translateX(0);
+}
+.message_box .options_cont .options_box {
+  width: 200px;
   padding: 0.5rem 0.25rem;
   background-color: var(--bg-color);
   box-shadow: 2.8px 1.7px 26.2px rgba(0, 0, 0, 0.044),
@@ -227,15 +236,11 @@
     41.8px 25.5px 158.9px rgba(0, 0, 0, 0.06),
     100px 61px 149px rgba(0, 0, 0, 0.07);
   height: 100%;
-  width: 200px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-.message_box .options_cont.active {
-  transform: translateX(0);
-}
-.message_box .options_cont .delete_chat_btn {
+.message_box .options_cont .options_box .delete_chat_btn {
   width: 100%;
   padding: 0.5rem;
   background-color: #d11a2a;
@@ -248,8 +253,12 @@
   font-size: 0.875rem;
   border-radius: 0.25rem;
 }
-.message_box .options_cont .delete_chat_btn:hover {
+.message_box .options_cont .options_box .delete_chat_btn:hover {
   filter: brightness(1.1);
+}
+.message_box .options_cont .options_box p {
+  color: var(--font-color);
+  font-size: 0.65rem;
 }
 .message_box .user_message {
   width: 100%;

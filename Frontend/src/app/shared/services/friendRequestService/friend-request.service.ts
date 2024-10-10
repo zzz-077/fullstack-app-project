@@ -100,6 +100,19 @@ export class FriendRequestService {
       }
     );
   }
+  deleteChat(
+    chatId: string,
+    participants: string[] | null,
+    userId: string
+  ): Observable<APIRESP> {
+    return this.http.post<APIRESP>(
+      this.url + '/home/deleteChat',
+      { chatId, participants, userId },
+      {
+        withCredentials: true,
+      }
+    );
+  }
   //socketio-clientSide requests
   JoinInChat(chatId: string): void {
     this.socket.emit('joinChat', chatId);

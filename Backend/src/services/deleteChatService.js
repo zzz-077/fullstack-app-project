@@ -1,54 +1,87 @@
+import { trusted } from "mongoose";
 import Chat from "../models/chatM.js";
 import Message from "../models/messageM.js";
 import User from "../models/userM.js";
 
 async function deletechat(req, res) {
-  const { chatId, participants } = req.body;
-
+  const chatId = req.body?.chatId;
+  const participants = req.body?.participants;
+  const removedFriendIDFromChat = req.body?.userId;
+  console.log(removedFriendIDFromChat);
   try {
-    const foundedChat = await Chat.findOneAndDelete({ _id: chatId });
-    console.log(foundedChat);
-    if (!foundedChat)
-      return res.status(404).json({
-        status: "fail",
-        message: "Can not find chat!",
-        error: null,
-        data: [],
-      });
-    await Message.deleteMany({ chatId: chatId });
-
+    /*
     if (Array.isArray(participants)) {
-      console.log("log1");
-      for (const idLoop1 of participants) {
-        console.log("idloop1", idLoop1);
-        for (const idLoop2 of participants) {
-          console.log("idloop2", idLoop2);
-          if (idLoop1 !== idLoop2) {
-            const updateUserFriends = await User.findOneAndUpdate(
-              idLoop1,
-              {
-                $pull: { friends: idLoop2 },
+      if (participants.length === 2 && removedFriendIDFromChat==='') {
+        const foundedChat = await Chat.findOneAndDelete({ _id: chatId });
+        // console.log(foundedChat);
+        if (!foundedChat)
+          return res.status(404).json({
+            status: "fail",
+            message: "Can not find chat!",
+            error: null,
+            data: [],
+          });
+
+        console.log("log1");
+        for (const idLoop1 of participants) {
+          // Removing participant from this user's friends array
+          const updateUserFriends = await User.findOneAndUpdate(
+            { _id: idLoop1 },
+            {
+              $pull: {
+                friends: { $in: participants.filter((id) => id !== idLoop1) },
               },
-              { new: true }
-            );
-            console.log("====================");
-            console.log(updateUserFriends);
-            if (!updateUserFriends)
-              return res.status(404).json({
-                status: "fail",
-                message: "Can not find friend in user's friends!",
-                error: null,
-                data: [],
-              });
+            },
+            { new: true }
+          );
+
+          console.log("log2");
+          console.log(updateUserFriends);
+
+          if (!updateUserFriends) {
+            return res.status(404).json({
+              status: "fail",
+              message: "Cannot find user or update friends array!",
+              error: null,
+              data: [],
+            });
           }
+
+          const DeletedMessages = await Message.deleteMany({ chatId: chatId });
+          console.log(DeletedMessages);
+          // we don't need to check if there is not messages, because it might be new chat without any message so it doesn't have to return error status
+          // if (DeletedMessages.deletedCount === 0)
+          //   return res.status(404).json({
+          //     status: "fail",
+          //     message: "Can not find messages!",
+          //     error: null,
+          //     data: [],
+          //   });
         }
+      } else if (participants.length > 2 && removedFriendIDFromChat!=='') {
+        console.log("log3");
+
+        const updateedChat = await Chat.findOneAndUpdate(
+          { _id: chatId },
+          { $pull: { participants: removedFriendIDFromChat } },
+          { new: true }
+        );
+        console.log(updateedChat);
+        if (!updateedChat)
+          return res.status(404).json({
+            status: "fail",
+            message: "Can not find user in chat!",
+            error: null,
+            data: [],
+          });
       }
     }
+
     return res.status(200).json({
       status: "success",
       message: "Chat and related data successfully deleted",
       data: [],
-    });
+    });*/
   } catch (error) {
     return res.status(500).json({
       status: "fail",

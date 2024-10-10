@@ -28,6 +28,9 @@ import * as UC from '@uploadcare/file-uploader';
 import '@uploadcare/file-uploader/web/uc-file-uploader-regular.min.css';
 import { OutputFileEntry } from '@uploadcare/file-uploader';
 import { selectChatData } from '../../../shared/store/Chat/chat.selectors';
+import * as userActions from '../../../shared/store/userData/userData.actions';
+import * as chatActions from '../../../shared/store/Chat/chat.actions';
+
 UC.defineComponents(UC);
 @Component({
   selector: 'app-message-box',
@@ -89,6 +92,7 @@ export class MessageBoxComponent
           if (this.OpenedChat.participants.length > 1) {
             this.store.select(selectChatData).subscribe((data: any) => {
               if (data) {
+                console.log(data);
                 this.chatInfo = [];
                 this.chatInfo.push({
                   name: data.chatName,
@@ -115,7 +119,9 @@ export class MessageBoxComponent
                     this.chatInfo = [];
                   }
                 },
-                (error) => console.log('Caught error:', error)
+                (error) => {
+                  console.log('Caught error:', error);
+                }
               );
           }
           //getChatMessages
@@ -207,7 +213,6 @@ export class MessageBoxComponent
       );
     this.messageText = '';
   }
-
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
@@ -249,6 +254,34 @@ export class MessageBoxComponent
   }
   deleteChatClick() {
     const chatId = this.OpenedChat?.chatId;
-    const participants = this.OpenedChat?.participants;
+    const userId =
+      this.chatInfo[0]?.name !== '' ? this.chatInfo[0]?.name : this.user?._id;
+    console.log(userId);
+
+    let participants: string[] | undefined = this.OpenedChat?.participants;
+    participants?.push(this.user?._id);
+    if (chatId && Array.isArray(participants)) {
+      this.friendReqS
+        .deleteChat(chatId, participants, userId)
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            return throwError(error);
+          })
+        )
+        .subscribe(
+          (res) => {
+            console.log(res);
+            if (res) {
+              this.store.dispatch(userActions.userData());
+              this.store.dispatch(chatActions.chatData({ data: [] }));
+              this.friendReqS.saveChatDataInLocalStorage('', []);
+              this.isOptionsClicked = false;
+            }
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    }
   }
 }

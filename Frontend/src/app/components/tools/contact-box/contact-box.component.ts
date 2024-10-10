@@ -28,6 +28,8 @@ export class ContactBoxComponent implements OnInit {
   userChats: any;
   user!: any;
   iscreateChatOpened: boolean = false;
+  OpenedChat: { chatId: string; participants: string[] } | null = null;
+
   constructor(
     private store: Store<AppState>,
     private friendreqS: FriendRequestService
@@ -36,9 +38,31 @@ export class ContactBoxComponent implements OnInit {
     this.chatsResp$ = this.store.select(SelectuserChats);
   }
   ngOnInit() {
+    this.friendreqS.chatCheck$.subscribe(
+      (data: { chatId: string; participants: string[] } | null) => {
+        if (data) {
+          this.OpenedChat = data;
+        }
+      }
+    );
     this.userResp$.subscribe((res) => {
       if (res.data && !Array.isArray(res.data)) {
         this.user = res.data;
+        if (this.OpenedChat?.participants.length === 1) {
+          const userFriends = this.user.friends;
+
+          const friendId = this.OpenedChat?.participants[0];
+          if (Array.isArray(userFriends)) {
+            const foundFriendInList = userFriends.find((id) => {
+              return id === friendId;
+            });
+            if (!foundFriendInList) {
+              this.store.dispatch(chatActions.chatData({ data: [] }));
+              this.friendreqS.saveChatDataInLocalStorage('', []);
+            }
+          }
+        }
+
         this.store.dispatch(chatsActions.chatsData());
         this.chatsResp$.subscribe((res: APIRESP) => {
           if (res.data.length > 0 && Array.isArray(res.data)) {
