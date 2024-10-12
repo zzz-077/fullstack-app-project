@@ -30,6 +30,7 @@
     "express": "^4.18.2",
     "ngx-auto-scroll": "^1.1.0",
     "ngx-cookie-service": "^17.0.1",
+    "ngx-skeleton-loader": "^9.0.0",
     "rxjs": "~7.8.0",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",

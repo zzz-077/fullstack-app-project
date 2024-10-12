@@ -14,11 +14,17 @@ import { HttpErrorResponse } from '@angular/common/http';
 import * as chatActions from '../../../shared/store/Chat/chat.actions';
 import { SelectuserChats } from '../../../shared/store/AllChat/chats.selectors';
 import { CreateChatBarComponent } from '../create-chat-bar/create-chat-bar.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-contact-box',
   standalone: true,
-  imports: [FriendCardComponent, CommonModule, CreateChatBarComponent],
+  imports: [
+    FriendCardComponent,
+    CommonModule,
+    CreateChatBarComponent,
+    NgxSkeletonLoaderModule,
+  ],
   templateUrl: './contact-box.component.html',
   styleUrl: './contact-box.component.css',
 })
@@ -29,7 +35,7 @@ export class ContactBoxComponent implements OnInit {
   user!: any;
   iscreateChatOpened: boolean = false;
   OpenedChat: { chatId: string; participants: string[] } | null = null;
-
+  isChatsLoaded: boolean = false;
   constructor(
     private store: Store<AppState>,
     private friendreqS: FriendRequestService
@@ -46,11 +52,11 @@ export class ContactBoxComponent implements OnInit {
       }
     );
     this.userResp$.subscribe((res) => {
+      this.isChatsLoaded = true;
       if (res.data && !Array.isArray(res.data)) {
         this.user = res.data;
         if (this.OpenedChat?.participants.length === 1) {
           const userFriends = this.user.friends;
-
           const friendId = this.OpenedChat?.participants[0];
           if (Array.isArray(userFriends)) {
             const foundFriendInList = userFriends.find((id) => {
@@ -78,6 +84,7 @@ export class ContactBoxComponent implements OnInit {
               }
               return data;
             });
+            this.isChatsLoaded = false;
             this.userChats = changedData;
           }
         });

@@ -78,3 +78,17 @@
 .contact_createChat_btn p {
   color: var(--font-light-color);
 }
+/*============================*/
+/*============================*/
+/*======SKELETON LOADER=======*/
+/*============================*/
+/*============================*/
+
+:host ::ng-deep .loader_class ngx-skeleton-loader .skeleton-loader {
+  width: 100%;
+  height: 55px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: #d0cdcdec;
+}

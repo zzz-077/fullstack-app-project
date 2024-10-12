@@ -13,6 +13,7 @@
         *ngIf="user?.friendRequests.length > 0"
       ></span>
     </button>
+    @if(!isUserLoadaded){
     <div class="user_info_box">
       <h3>{{ user?.name }}</h3>
       <div (click)="userImgClicked()" class="user_img">
@@ -23,6 +24,22 @@
         <p>Logout</p>
       </div>
     </div>
+    }@else {
+    <div ngClass="loader_class">
+      <ngx-skeleton-loader
+        class="nameSkeleton"
+        animation="progress"
+        count="1"
+        appearance="line"
+      />
+      <ngx-skeleton-loader
+        class="imgSkeleton"
+        animation="progress"
+        count="1"
+        appearance="circle"
+      />
+    </div>
+    }
   </div>
   <div *ngIf="isAddfriendClicked" class="friendAdd_box">
     <div *ngIf="isAddfriendClicked" class="">

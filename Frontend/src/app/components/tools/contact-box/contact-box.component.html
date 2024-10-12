@@ -1,11 +1,17 @@
 <div class="chat_contact_cont">
   <div class="contact_friend_box">
+    @if (isChatsLoaded) {
+    <div ngClass="loader_class">
+      <ngx-skeleton-loader animation="progress" count="10" appearance="line" />
+    </div>
+    }@else {
     <app-friend-card
       (click)="friendCardClick(chat)"
       *ngFor="let chat of userChats"
       [chatInfo]="chat"
       [fromWhereIscalled]="'contactBox'"
     ></app-friend-card>
+    }
   </div>
   <button (click)="createChatClick('opened')" class="contact_createChat_btn">
     <i class="fa-solid fa-circle-plus"></i>

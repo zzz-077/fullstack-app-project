@@ -30,12 +30,15 @@ import { OutputFileEntry } from '@uploadcare/file-uploader';
 import { selectChatData } from '../../../shared/store/Chat/chat.selectors';
 import * as userActions from '../../../shared/store/userData/userData.actions';
 import * as chatActions from '../../../shared/store/Chat/chat.actions';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { error } from 'console';
+import e from 'express';
 
 UC.defineComponents(UC);
 @Component({
   selector: 'app-message-box',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgxSkeletonLoaderModule],
   templateUrl: './message-box.component.html',
   styleUrl: './message-box.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -68,6 +71,8 @@ export class MessageBoxComponent
   isMessagesLoaded: boolean = false;
   isOptionsClicked: boolean = false;
   EmojiSubsription!: Subscription;
+  isChatInfoLoaded: boolean = false;
+  isEmojisLoaded: boolean = false;
   constructor(
     private store: Store<AppState>,
     private friendReqS: FriendRequestService
@@ -83,6 +88,7 @@ export class MessageBoxComponent
         this.user = res.data;
       }
     });
+    this.isChatInfoLoaded = true;
     this.friendReqS.chatCheck$.subscribe(
       (data: { chatId: string; participants: string[] } | null) => {
         if (data) {
@@ -94,6 +100,7 @@ export class MessageBoxComponent
               if (data) {
                 console.log(data);
                 this.chatInfo = [];
+                this.isChatInfoLoaded = false;
                 this.chatInfo.push({
                   name: data.chatName,
                   img: 'assets/groupChatImg.png',
@@ -115,6 +122,7 @@ export class MessageBoxComponent
                     this.messagesArray = [];
                     this.chatInfo = [];
                     this.chatInfo.push(res.data[0]);
+                    this.isChatInfoLoaded = false;
                   } else {
                     this.chatInfo = [];
                   }
@@ -189,16 +197,30 @@ export class MessageBoxComponent
         });
       }
     });
-    this.friendReqS.getAllEmoji().subscribe((data) => {
-      if (Array.isArray(data)) {
-        data.filter((emoji) => {
-          this.emojiArr.push({
-            htmlCodes: emoji.htmlCode,
-            unicode: emoji.unicode,
-          });
-        });
-      }
-    });
+    this.isEmojisLoaded = true;
+    this.friendReqS
+      .getAllEmoji()
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          return throwError(error);
+        })
+      )
+      .subscribe(
+        (data) => {
+          if (Array.isArray(data)) {
+            data.forEach((emoji) => {
+              this.emojiArr.push({
+                htmlCodes: emoji.htmlCode,
+                unicode: emoji.unicode,
+              });
+            });
+            this.isEmojisLoaded = false;
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
   ngOnDestroy(): void {
     if (this.EmojiSubsription) this.EmojiSubsription.unsubscribe();

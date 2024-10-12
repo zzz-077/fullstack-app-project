@@ -1,6 +1,7 @@
 <div class="chat_message_cont">
   <div class="message_header">
-    <div *ngIf="chatInfo.length > 0" class="left_col">
+    @if (!isChatInfoLoaded) {
+    <div class="left_col">
       <div class="img_box">
         <img [src]="chatInfo[0]?.img" alt="" />
       </div>
@@ -17,6 +18,41 @@
         </div>
       </div>
     </div>
+    }@else {
+    <div ngClass="loader_class">
+      <div class="img_box">
+        <ngx-skeleton-loader
+          class="imgSkeleton"
+          animation="progress"
+          count="1"
+          appearance="circle"
+        />
+      </div>
+      <div class="friend_info_box">
+        <ngx-skeleton-loader
+          class="nameSkeleton"
+          animation="progress"
+          count="1"
+          appearance="line"
+        />
+        <div>
+          <ngx-skeleton-loader
+            class="statusIconSkeleton"
+            animation="progress"
+            count="1"
+            appearance="circle"
+          />
+          <ngx-skeleton-loader
+            class="statusTextSkeleton"
+            animation="progress"
+            count="1"
+            appearance="line"
+          />
+        </div>
+      </div>
+    </div>
+    }
+
     <div class="right_col">
       <button>
         <i class="fa-solid fa-video"></i>
@@ -185,11 +221,23 @@
           ></i>
           @if(isEmojiClickOpened){
           <div class="EmojiBox">
+            @if (isEmojisLoaded) {
+
+            <div ngClass="loader_class">
+              <ngx-skeleton-loader
+                class="emojiSkeleton"
+                animation="pulse"
+                count="36"
+                appearance="circle"
+              />
+            </div>
+            }@else {
             <p
               (click)="emojiClick(emoji)"
               *ngFor="let emoji of emojiArr"
               [innerHTML]="emoji.htmlCodes[0]"
             ></p>
+            }
           </div>
           }
         </button>

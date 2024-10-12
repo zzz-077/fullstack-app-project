@@ -381,3 +381,67 @@
   margin-left: 0.5rem;
   text-align: left;
 }
+/*============================*/
+/*============================*/
+/*======SKELETON LOADER=======*/
+/*============================*/
+/*============================*/
+
+.loader_class {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+:host ::ng-deep .loader_class .img_box .imgSkeleton .skeleton-loader {
+  background-color: #d0cdcdec;
+}
+:host
+  ::ng-deep
+  .loader_class
+  .friend_info_box
+  ngx-skeleton-loader
+  .skeleton-loader {
+  width: 100px;
+  height: 20px;
+  background-color: #d0cdcdec;
+  margin: 0;
+}
+.loader_class .friend_info_box div {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+:host
+  ::ng-deep
+  .loader_class
+  .friend_info_box
+  div
+  .statusIconSkeleton
+  .skeleton-loader {
+  width: 13px;
+  height: 13px;
+}
+:host
+  ::ng-deep
+  .loader_class
+  .friend_info_box
+  div
+  ngx-skeleton-loader
+  .skeleton-loader {
+  width: 60px;
+  height: 18px;
+  margin: 0;
+}
+.EmojiBox .loader_class {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+:host ::ng-deep .EmojiBox .loader_class ngx-skeleton-loader .skeleton-loader {
+  width: 20px;
+  height: 20px;
+  background-color: var(--font-color);
+  margin: 2.5px;
+}

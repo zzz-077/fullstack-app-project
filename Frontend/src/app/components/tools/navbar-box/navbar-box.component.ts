@@ -14,11 +14,18 @@ import { USER } from '../../../models/userModel';
 import { APIRESP } from '../../../models/statusModel';
 import * as userActions from '../../../shared/store/userData/userData.actions';
 import { Route, Router } from '@angular/router';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-navbar-box',
   standalone: true,
-  imports: [CommonModule, LoaderComponent, FormsModule, AlertsComponent],
+  imports: [
+    CommonModule,
+    LoaderComponent,
+    FormsModule,
+    AlertsComponent,
+    NgxSkeletonLoaderModule,
+  ],
   templateUrl: './navbar-box.component.html',
   styleUrl: './navbar-box.component.css',
 })
@@ -30,6 +37,7 @@ export class NavbarBoxComponent implements OnInit {
   isAcceptBtnClicked: boolean = false;
   userResp$: Observable<APIRESP>;
   friendCardIdAccept: string | null = null;
+  isUserLoadaded: boolean = false;
   user: any;
   alert: any = {
     status: '',
@@ -47,7 +55,9 @@ export class NavbarBoxComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(userActions.userData());
     this.userResp$.subscribe((res) => {
+      this.isUserLoadaded = true;
       if (res.data && !Array.isArray(res.data)) {
+        this.isUserLoadaded = false;
         this.user = res.data;
       }
     });

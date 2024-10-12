@@ -289,3 +289,29 @@
   text-align: center;
   font-size: 0.75rem;
 }
+/*============================*/
+/*============================*/
+/*======SKELETON LOADER=======*/
+/*============================*/
+/*============================*/
+
+.loader_class {
+  display: flex;
+  gap: 0.125rem;
+  align-items: center;
+}
+:host ::ng-deep .loader_class .imgSkeleton .skeleton-loader {
+  width: 34px;
+  height: 34px;
+  border-radius: 5rem;
+}
+:host ::ng-deep .loader_class ngx-skeleton-loader .skeleton-loader {
+  width: 100px;
+  height: 27px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: #d0cdcdec;
+  background-color: var(--font-color);
+  margin: 0;
+}
