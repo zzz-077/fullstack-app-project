@@ -13,7 +13,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class FriendRequestService {
   url: string = 'http://localhost:3000';
-  emojiAPi: string = 'https://emojihub.yurace.pro/api/all';
+  emojiAPi: string = 'https://emoji-api.com/emojis?access_key=';
   private socket: Socket;
   ChatBehaviorSabject = new BehaviorSubject<{
     chatId: string;
@@ -28,7 +28,8 @@ export class FriendRequestService {
     });
   }
   getAllEmoji() {
-    return this.http.get(this.emojiAPi);
+    let apiKey = '303c05e64be8322d963fe905b0655a1837e3f686';
+    return this.http.get(this.emojiAPi + apiKey);
   }
   friendAddRequest(obj: FRIENDADD): Observable<APIRESP> {
     return this.http.post<APIRESP>(this.url + '/home/friendAddRequest', obj, {

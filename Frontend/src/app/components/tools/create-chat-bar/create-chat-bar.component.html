@@ -36,6 +36,7 @@
             ></i>
           </span>
         </div>
+        @if(!isFriendsLoaded){
         <ul>
           @if (friendInfo.length>0) {
           <li
@@ -53,6 +54,15 @@
           <p class="noFriend_p">No friend yet</p>
           }
         </ul>
+        }@else {
+        <div ngClass="loader_class">
+          <ngx-skeleton-loader
+            animation="progress"
+            count="3"
+            appearance="line"
+          />
+        </div>
+        }
       </div>
     </div>
     <div class="chatBar_buttons">
@@ -77,4 +87,3 @@
     </div>
   </div>
 </div>
-6702c05efe55a8f20589fab3

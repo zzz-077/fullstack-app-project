@@ -33,12 +33,18 @@ import * as chatActions from '../../../shared/store/Chat/chat.actions';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { error } from 'console';
 import e from 'express';
+import { LoaderComponent } from '../loader/loader.component';
 
 UC.defineComponents(UC);
 @Component({
   selector: 'app-message-box',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgxSkeletonLoaderModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    NgxSkeletonLoaderModule,
+    LoaderComponent,
+  ],
   templateUrl: './message-box.component.html',
   styleUrl: './message-box.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -58,7 +64,7 @@ export class MessageBoxComponent
   }[] = [];
   isChatImgClicked: boolean = false;
   cklickedChatImg!: string;
-  emojiArr: { htmlCodes: string[]; unicode: string[] }[] = [];
+  emojiArr: { character: string }[] = [];
   isEmojiClickOpened: boolean = false;
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
   @ViewChild('ctxProvider', { static: true }) ctxProviderRef!: ElementRef<
@@ -186,7 +192,6 @@ export class MessageBoxComponent
       } else console.log(messagedata);
     });
     this.friendReqS.listenForMessagesInChat().subscribe((data: any) => {
-      this.isMessagesLoaded = true;
       if (data) {
         this.messagesArray.push({
           name: data.senderName,
@@ -195,6 +200,7 @@ export class MessageBoxComponent
           status: 'sent',
           senderId: data.senderId,
         });
+        this.isMessagesLoaded = true;
       }
     });
     this.isEmojisLoaded = true;
@@ -210,8 +216,7 @@ export class MessageBoxComponent
           if (Array.isArray(data)) {
             data.forEach((emoji) => {
               this.emojiArr.push({
-                htmlCodes: emoji.htmlCode,
-                unicode: emoji.unicode,
+                character: emoji.character,
               });
             });
             this.isEmojisLoaded = false;
@@ -245,19 +250,18 @@ export class MessageBoxComponent
   emojiOpenClick() {
     this.isEmojiClickOpened = !this.isEmojiClickOpened;
   }
-  emojiClick(emoji: { htmlCodes: string[]; unicode: string[] }) {
+  emojiClick(emoji: string) {
     // Combine all HTML codes for the emoji
-    const combinedEmoji = emoji.htmlCodes
-      .map((code) => {
-        const decimalCode = parseInt(
-          code.replace('&#', '').replace(';', ''),
-          10
-        );
-        return String.fromCodePoint(decimalCode);
-      })
-      .join('');
-
-    this.messageText += combinedEmoji;
+    // const combinedEmoji = emoji
+    //   .map((code) => {
+    //     const decimalCode = parseInt(
+    //       code.replace('&#', '').replace(';', ''),
+    //       10
+    //     );
+    //     return String.fromCodePoint(decimalCode);
+    //   })
+    //   .join('');
+    this.messageText += emoji;
   }
   handleUploadEvent = (e: UC.EventMap['change']) => {
     this.files = e.detail.allEntries.filter(
@@ -278,8 +282,6 @@ export class MessageBoxComponent
     const chatId = this.OpenedChat?.chatId;
     const userId =
       this.chatInfo[0]?.name !== '' ? this.chatInfo[0]?.name : this.user?._id;
-    console.log(userId);
-
     let participants: string[] | undefined = this.OpenedChat?.participants;
     participants?.push(this.user?._id);
     if (chatId && Array.isArray(participants)) {
@@ -292,7 +294,6 @@ export class MessageBoxComponent
         )
         .subscribe(
           (res) => {
-            console.log(res);
             if (res) {
               this.store.dispatch(userActions.userData());
               this.store.dispatch(chatActions.chatData({ data: [] }));

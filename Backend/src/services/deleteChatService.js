@@ -9,11 +9,9 @@ async function deletechat(req, res) {
   const removedFriendIDFromChat = req.body?.userId;
   console.log(removedFriendIDFromChat);
   try {
-    /*
     if (Array.isArray(participants)) {
-      if (participants.length === 2 && removedFriendIDFromChat==='') {
+      if (participants.length === 2 && removedFriendIDFromChat === "") {
         const foundedChat = await Chat.findOneAndDelete({ _id: chatId });
-        // console.log(foundedChat);
         if (!foundedChat)
           return res.status(404).json({
             status: "fail",
@@ -22,9 +20,7 @@ async function deletechat(req, res) {
             data: [],
           });
 
-        console.log("log1");
         for (const idLoop1 of participants) {
-          // Removing participant from this user's friends array
           const updateUserFriends = await User.findOneAndUpdate(
             { _id: idLoop1 },
             {
@@ -34,10 +30,6 @@ async function deletechat(req, res) {
             },
             { new: true }
           );
-
-          console.log("log2");
-          console.log(updateUserFriends);
-
           if (!updateUserFriends) {
             return res.status(404).json({
               status: "fail",
@@ -48,7 +40,6 @@ async function deletechat(req, res) {
           }
 
           const DeletedMessages = await Message.deleteMany({ chatId: chatId });
-          console.log(DeletedMessages);
           // we don't need to check if there is not messages, because it might be new chat without any message so it doesn't have to return error status
           // if (DeletedMessages.deletedCount === 0)
           //   return res.status(404).json({
@@ -58,15 +49,12 @@ async function deletechat(req, res) {
           //     data: [],
           //   });
         }
-      } else if (participants.length > 2 && removedFriendIDFromChat!=='') {
-        console.log("log3");
-
+      } else if (participants.length > 2 && removedFriendIDFromChat !== "") {
         const updateedChat = await Chat.findOneAndUpdate(
           { _id: chatId },
           { $pull: { participants: removedFriendIDFromChat } },
           { new: true }
         );
-        console.log(updateedChat);
         if (!updateedChat)
           return res.status(404).json({
             status: "fail",
@@ -81,7 +69,7 @@ async function deletechat(req, res) {
       status: "success",
       message: "Chat and related data successfully deleted",
       data: [],
-    });*/
+    });
   } catch (error) {
     return res.status(500).json({
       status: "fail",

@@ -32,6 +32,7 @@ import { selectUserData } from '../../../shared/store/userData/userData.selector
 import { AlertsComponent } from '../alerts/alerts.component';
 import * as chatsActions from '../../../shared/store/AllChat/chats.actions';
 import { LoaderComponent } from '../loader/loader.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-create-chat-bar',
@@ -43,6 +44,7 @@ import { LoaderComponent } from '../loader/loader.component';
     FriendCardComponent,
     AlertsComponent,
     LoaderComponent,
+    NgxSkeletonLoaderModule,
   ],
   templateUrl: './create-chat-bar.component.html',
   styleUrl: './create-chat-bar.component.css',
@@ -73,7 +75,7 @@ export class CreateChatBarComponent implements OnInit, OnDestroy {
   };
   friendSelectCounter: number = 0;
   isLoading: boolean = false;
-
+  isFriendsLoaded: boolean = false;
   constructor(
     private friendreqS: FriendRequestService,
     private store: Store<AppState>
@@ -85,6 +87,7 @@ export class CreateChatBarComponent implements OnInit, OnDestroy {
     });
   }
   ngOnInit(): void {
+    this.isFriendsLoaded = true;
     this.chatUserIds.push(this.user._id);
     this.userFriendsId.forEach((id: any) => {
       this.subscription = this.friendreqS
@@ -97,6 +100,7 @@ export class CreateChatBarComponent implements OnInit, OnDestroy {
         .subscribe(
           (res) => {
             if (Array.isArray(res.data)) {
+              this.isFriendsLoaded = false;
               this.friendInfo.push({
                 id: id,
                 name: res.data[0]?.name,

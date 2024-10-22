@@ -71,9 +71,11 @@
         <p>More feature will be added soon</p>
       </div>
     </div>
+
     @if(isMessagesLoaded){
-    <div *ngFor="let message of messagesArray">
-      @if(message.senderId=== user?._id){
+    <div>
+      @for(message of messagesArray; track $index){ @if(message.senderId===
+      user?._id){
       <div class="user_message">
         @if (message.status==='sent') {
         <div class="message">
@@ -174,7 +176,11 @@
         </div>
         }
       </div>
-      }
+      } }
+    </div>
+    }@else {
+    <div class="laoder-box">
+      <div class="loader"></div>
     </div>
     }
   </div>
@@ -233,9 +239,9 @@
             </div>
             }@else {
             <p
-              (click)="emojiClick(emoji)"
+              (click)="emojiClick(emoji.character)"
               *ngFor="let emoji of emojiArr"
-              [innerHTML]="emoji.htmlCodes[0]"
+              [innerHTML]="emoji.character"
             ></p>
             }
           </div>
