@@ -6,11 +6,13 @@ import User from "../models/userM.js";
 async function deletechat(req, res) {
   const chatId = req.body?.chatId;
   const participants = req.body?.participants;
-  const removedFriendIDFromChat = req.body?.userId;
-  console.log(removedFriendIDFromChat);
+  const isGroupChat = req.body?.isGroupChat;
+  const userId = req.body?.userId;
+  console.log(isGroupChat);
+  console.log(userId);
   try {
     if (Array.isArray(participants)) {
-      if (participants.length === 2 && removedFriendIDFromChat === "") {
+      if (isGroupChat === null) {
         const foundedChat = await Chat.findOneAndDelete({ _id: chatId });
         if (!foundedChat)
           return res.status(404).json({
@@ -49,10 +51,10 @@ async function deletechat(req, res) {
           //     data: [],
           //   });
         }
-      } else if (participants.length > 2 && removedFriendIDFromChat !== "") {
+      } else if (isGroupChat === true) {
         const updateedChat = await Chat.findOneAndUpdate(
           { _id: chatId },
-          { $pull: { participants: removedFriendIDFromChat } },
+          { $pull: { participants: userId } },
           { new: true }
         );
         if (!updateedChat)
@@ -63,13 +65,12 @@ async function deletechat(req, res) {
             data: [],
           });
       }
+      return res.status(200).json({
+        status: "success",
+        message: "Chat and related data successfully deleted",
+        data: [],
+      });
     }
-
-    return res.status(200).json({
-      status: "success",
-      message: "Chat and related data successfully deleted",
-      data: [],
-    });
   } catch (error) {
     return res.status(500).json({
       status: "fail",

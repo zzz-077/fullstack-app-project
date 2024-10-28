@@ -34,7 +34,11 @@ export class ContactBoxComponent implements OnInit {
   userChats: any;
   user!: any;
   iscreateChatOpened: boolean = false;
-  OpenedChat: { chatId: string; participants: string[] } | null = null;
+  OpenedChat: {
+    chatId: string;
+    participants: string[];
+    isGroupChat: boolean | null;
+  } | null = null;
   isChatsLoaded: boolean = false;
   constructor(
     private store: Store<AppState>,
@@ -45,7 +49,13 @@ export class ContactBoxComponent implements OnInit {
   }
   ngOnInit() {
     this.friendreqS.chatCheck$.subscribe(
-      (data: { chatId: string; participants: string[] } | null) => {
+      (
+        data: {
+          chatId: string;
+          participants: string[];
+          isGroupChat: boolean | null;
+        } | null
+      ) => {
         if (data) {
           this.OpenedChat = data;
         }
@@ -54,17 +64,18 @@ export class ContactBoxComponent implements OnInit {
     this.userResp$.subscribe((res) => {
       this.isChatsLoaded = true;
       if (res.data && !Array.isArray(res.data)) {
-        this.user = res.data;
-        if (this.OpenedChat?.participants.length === 1) {
+        this.isChatsLoaded = false;
+        if (this.OpenedChat?.isGroupChat === null) {
           const userFriends = this.user.friends;
           const friendId = this.OpenedChat?.participants[0];
+          this.user = res.data;
           if (Array.isArray(userFriends)) {
             const foundFriendInList = userFriends.find((id) => {
               return id === friendId;
             });
             if (!foundFriendInList) {
               this.store.dispatch(chatActions.chatData({ data: [] }));
-              this.friendreqS.saveChatDataInLocalStorage('', []);
+              this.friendreqS.saveChatDataInLocalStorage('', [], null);
             }
           }
         }
@@ -84,7 +95,6 @@ export class ContactBoxComponent implements OnInit {
               }
               return data;
             });
-            this.isChatsLoaded = false;
             this.userChats = changedData;
           }
         });
@@ -95,7 +105,8 @@ export class ContactBoxComponent implements OnInit {
     this.store.dispatch(chatActions.chatData({ data: chatInfo }));
     this.friendreqS.saveChatDataInLocalStorage(
       chatInfo._id,
-      chatInfo?.participants
+      chatInfo?.participants,
+      chatInfo?.isGroupChat
     );
   }
   createChatClick(string: string) {

@@ -86,8 +86,6 @@ export class SigninComponent implements OnInit, OnDestroy {
       .userSignIn(user)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          console.log(error);
-
           if (error.error instanceof ErrorEvent) {
             // Client-side error
             this.alert = {

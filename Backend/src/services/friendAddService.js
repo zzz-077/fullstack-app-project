@@ -129,7 +129,7 @@ async function acceptRequest(req, res) {
         },
         { new: true }
       );
-      console.log(updatedUser);
+      // console.log(updatedUser);
       if (!updatedUser)
         return res.status(404).json({
           status: "fail",

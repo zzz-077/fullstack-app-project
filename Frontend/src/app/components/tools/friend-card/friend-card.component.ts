@@ -52,7 +52,7 @@ export class FriendCardComponent implements OnInit {
         }
       }
     );
-    if (this.chatInfo?.participants.length > 1) {
+    if (this.chatInfo?.isGroupChat === true) {
       this.friendInfo = [];
       this.friendInfo.push({
         name: this.chatInfo?.chatName,
@@ -61,49 +61,31 @@ export class FriendCardComponent implements OnInit {
       });
       this.getChatLastMessage(this.chatInfo?._id);
     } else {
-      this.getChatLastMessage(this.chatInfo?._id);
-      this.friendreqS
-        .getFriendData(this.chatInfo?.participants[0])
-        .pipe(
-          catchError((error: HttpErrorResponse) => {
-            return throwError(() => error);
-          })
-        )
-        .subscribe(
-          (res) => {
-            if (Array.isArray(res.data)) {
-              this.friendInfo = [];
-              this.friendInfo.push(res.data[0]);
-            } else {
-              this.friendInfo = [];
-            }
-          },
-          (error) => console.log('Caught error:', error)
+      if (Array.isArray(this.chatInfo?.participants)) {
+        const friendId = this.chatInfo?.participants.find(
+          (id: string) => id !== this.user?._id
         );
-      /*
-      if (this.fromWhereIscalled === 'contactBox') {
+
+        this.getChatLastMessage(this.chatInfo?._id);
         this.friendreqS
-          .getChatData({
-            userId: this.user?._id,
-            friendId: this.chatInfo?.participants[0],
-          })
+          .getFriendData(friendId)
           .pipe(
             catchError((error: HttpErrorResponse) => {
               return throwError(() => error);
             })
           )
           .subscribe(
-            (res: APIRESP) => {
-              if (res) {
-                const chatId = res.data[0]?._id;
-                this.getChatLastMessage(chatId);
+            (res) => {
+              if (Array.isArray(res.data)) {
+                this.friendInfo = [];
+                this.friendInfo.push(res.data[0]);
+              } else {
+                this.friendInfo = [];
               }
             },
-            (error: APIRESP) => {
-              // console.log(error);
-            }
+            (error) => console.log('Caught error:', error)
           );
-      }*/
+      }
     }
   }
 

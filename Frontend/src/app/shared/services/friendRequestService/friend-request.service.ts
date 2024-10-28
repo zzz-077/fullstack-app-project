@@ -18,9 +18,13 @@ export class FriendRequestService {
   ChatBehaviorSabject = new BehaviorSubject<{
     chatId: string;
     participants: string[];
+    isGroupChat: boolean | null;
   } | null>(this.checkChat());
-  chatCheck$: Observable<{ chatId: string; participants: string[] } | null> =
-    this.ChatBehaviorSabject.asObservable();
+  chatCheck$: Observable<{
+    chatId: string;
+    participants: string[];
+    isGroupChat: boolean | null;
+  } | null> = this.ChatBehaviorSabject.asObservable();
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.socket = io('http://localhost:3000', {
@@ -53,18 +57,27 @@ export class FriendRequestService {
       withCredentials: true,
     });
   }
-  saveChatDataInLocalStorage(chatId: string, participants: string[]) {
+  saveChatDataInLocalStorage(
+    chatId: string,
+    participants: string[],
+    isGroupChat: boolean | null
+  ) {
     if (chatId === '' && participants.length === 0) {
       localStorage.clear();
       this.ChatBehaviorSabject.next(null);
     } else {
       localStorage.setItem(
         'openedChat',
-        JSON.stringify({ chatId: chatId, participants: participants })
+        JSON.stringify({
+          chatId: chatId,
+          participants: participants,
+          isGroupChat: isGroupChat,
+        })
       );
       this.ChatBehaviorSabject.next({
         chatId: chatId,
         participants: participants,
+        isGroupChat: isGroupChat,
       });
     }
   }
@@ -104,11 +117,12 @@ export class FriendRequestService {
   deleteChat(
     chatId: string,
     participants: string[] | null,
+    isGroupChat: boolean | null,
     userId: string
   ): Observable<APIRESP> {
     return this.http.post<APIRESP>(
       this.url + '/home/deleteChat',
-      { chatId, participants, userId },
+      { chatId, participants, isGroupChat, userId },
       {
         withCredentials: true,
       }

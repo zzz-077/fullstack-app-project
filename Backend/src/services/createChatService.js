@@ -7,6 +7,7 @@ export default async function createChat(req, res) {
     await Chat.create({
       chatName: chatName,
       participants: groupIds,
+      isGroupChat: true,
     });
     return res.status(200).json({
       status: "success",

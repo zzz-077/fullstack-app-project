@@ -34,6 +34,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { error } from 'console';
 import e from 'express';
 import { LoaderComponent } from '../loader/loader.component';
+import { AlertsComponent } from '../alerts/alerts.component';
 
 UC.defineComponents(UC);
 @Component({
@@ -44,6 +45,7 @@ UC.defineComponents(UC);
     FormsModule,
     NgxSkeletonLoaderModule,
     LoaderComponent,
+    AlertsComponent,
   ],
   templateUrl: './message-box.component.html',
   styleUrl: './message-box.component.css',
@@ -52,7 +54,15 @@ UC.defineComponents(UC);
 export class MessageBoxComponent
   implements OnInit, OnDestroy, AfterViewChecked
 {
-  OpenedChat: { chatId: string; participants: string[] } | null = null;
+  alert: any = {
+    status: '',
+    message: '',
+  };
+  OpenedChat: {
+    chatId: string;
+    participants: string[];
+    isGroupChat: boolean | null;
+  } | null = null;
   user!: any;
   messageText: string = '';
   messagesArray: {
@@ -79,6 +89,9 @@ export class MessageBoxComponent
   EmojiSubsription!: Subscription;
   isChatInfoLoaded: boolean = false;
   isEmojisLoaded: boolean = false;
+  isLeaveChatClicked: boolean = false;
+  isLoading: boolean = false;
+
   constructor(
     private store: Store<AppState>,
     private friendReqS: FriendRequestService
@@ -92,88 +105,117 @@ export class MessageBoxComponent
     this.store.select(selectUserData).subscribe((res) => {
       if (res.data && !Array.isArray(res.data)) {
         this.user = res.data;
+        if (this.user)
+          this.friendReqS.chatCheck$.subscribe(
+            (
+              data: {
+                chatId: string;
+                participants: string[];
+                isGroupChat: boolean | null;
+              } | null
+            ) => {
+              if (data) {
+                this.OpenedChat = data;
+                this.friendReqS.JoinInChat(this.OpenedChat.chatId);
+                this.messagesArray = [];
+                if (this.OpenedChat.isGroupChat === true) {
+                  this.store.select(selectChatData).subscribe((data: any) => {
+                    if (data) {
+                      this.chatInfo = [];
+                      this.isChatInfoLoaded = false;
+                      this.chatInfo.push({
+                        name: data.chatName,
+                        img: 'assets/groupChatImg.png',
+                        status: true,
+                      });
+                      console.log(data);
+                      console.log(data.chatName);
+
+                      console.log(this.chatInfo);
+                    }
+                  });
+                } else {
+                  if (Array.isArray(this.OpenedChat?.participants)) {
+                    const friendId = this.OpenedChat?.participants.find(
+                      (id: string) => id !== this.user?._id
+                    );
+                    let findFriendInUserFriendsArray;
+
+                    if (Array.isArray(this.user?.friends)) {
+                      findFriendInUserFriendsArray = this.user?.friends.find(
+                        (id: string) => id === friendId
+                      );
+                    }
+                    if (friendId && findFriendInUserFriendsArray) {
+                      this.friendReqS
+                        .getFriendData(friendId)
+                        .pipe(
+                          catchError((error: HttpErrorResponse) => {
+                            return throwError(() => error);
+                          })
+                        )
+                        .subscribe(
+                          (res) => {
+                            if (Array.isArray(res.data)) {
+                              this.messagesArray = [];
+                              this.chatInfo = [];
+                              this.chatInfo.push(res.data[0]);
+                              this.isChatInfoLoaded = false;
+                            } else {
+                              this.chatInfo = [];
+                            }
+                          },
+                          (error) => {
+                            console.log('Caught error:', error);
+                          }
+                        );
+                    } else {
+                      this.store.dispatch(chatActions.chatData({ data: [] }));
+                      this.friendReqS.saveChatDataInLocalStorage('', [], null);
+                    }
+                  }
+                }
+                //getChatMessages
+                if (this.OpenedChat?.chatId) {
+                  this.isMessagesLoaded = false;
+                  this.friendReqS
+                    .getChatmessages(this.OpenedChat?.chatId)
+                    .pipe(
+                      catchError((error: HttpErrorResponse) => {
+                        return throwError(error);
+                      })
+                    )
+                    .subscribe(
+                      (res) => {
+                        if (res && res.data) {
+                          let Data = res.data;
+                          if (Array.isArray(Data)) {
+                            Data.forEach((sender) => {
+                              this.messagesArray.push({
+                                name: sender.senderName,
+                                message: sender.message,
+                                time: sender.createdAt as string,
+                                status: 'sent',
+                                senderId: sender.senderId,
+                              });
+                            });
+                            this.isMessagesLoaded = true;
+                          }
+                        }
+                      },
+                      (error) => {
+                        if (error?.error?.message === 'No Chat Data!')
+                          this.isMessagesLoaded = true;
+                      }
+                    );
+                }
+              } else this.OpenedChat = null;
+            }
+          );
       }
     });
     this.isChatInfoLoaded = true;
-    this.friendReqS.chatCheck$.subscribe(
-      (data: { chatId: string; participants: string[] } | null) => {
-        if (data) {
-          this.OpenedChat = data;
-          this.friendReqS.JoinInChat(this.OpenedChat.chatId);
-          this.messagesArray = [];
-          if (this.OpenedChat.participants.length > 1) {
-            this.store.select(selectChatData).subscribe((data: any) => {
-              if (data) {
-                console.log(data);
-                this.chatInfo = [];
-                this.isChatInfoLoaded = false;
-                this.chatInfo.push({
-                  name: data.chatName,
-                  img: 'assets/groupChatImg.png',
-                  status: true,
-                });
-              }
-            });
-          } else {
-            this.friendReqS
-              .getFriendData(this.OpenedChat.participants[0])
-              .pipe(
-                catchError((error: HttpErrorResponse) => {
-                  return throwError(() => error);
-                })
-              )
-              .subscribe(
-                (res) => {
-                  if (Array.isArray(res.data)) {
-                    this.messagesArray = [];
-                    this.chatInfo = [];
-                    this.chatInfo.push(res.data[0]);
-                    this.isChatInfoLoaded = false;
-                  } else {
-                    this.chatInfo = [];
-                  }
-                },
-                (error) => {
-                  console.log('Caught error:', error);
-                }
-              );
-          }
-          //getChatMessages
-          if (this.OpenedChat?.chatId) {
-            this.isMessagesLoaded = false;
-            this.friendReqS
-              .getChatmessages(this.OpenedChat?.chatId)
-              .pipe(
-                catchError((error: HttpErrorResponse) => {
-                  return throwError(error);
-                })
-              )
-              .subscribe(
-                (res) => {
-                  if (res && res.data) {
-                    let Data = res.data;
-                    if (Array.isArray(Data)) {
-                      Data.forEach((sender) => {
-                        this.messagesArray.push({
-                          name: sender.senderName,
-                          message: sender.message,
-                          time: sender.createdAt as string,
-                          status: 'sent',
-                          senderId: sender.senderId,
-                        });
-                      });
-                      this.isMessagesLoaded = true;
-                    }
-                  }
-                },
-                (error) => {
-                  console.log(error);
-                }
-              );
-          }
-        } else this.OpenedChat = null;
-      }
-    );
+
     this.friendReqS.receivedMessage().subscribe((messagedata) => {
       if (messagedata && this.user?._id === messagedata?.senderId) {
         if (this.messagesArray || Array.isArray(this.messagesArray)) {
@@ -278,18 +320,57 @@ export class MessageBoxComponent
   optionsClick() {
     this.isOptionsClicked = !this.isOptionsClicked;
   }
-  deleteChatClick() {
+  leaveChatBtnClick() {
+    this.isLeaveChatClicked = true;
+  }
+  cancelLeavingChat() {
+    this.isLeaveChatClicked = false;
+  }
+  leaveChat() {
+    this.isLoading = true;
     const chatId = this.OpenedChat?.chatId;
-    const userId =
-      this.chatInfo[0]?.name !== '' ? this.chatInfo[0]?.name : this.user?._id;
-    let participants: string[] | undefined = this.OpenedChat?.participants;
-    participants?.push(this.user?._id);
+    let participants: string[] | undefined = this.OpenedChat?.participants
+      ? [...this.OpenedChat.participants]
+      : undefined;
+    const isGroupChat = this.OpenedChat?.isGroupChat
+      ? this.OpenedChat?.isGroupChat
+      : null;
+    if (Array.isArray(participants)) {
+      participants?.push(this.user?._id);
+    }
     if (chatId && Array.isArray(participants)) {
       this.friendReqS
-        .deleteChat(chatId, participants, userId)
+        .deleteChat(chatId, participants, isGroupChat, this.user?._id)
         .pipe(
           catchError((error: HttpErrorResponse) => {
-            return throwError(error);
+            if (error.error instanceof ErrorEvent) {
+              // Client-side error
+              this.alert = {
+                status: 'fail',
+                message: error.error.message,
+              };
+            } else {
+              // Server-side errors
+              if (error.status === 0) {
+                this.alert = {
+                  status: 'fail',
+                  message: 'there is no response',
+                };
+              } else {
+                this.alert = {
+                  status: error.error.status,
+                  message: error.error.message,
+                };
+              }
+            }
+            this.isLoading = false;
+            setTimeout(() => {
+              this.alert = {
+                status: '',
+                message: '',
+              };
+            }, 5000);
+            return throwError(this.alert);
           })
         )
         .subscribe(
@@ -297,13 +378,13 @@ export class MessageBoxComponent
             if (res) {
               this.store.dispatch(userActions.userData());
               this.store.dispatch(chatActions.chatData({ data: [] }));
-              this.friendReqS.saveChatDataInLocalStorage('', []);
+              this.friendReqS.saveChatDataInLocalStorage('', [], null);
               this.isOptionsClicked = false;
+              this.isLeaveChatClicked = false;
+              this.isLoading = false;
             }
           },
-          (error) => {
-            console.log(error);
-          }
+          (error) => {}
         );
     }
   }

@@ -1,4 +1,9 @@
 <div class="chat_message_cont">
+  @if (alert.status!=='') {
+  <div class="toast_box">
+    <app-alerts [alert]="alert"></app-alerts>
+  </div>
+  }
   <div class="message_header">
     @if (!isChatInfoLoaded) {
     <div class="left_col">
@@ -54,24 +59,12 @@
     }
 
     <div class="right_col">
-      <button>
-        <i class="fa-solid fa-video"></i>
-      </button>
-      <button (click)="optionsClick()">
-        <i class="fa-solid fa-gears"></i>
+      <button (click)="leaveChatBtnClick()">
+        <i class="fa-solid fa-door-open"></i>leave chat
       </button>
     </div>
   </div>
   <div class="message_box" #messageContainer>
-    <div [ngClass]="isOptionsClicked ? 'active' : null" class="options_cont">
-      <div class="options_box">
-        <button (click)="deleteChatClick()" class="delete_chat_btn">
-          <i class="fa-solid fa-trash-can"></i>delete chat
-        </button>
-        <p>More feature will be added soon</p>
-      </div>
-    </div>
-
     @if(isMessagesLoaded){
     <div>
       @for(message of messagesArray; track $index){ @if(message.senderId===
@@ -263,5 +256,31 @@
       <img [src]="cklickedChatImg" alt="" />
     </div>
     <p (click)="chatImgClick('', false)">zoom out image</p>
+  </div>
+</div>
+
+<div *ngIf="isLeaveChatClicked" class="leavechatPopUp">
+  <div class="leave_popup_content">
+    <div class="popup_top_row">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <h2>leave chat</h2>
+    </div>
+    <div class="popup_bottom_row">
+      <p>Are you sure you want to leave this chat?</p>
+      <div class="leave_popUp_btns">
+        <button (click)="cancelLeavingChat()" class="popUp_cancelBtn">
+          cancel
+        </button>
+        <button (click)="leaveChat()" class="popUp_leaveBtn">
+          @if(isLoading){
+          <div class="loader">
+            <app-loader></app-loader>
+          </div>
+          }@else{
+          <p>leave</p>
+          }
+        </button>
+      </div>
+    </div>
   </div>
 </div>

@@ -76,8 +76,20 @@
   background-color: rgba(0, 0, 0, 0);
   cursor: pointer;
 }
+
 .chat_message_cont .message_header .right_col button {
   background-color: #80808000;
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #d11a2a;
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  align-items: center;
+  transition: all 0.3s;
+  color: var(--font-light-color);
+  font-size: 0.875rem;
+  border-radius: 0.25rem;
 }
 .chat_message_cont .message_header .right_col button i {
   transition: all 0.2s;
@@ -85,9 +97,12 @@
   font-size: 1rem;
   color: var(--font-light-color);
 }
-.chat_message_cont .message_header .right_col button i:hover {
-  color: var(--decoration-color);
-  /* color: #808080; */
+.chat_message_cont .message_header .right_col button p {
+  color: var(--font-color);
+  font-size: 0.65rem;
+}
+.chat_message_cont .message_header .right_col button:hover {
+  filter: brightness(1.1);
 }
 
 /*========================*/
@@ -237,20 +252,9 @@
     transform: rotate(360deg);
   }
 }
-
 .message_box .options_cont {
-  position: absolute;
-  top: 0;
-  right: 0;
-  transform: translateX(100%);
+  position: fixed;
   height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: end;
-  transition: all 0.3s;
-}
-.message_box .options_cont.active {
-  transform: translateX(0);
 }
 .message_box .options_cont .options_box {
   width: 200px;
@@ -292,6 +296,22 @@
   display: flex;
   justify-content: end;
 }
+
+.message_box .options_cont {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateX(100%);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  transition: all 0.3s;
+}
+.message_box .options_cont.active {
+  transform: translateX(0);
+}
+
 .message_box .friend_message .message,
 .message_box .user_message .message {
   display: flex;
@@ -407,6 +427,99 @@
   margin-right: 0;
   margin-left: 0.5rem;
   text-align: left;
+}
+
+/*=========================*/
+/*=========================*/
+/*======Delete popup=======*/
+/*=========================*/
+/*=========================*/
+.leavechatPopUp {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.leave_popup_content {
+  padding-bottom: 0.5rem;
+  border-radius: 0.3rem;
+  background-color: var(--bg-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.popup_top_row {
+  display: flex;
+  padding: 0.3rem 0.25rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.446);
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--font-color);
+}
+
+.popup_top_row h2 {
+  font-size: 1.125rem;
+}
+
+.popup_top_row i {
+  font-size: 1.875rem;
+  height: 1.875rem;
+  width: 1.875rem;
+  color: #d11a2a;
+}
+
+.popup_bottom_row {
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.popup_bottom_row p {
+  font-size: 0.875rem;
+  margin: 1.25rem 0;
+}
+
+.leave_popUp_btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.leave_popUp_btns button {
+  padding: 0.3rem 1rem;
+  border-radius: 0.125rem;
+}
+.leave_popUp_btns button p {
+  font-size: 1rem;
+  margin: 0;
+}
+.leave_popUp_btns button:hover {
+  filter: brightness(1.1);
+}
+
+.popUp_leaveBtn {
+  border: 0;
+  background-color: #d11a2a;
+  color: var(--box-color);
+}
+.popUp_leaveBtn .loader {
+  width: 18px;
+  height: 18px;
+}
+
+.popUp_cancelBtn {
+  background-color: #d2c7c700;
+  border: 1px solid rgb(190, 189, 189);
+  color: var(--box-dark-color);
 }
 
 /*============================*/
