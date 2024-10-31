@@ -12,7 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root',
 })
 export class FriendRequestService {
-  url: string = 'http://localhost:3000';
+  url: string = 'https://fullstack-app-project-server.vercel.app/';
   emojiAPi: string = 'https://emoji-api.com/emojis?access_key=';
   private socket: Socket;
   ChatBehaviorSabject = new BehaviorSubject<{

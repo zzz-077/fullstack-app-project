@@ -9,7 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root',
 })
 export class RegistrationService {
-  url: string = 'http://localhost:3000';
+  url: string = 'https://fullstack-app-project-server.vercel.app/';
   private socket: Socket;
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.socket = io('http://localhost:3000', {
