@@ -89,37 +89,39 @@ export class CreateChatBarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isFriendsLoaded = true;
     this.chatUserIds.push(this.user._id);
-    this.userFriendsId.forEach((id: any) => {
-      this.subscription = this.friendreqS
-        .getFriendData(id)
-        .pipe(
-          catchError((error: HttpErrorResponse) => {
-            return throwError(() => error);
-          })
-        )
-        .subscribe(
-          (res) => {
-            if (Array.isArray(res.data)) {
-              this.isFriendsLoaded = false;
-              this.friendInfo.push({
-                id: id,
-                name: res.data[0]?.name,
-                img: res.data[0]?.img,
-                checked: false,
-              });
-              this.savedFriendInfoData.push({
-                id: id,
-                name: res.data[0]?.name,
-                img: res.data[0]?.img,
-                checked: false,
-              });
-            } else {
-              this.friendInfo = [];
-            }
-          },
-          (error) => console.log('Caught error:', error)
-        );
-    });
+
+    if (Array.isArray(this.userFriendsId))
+      this.userFriendsId.forEach((id: any) => {
+        this.subscription = this.friendreqS
+          .getFriendData(id)
+          .pipe(
+            catchError((error: HttpErrorResponse) => {
+              return throwError(() => error);
+            })
+          )
+          .subscribe(
+            (res) => {
+              if (Array.isArray(res.data)) {
+                this.isFriendsLoaded = false;
+                this.friendInfo.push({
+                  id: id,
+                  name: res.data[0]?.name,
+                  img: res.data[0]?.img,
+                  checked: false,
+                });
+                this.savedFriendInfoData.push({
+                  id: id,
+                  name: res.data[0]?.name,
+                  img: res.data[0]?.img,
+                  checked: false,
+                });
+              } else {
+                this.friendInfo = [];
+              }
+            },
+            (error) => console.log('Caught error:', error)
+          );
+      });
   }
   ngOnDestroy(): void {
     if (this.subscription) {

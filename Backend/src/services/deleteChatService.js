@@ -8,8 +8,8 @@ async function deletechat(req, res) {
   const participants = req.body?.participants;
   const isGroupChat = req.body?.isGroupChat;
   const userId = req.body?.userId;
-  console.log(isGroupChat);
-  console.log(userId);
+  // console.log(isGroupChat);
+  // console.log(userId);
   try {
     if (Array.isArray(participants)) {
       if (isGroupChat === null) {

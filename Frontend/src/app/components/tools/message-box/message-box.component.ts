@@ -128,10 +128,6 @@ export class MessageBoxComponent
                         img: 'assets/groupChatImg.png',
                         status: true,
                       });
-                      console.log(data);
-                      console.log(data.chatName);
-
-                      console.log(this.chatInfo);
                     }
                   });
                 } else {
@@ -231,7 +227,7 @@ export class MessageBoxComponent
             senderId: messagedata.senderId,
           });
         }
-      } else console.log(messagedata);
+      }
     });
     this.friendReqS.listenForMessagesInChat().subscribe((data: any) => {
       if (data) {

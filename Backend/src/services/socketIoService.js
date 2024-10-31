@@ -2,9 +2,9 @@ import jwt from "jsonwebtoken";
 import User from "../models/userM.js";
 import Message from "../models/messageM.js";
 function handleSocketConnection(io, socket) {
-  console.log(
-    "===================================================================="
-  );
+  // console.log(
+  //   "===================================================================="
+  // );
   const token = socket.handshake.headers.cookie
     ?.split(";")
     .find((cookie) => {
@@ -13,7 +13,6 @@ function handleSocketConnection(io, socket) {
       }
     })
     ?.split("=")[1];
-  console.log(token);
   // console.log(token);
   // console.log("A user connected:", socket.id);
 
@@ -64,20 +63,20 @@ function handleSocketConnection(io, socket) {
   });
   socket.on("logout", () => {
     if (!token) {
-      console.log("No token from coockies.");
+      // console.log("No token from coockies.");
       return;
     }
-    console.log("||||||1|||||||");
+    // console.log("||||||1|||||||");
     Tokenverify(token, false);
   });
   socket.on("disconnect", () => {
     if (!token) {
-      console.log("No token found in cookies.");
+      // console.log("No token found in cookies.");
       return;
     }
-    console.log("||||||2|||||||");
+    // console.log("||||||2|||||||");
     Tokenverify(token, false);
-    console.log("user disconnected:", socket.id);
+    // console.log("user disconnected:", socket.id);
   });
 }
 
@@ -89,7 +88,7 @@ function Tokenverify(token, status) {
       const userId = decoded.userId;
       if (userId === "" || !userId)
         console.log("Don't have access on UserData!");
-      console.log("STATUS", status);
+      // console.log("STATUS", status);
       await User.findOneAndUpdate(
         { _id: userId },
         { $set: { status: status } }

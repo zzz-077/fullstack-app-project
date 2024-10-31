@@ -20,7 +20,7 @@ async function friendRequest(req, res) {
     // console.log(friend.userId);
     const checkFriendReqInRequests = foundedFriend.friendRequests.find(
       (obj) => {
-        console.log("FIRSTCHECK:" + obj._id);
+        // console.log("FIRSTCHECK:" + obj._id);
         return obj._id.toString() === friend.userId;
       }
     );

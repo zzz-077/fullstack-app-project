@@ -62,6 +62,7 @@ export class ContactBoxComponent implements OnInit {
       }
     );
     this.userResp$.subscribe((res) => {
+      this.user = res.data;
       this.isChatsLoaded = true;
       if (res.data && !Array.isArray(res.data)) {
         this.isChatsLoaded = false;

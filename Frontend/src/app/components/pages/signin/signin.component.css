@@ -223,3 +223,29 @@
   color: #bbb8b8;
   font-weight: 300;
 }
+.Template_alert_box {
+  background-color: rgb(255, 162, 162);
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.25rem;
+  border: 1px solid rgb(229, 18, 18);
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+}
+.Template_alert_box div:nth-child(1) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  text-align: justify;
+  gap: 0.5rem;
+}
+.Template_alert_box div:nth-child(1) i {
+  font-size: 2rem;
+  color: #d11a2a;
+}
+.Template_alert_box div:nth-child(2) {
+  font-size: 0.75rem;
+  text-align: left;
+  font-style: oblique;
+}
