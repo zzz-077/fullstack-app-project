@@ -31,8 +31,6 @@ import { selectChatData } from '../../../shared/store/Chat/chat.selectors';
 import * as userActions from '../../../shared/store/userData/userData.actions';
 import * as chatActions from '../../../shared/store/Chat/chat.actions';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { error } from 'console';
-import e from 'express';
 import { LoaderComponent } from '../loader/loader.component';
 import { AlertsComponent } from '../alerts/alerts.component';
 
@@ -76,10 +74,8 @@ export class MessageBoxComponent
   cklickedChatImg!: string;
   emojiArr: { character: string }[] = [];
   isEmojiClickOpened: boolean = false;
-  @ViewChild('messageContainer') private messageContainer!: ElementRef;
-  @ViewChild('ctxProvider', { static: true }) ctxProviderRef!: ElementRef<
-    InstanceType<UC.UploadCtxProvider>
-  >;
+  @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
+
   getChatMembersName: { name: string; id: string }[] = [];
   chatInfo: { name: string; img: string; status: boolean }[] = [];
   files: any[] = [];
@@ -98,10 +94,6 @@ export class MessageBoxComponent
   ) {}
 
   ngOnInit() {
-    this.ctxProviderRef.nativeElement.addEventListener(
-      'change',
-      this.handleUploadEvent
-    );
     this.store.select(selectUserData).subscribe((res) => {
       if (res.data && !Array.isArray(res.data)) {
         this.user = res.data;
@@ -281,10 +273,16 @@ export class MessageBoxComponent
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
+
   private scrollToBottom(): void {
-    const container = this.messageContainer.nativeElement;
-    container.scrollTop = container.scrollHeight;
+    try {
+      const container = this.scrollContainer.nativeElement;
+      container.scrollTop = container.scrollHeight;
+    } catch (err) {
+      console.error('Could not auto-scroll:', err);
+    }
   }
+
   emojiOpenClick() {
     this.isEmojiClickOpened = !this.isEmojiClickOpened;
   }

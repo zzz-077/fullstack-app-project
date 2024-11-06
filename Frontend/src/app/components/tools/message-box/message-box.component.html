@@ -64,7 +64,7 @@
       </button>
     </div>
   </div>
-  <div class="message_box" #messageContainer>
+  <div class="message_box" #scrollContainer>
     @if(isMessagesLoaded){
     <div>
       @for(message of messagesArray; track $index){ @if(message.senderId===
