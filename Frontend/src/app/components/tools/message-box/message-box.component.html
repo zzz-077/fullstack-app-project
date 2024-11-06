@@ -8,12 +8,12 @@
     @if (!isChatInfoLoaded) {
     <div class="left_col">
       <div class="img_box">
-        <img [src]="chatInfo[0]?.img" alt="" />
+        <img [src]="chatInfo[0].img" alt="" />
       </div>
       <div class="friend_info_box">
-        <h2>{{ chatInfo[0]?.name }}</h2>
+        <h2>{{ chatInfo[0].name }}</h2>
         <div>
-          @if(chatInfo[0]?.status){
+          @if(chatInfo[0].status){
           <span class="online"></span>
           <p>online</p>
           }@else {

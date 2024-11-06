@@ -1,18 +1,18 @@
 @if(friendInfo&& friendInfo.length>0){ @if (fromWhereIscalled==='contactBox') {
 <div class="frined_card_cont">
   <div class="friend_img">
-    <img [src]="friendInfo[0]?.img" alt="" />
+    <img [src]="friendInfo[0].img" alt="" />
   </div>
   <div class="friend_info">
     <div class="header_info">
       <h4>
         {{
-          friendInfo[0]?.name?.length! > 10
-            ? friendInfo[0]?.name?.slice(0, 10) + "..."
-            : friendInfo[0]?.name
+          friendInfo[0].name.length! > 10
+            ? friendInfo[0].name.slice(0, 10) + "..."
+            : friendInfo[0].name
         }}
       </h4>
-      @if(friendInfo[0]?.status){
+      @if(friendInfo[0].status){
       <span class="online"></span>
       }@else{
       <span class="offline"></span>
