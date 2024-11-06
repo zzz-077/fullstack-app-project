@@ -19,7 +19,7 @@ const server = http.createServer(app);
 //socketIo
 export const io = new Server(server, {
   cors: {
-    origin: `http://localhost:${process.env.FRONT_PORT}`,
+    origin: `http://chatz-prj.netlify.app:${process.env.FRONT_PORT}`,
     credentials: true,
   },
 });
@@ -42,7 +42,7 @@ io.on("connection", (socket) => handleSocketConnection(io, socket));
 // Enable CORS
 app.use(
   cors({
-    origin: `http://localhost:${process.env.FRONT_PORT}`,
+    origin: `http://chatz-prj.netlify.app:${process.env.FRONT_PORT}`,
     credentials: true,
     methods: "GET,POST,PUT,DELETE",
   })
