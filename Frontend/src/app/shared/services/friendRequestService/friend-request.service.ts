@@ -62,23 +62,25 @@ export class FriendRequestService {
     participants: string[],
     isGroupChat: boolean | null
   ) {
-    if (chatId === '' && participants.length === 0) {
-      localStorage.clear();
-      this.ChatBehaviorSabject.next(null);
-    } else {
-      localStorage.setItem(
-        'openedChat',
-        JSON.stringify({
+    if (typeof window !== 'undefined') {
+      if (chatId === '' && participants.length === 0) {
+        localStorage.clear();
+        this.ChatBehaviorSabject.next(null);
+      } else {
+        localStorage.setItem(
+          'openedChat',
+          JSON.stringify({
+            chatId: chatId,
+            participants: participants,
+            isGroupChat: isGroupChat,
+          })
+        );
+        this.ChatBehaviorSabject.next({
           chatId: chatId,
           participants: participants,
           isGroupChat: isGroupChat,
-        })
-      );
-      this.ChatBehaviorSabject.next({
-        chatId: chatId,
-        participants: participants,
-        isGroupChat: isGroupChat,
-      });
+        });
+      }
     }
   }
   checkChat() {
