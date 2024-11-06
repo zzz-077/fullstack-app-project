@@ -27,7 +27,7 @@ export class FriendRequestService {
   } | null> = this.ChatBehaviorSabject.asObservable();
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
-    this.socket = io('http://localhost:3000', {
+    this.socket = io('https://chatz-project.onrender.com', {
       withCredentials: true,
     });
   }
