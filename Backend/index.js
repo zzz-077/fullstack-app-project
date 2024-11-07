@@ -39,7 +39,10 @@ io.use(async (socket, next) => {
     });
   }
 });
-io.on("connection", (socket) => handleSocketConnection(io, socket));
+io.on("connection", (socket) => {
+  console.log("Socket connected: ", socket.id);
+  handleSocketConnection(io, socket);
+});
 // Enable CORS
 app.use(
   cors({
