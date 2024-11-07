@@ -2,7 +2,7 @@
   "builds": [
     {
       "src": "angular.json",
-      "use": "@vercel/angular"
+      "use": "@vercel/static-build"
     }
   ],
   "routes": [{ "src": "/(.*)", "dest": "/index.html" }]
