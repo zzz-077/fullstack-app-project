@@ -5,6 +5,7 @@ import signIn from "../services/signInService.js";
 const router = express.Router();
 
 // router.get("/usersget", usersGet);
+console.log("request made");
 router.post("/signup", userCreate);
 router.post("/signin", signIn);
 export default router;

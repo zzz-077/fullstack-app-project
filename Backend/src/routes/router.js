@@ -3,8 +3,6 @@ import usersRoute from "./usersRoute.js";
 import authRoute from "./authRoute.js";
 import homeRoute from "./homeRoute.js";
 import tokenAutentication from "../middleware/tokenAutentication.js";
-import User from "../models/userM.js";
-import jwt from "jsonwebtoken";
 const router = express.Router();
 
 router.use("/", usersRoute);

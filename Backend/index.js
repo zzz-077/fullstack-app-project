@@ -26,6 +26,7 @@ export const io = new Server(server, {
 });
 io.use(async (socket, next) => {
   const cookies = cookie.parse(socket.handshake.headers.cookie || "");
+  console.log(cookies);
   const AccessToken = cookies.AccessToken;
   const RefreshToken = cookies.RefreshToken;
   if (!AccessToken) {
@@ -34,7 +35,6 @@ io.use(async (socket, next) => {
   } else {
     jwt.verify(AccessToken, process.env.ACCESS_TOKEN_SECRET, (err, decode) => {
       if (err) return next(new Error("Invalid Access token"));
-
       next();
     });
   }
