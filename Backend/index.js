@@ -19,8 +19,8 @@ const server = http.createServer(app);
 //socketIo
 export const io = new Server(server, {
   cors: {
-    origin: `https://chatz-prj.vercel.app:${process.env.FRONT_PORT}`,
-
+    // origin: `https://localhost:${process.env.FRONT_PORT}`,
+    origin: `https://chatz-prj.vercel.app`,
     credentials: true,
   },
 });
@@ -43,7 +43,8 @@ io.on("connection", (socket) => handleSocketConnection(io, socket));
 // Enable CORS
 app.use(
   cors({
-    origin: `https://chatz-prj.vercel.app:${process.env.FRONT_PORT}`,
+    // origin: `https://localhost:${process.env.FRONT_PORT}`,
+    origin: `https://chatz-prj.vercel.app`,
     credentials: true,
     methods: "GET,POST,PUT,DELETE",
   })
