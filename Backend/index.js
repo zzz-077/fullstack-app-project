@@ -30,7 +30,7 @@ export const io = new Server(server, {
 });
 io.use(async (socket, next) => {
   const cookies = cookie.parse(socket.handshake.headers.cookie || "");
-  console.log(cookies);
+  console.log("Cookies from handshake:", cookies);
   const AccessToken = cookies.AccessToken;
   const RefreshToken = cookies.RefreshToken;
   if (!AccessToken) {
@@ -59,6 +59,7 @@ app.use(
   })
 );
 // Middleware to parse JSON
+app.options("*", cors());
 app.use(express.json());
 app.use(express.text());
 //coockieParser
