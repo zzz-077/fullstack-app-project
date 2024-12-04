@@ -23,7 +23,7 @@ export const io = new Server(server, {
   cors: {
     origin: [
       "https://chatz-prj.vercel.app",
-      `https://localhost:${frontendPort}`,
+      `http://localhost:${frontendPort}`,
     ],
     credentials: true,
   },
@@ -52,7 +52,7 @@ app.use(
   cors({
     origin: [
       "https://chatz-prj.vercel.app",
-      `https://localhost:${frontendPort}`,
+      `http://localhost:${frontendPort}`,
     ],
     credentials: true,
     methods: "GET,POST,PUT,DELETE",

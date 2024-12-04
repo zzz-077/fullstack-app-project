@@ -12,7 +12,7 @@ export class RegistrationService {
   url: string = 'https://chatz-project.onrender.com';
   private socket: Socket;
   constructor(private http: HttpClient, private cookieService: CookieService) {
-    this.socket = io('https://chatz-project.onrender.com', {
+    this.socket = io(this.url, {
       withCredentials: true,
     });
   }
