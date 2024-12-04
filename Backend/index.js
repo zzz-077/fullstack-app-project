@@ -26,6 +26,7 @@ export const io = new Server(server, {
       `http://localhost:${frontendPort}`,
     ],
     credentials: true,
+    transports: ["websocket", "polling"],
   },
 });
 io.use(async (socket, next) => {
@@ -56,6 +57,7 @@ app.use(
     ],
     credentials: true,
     methods: "GET,POST,PUT,DELETE",
+    transports: ["websocket", "polling"],
   })
 );
 // Middleware to parse JSON

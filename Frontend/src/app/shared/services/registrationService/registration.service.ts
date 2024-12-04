@@ -14,6 +14,7 @@ export class RegistrationService {
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.socket = io(this.url, {
       withCredentials: true,
+      transports: ['websocket', 'polling'],
     });
   }
 
