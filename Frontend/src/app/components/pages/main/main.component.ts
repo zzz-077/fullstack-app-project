@@ -42,8 +42,8 @@ export class MainComponent implements OnInit {
         // console.log(res);
       },
       error: (err) => {
-        this.router.navigate(['/signin']);
         console.error('Home Autentication failed:', err);
+        this.router.navigate(['/signin']);
       },
     });
   }

@@ -20,7 +20,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: `chatz-prj.netlify.app:${process.env.FRONT_PORT}/signin`,
+    failureRedirect: `https://chatz-prj.vercel.app/signin`,
     session: false,
   }),
   async (req, res) => {
@@ -33,7 +33,7 @@ router.get(
     //     message: "Authentication success",
     //     error: null,
     // });
-    return res.redirect(`chatz-prj.netlify.app:${process.env.FRONT_PORT}/home`);
+    return res.redirect(`https://chatz-prj.vercel.app/home`);
   },
   (err, req, res, next) => {
     // return res.status(500).json({
@@ -41,7 +41,7 @@ router.get(
     //     message: "Authentication failed",
     //     error: err.message,
     // });
-    res.redirect(`chatz-prj.netlify.app:${process.env.FRONT_PORT}/signin`);
+    res.redirect(`https://chatz-prj.vercel.app/signin`);
   }
 );
 

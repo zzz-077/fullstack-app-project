@@ -15,13 +15,15 @@ import handleSocketConnection from "./src/services/socketIoService.js";
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
+const frontendPort = process.env.FRONT_PORT || 4200;
+const backendPort = process.env.PORT || 3000;
 
 //socketIo
 export const io = new Server(server, {
   cors: {
     origin: [
-      `https://chatz-prj.vercel.app/`,
-      `https://localhost:${process.env.FRONT_PORT}`,
+      "https://chatz-prj.vercel.app",
+      `https://localhost:${frontendPort}`,
     ],
     credentials: true,
   },
@@ -49,8 +51,8 @@ io.on("connection", (socket) => {
 app.use(
   cors({
     origin: [
-      `https://chatz-prj.vercel.app/`,
-      `https://localhost:${process.env.FRONT_PORT}`,
+      "https://chatz-prj.vercel.app",
+      `https://localhost:${frontendPort}`,
     ],
     credentials: true,
     methods: "GET,POST,PUT,DELETE",
@@ -70,8 +72,8 @@ mongoose
   .then(() => {
     console.log("Connected to database saccessfully!");
     server
-      .listen(process.env.PORT, () => {
-        console.log(`Server is running on port ${process.env.PORT}`);
+      .listen(backendPort, () => {
+        console.log(`Server is running on port ${backendPort}`);
       })
       .on("error", (err) => {
         console.error("Server error:", err);
