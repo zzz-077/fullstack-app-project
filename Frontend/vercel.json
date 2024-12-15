@@ -1,9 +1,8 @@
 {
-  "version": 2,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "Frontend/dist/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
