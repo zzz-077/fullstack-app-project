@@ -53,7 +53,7 @@ export class NavbarBoxComponent implements OnInit {
     this.userResp$ = this.store.select(selectUserData);
   }
   ngOnInit() {
-    this.store.dispatch(userActions.userData());
+    if (this.userResp$) this.store.dispatch(userActions.userData());
     this.userResp$.subscribe((res) => {
       this.isUserLoadaded = true;
       if (res.data && !Array.isArray(res.data)) {
