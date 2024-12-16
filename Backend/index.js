@@ -12,6 +12,8 @@ import cookie from "cookie";
 import jwt from "jsonwebtoken";
 import "./auth.js";
 import handleSocketConnection from "./src/services/socketIoService.js";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
@@ -32,10 +34,16 @@ app.use(
 app.options("*", cors());
 app.use(express.json());
 app.use(express.text());
-//coockieParser
 app.use(cookieParser());
 app.use(passport.initialize());
-app.use(session({ secret: "secret", resave: false, saveUninitialized: true }));
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  })
+);
 
 //socketIo
 export const io = new Server(server, {
