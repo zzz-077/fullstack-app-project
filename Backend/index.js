@@ -12,7 +12,6 @@ import cookie from "cookie";
 import jwt from "jsonwebtoken";
 import "./auth.js";
 import handleSocketConnection from "./src/services/socketIoService.js";
-import session from "express-session";
 import MongoStore from "connect-mongo";
 dotenv.config();
 const app = express();
