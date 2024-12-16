@@ -40,7 +40,6 @@ app.use(
     secret: "secret",
     resave: false,
     saveUninitialized: true,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
 );
 
