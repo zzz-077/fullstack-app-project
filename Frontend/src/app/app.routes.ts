@@ -6,7 +6,7 @@ import { MainComponent } from './components/pages/main/main.component';
 import { LogoutComponent } from './components/tools/logout/logout.component';
 import { AuthGuardService } from './shared/services/Authentication/auth-guard.service';
 export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: MainComponent, canActivate: [AuthGuardService] },
   { path: 'signup', component: RegistrationComponent },
   { path: 'signin', component: SigninComponent },

@@ -17,6 +17,25 @@ const app = express();
 const server = http.createServer(app);
 const frontendPort = process.env.FRONT_PORT || 4200;
 const backendPort = process.env.PORT || 3000;
+// Enable CORS
+app.use(
+  cors({
+    origin: [
+      "https://chatz-prj.vercel.app",
+      `http://localhost:${frontendPort}`,
+    ],
+    credentials: true,
+    methods: "GET,POST,PUT,DELETE",
+  })
+);
+// Middleware to parse JSON
+app.options("*", cors());
+app.use(express.json());
+app.use(express.text());
+//coockieParser
+app.use(cookieParser());
+app.use(passport.initialize());
+app.use(session({ secret: "secret", resave: false, saveUninitialized: true }));
 
 //socketIo
 export const io = new Server(server, {
@@ -47,24 +66,7 @@ io.on("connection", (socket) => {
   console.log("Socket connected: ", socket.id);
   handleSocketConnection(io, socket);
 });
-// Enable CORS
-app.use(
-  cors({
-    origin: [
-      "https://chatz-prj.vercel.app",
-      `http://localhost:${frontendPort}`,
-    ],
-    credentials: true,
-    methods: "GET,POST,PUT,DELETE",
-  })
-);
-// Middleware to parse JSON
-app.options("*", cors());
-app.use(express.json());
-app.use(express.text());
-//coockieParser
-app.use(cookieParser());
-app.use(passport.initialize());
+
 //default rout
 app.use("/", router);
 //connecting to database

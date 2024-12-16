@@ -5,13 +5,18 @@ import { APIRESP } from '../../../models/statusModel';
 import { USER } from '../../../models/userModel';
 import { io, Socket } from 'socket.io-client';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
 export class RegistrationService {
   url: string = 'https://chatz-project.onrender.com';
   private socket: Socket;
-  constructor(private http: HttpClient, private cookieService: CookieService) {
+  constructor(
+    private http: HttpClient,
+    private cookieService: CookieService,
+    private router: Router
+  ) {
     this.socket = io(this.url, {
       withCredentials: true,
       transports: ['websocket', 'polling'],
@@ -44,13 +49,16 @@ export class RegistrationService {
     );
   }
   homeAutentication(): Observable<APIRESP> {
-    return this.http.post<APIRESP>(
-      this.url + '/home',
-      {},
-      {
-        withCredentials: true,
-      }
-    );
+    return this.http
+      .post<APIRESP>(`${this.url}/home`, {}, { withCredentials: true })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 401 || error.status === 403) {
+            this.router.navigate(['/signin']);
+          }
+          return throwError(error);
+        })
+      );
   }
 
   getUserData(): Observable<APIRESP> {
