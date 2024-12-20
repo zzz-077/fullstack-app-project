@@ -23,6 +23,7 @@ app.use(
   cors({
     origin: [
       "https://chatz-prj.vercel.app",
+      "https://chatz-prj.netlify.app",
       `http://localhost:${frontendPort}`,
     ],
     credentials: true,
@@ -48,6 +49,7 @@ export const io = new Server(server, {
   cors: {
     origin: [
       "https://chatz-prj.vercel.app",
+      "https://chatz-prj.netlify.app",
       `http://localhost:${frontendPort}`,
     ],
     credentials: true,

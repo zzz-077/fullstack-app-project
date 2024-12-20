@@ -4,7 +4,6 @@ async function createAccessTokenCookie(res, AccessToken) {
     sameSite: "None",
     secure: true,
     path: "/",
-    domain: "chatz-prj.vercel.app",
     maxAge: 1 * 3600 * 1000,
   });
 }
@@ -14,7 +13,6 @@ async function createRefreshTokenCookie(res, RefreshToken) {
     sameSite: "None",
     secure: true,
     path: "/",
-    domain: "chatz-prj.vercel.app",
     maxAge: 24 * 3600 * 1000,
   });
 }
