@@ -13,6 +13,12 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": [
+              "socket.io-client",
+              "debug",
+              "engine.io-client",
+              "xmlhttprequest-ssl"
+            ],
             "outputPath": "dist/frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
